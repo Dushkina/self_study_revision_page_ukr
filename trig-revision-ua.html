@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тригонометричні рівняння та тотожності</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '\\(', right: '\\)', display: false}
+    ]
+  });"></script>
+
+<style>
+:root {
+  --bg:        #f7f4f0;
+  --card:      #ffffff;
+  --pink:      #e84fa3;
+  --purple:    #7c5cbf;
+  --pink-lt:   #fde8f4;
+  --pink-mid:  #f9c9e8;
+  --purple-lt: #ede8f8;
+  --ink:       #1a1228;
+  --muted:     #7a6e82;
+  --border:    #e5dff0;
+  --radius:    20px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  padding: 48px 24px 80px;
+}
+
+.page { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+
+.divider {
+  height: 2px;
+  background: linear-gradient(90deg, var(--pink), var(--purple));
+  opacity: 0.25;
+  border-radius: 2px;
+  margin: 4px 0;
+}
+
+/* HERO */
+.hero {
+  background: var(--ink);
+  border-radius: var(--radius);
+  padding: 52px 44px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-blob { position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none; }
+.hero-blob-1 { width: 300px; height: 300px; background: rgba(232,79,163,0.28); top: -80px; right: -60px; }
+.hero-blob-2 { width: 240px; height: 240px; background: rgba(124,92,191,0.22); bottom: -60px; left: 40px; }
+.hero-badge {
+  position: absolute; top: 24px; right: 24px;
+  background: var(--pink); color: #fff;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 99px;
+}
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--pink); margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 4.6vw, 3.1rem);
+  color: #fff; line-height: 1.15; margin-bottom: 16px; position: relative;
+}
+.hero-sub { color: rgba(255,255,255,0.55); font-size: 0.95rem; max-width: 540px; position: relative; }
+
+/* SECTION LABEL */
+.sec-label {
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 18px;
+}
+.sec-label::before { content:''; display:block; width:24px; height:3px; background:var(--pink); border-radius:2px; flex-shrink:0; }
+
+/* CARD */
+.card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 28px 32px; }
+h2 { font-family: 'DM Serif Display', serif; font-size: 1.55rem; color: var(--ink); margin-bottom: 18px; line-height: 1.25; }
+h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+p { color: var(--muted); font-size: 0.93rem; }
+p strong { color: var(--ink); }
+
+/* EQUATION SOLVE CARD (sin/cos/tan/cot = a) */
+.solve-grid { display: flex; flex-direction: column; gap: 12px; }
+.solve-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 22px;
+}
+.solve-top {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px; margin-bottom: 12px;
+}
+.solve-eq {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700; font-size: 1.05rem; color: var(--pink);
+}
+.solve-domain {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+  color: var(--purple); background: var(--purple-lt);
+  border: 1px solid #d4c8ef; border-radius: 8px; padding: 3px 10px;
+}
+.solve-formula {
+  background: var(--pink-lt); border: 1px solid var(--pink-mid);
+  border-radius: 10px; padding: 12px 18px; text-align: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.98rem;
+}
+.solve-formula-deg {
+  background: var(--purple-lt); border: 1px solid #d4c8ef;
+  border-radius: 10px; padding: 9px 18px; text-align: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.86rem;
+  color: var(--purple); margin-top: 6px;
+}
+.deg-tag {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--purple); margin-right: 6px; opacity: 0.7;
+}
+.sp-sol-deg {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.74rem;
+  color: var(--purple); margin-top: 2px;
+}
+.special-toggle {
+  margin-top: 12px; font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted);
+}
+.special-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px;
+}
+.special-item {
+  background: var(--purple-lt); border: 1px solid #d4c8ef;
+  border-radius: 10px; padding: 10px 12px; text-align: center;
+}
+.special-item .sp-case { font-family:'JetBrains Mono', monospace; font-size:0.8rem; font-weight:700; color: var(--purple); margin-bottom: 4px; }
+.special-item .sp-sol { font-family:'JetBrains Mono', monospace; font-size:0.82rem; color: var(--ink); }
+
+/* RECIPROCAL CARDS */
+.recip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.recip-card {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: 14px; padding: 16px 18px;
+}
+.recip-name {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--pink); margin-bottom: 6px;
+}
+.recip-formula { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--ink); }
+.recip-note { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+/* IDENTITY TABLE STYLE */
+table {
+  width: 100%; border-collapse: collapse; font-size: 0.88rem;
+  border-radius: 14px; overflow: hidden; border: 1.5px solid var(--border);
+}
+thead tr { background: var(--purple-lt); }
+thead th {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--purple);
+  padding: 11px 16px; text-align: left;
+}
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #f5f0fc; }
+tbody td { padding: 11px 16px; font-family: 'JetBrains Mono', monospace; color: var(--ink); font-size: 0.86rem; }
+tbody td.desc { font-family: 'Space Grotesk', sans-serif; color: var(--muted); font-size: 0.85rem; }
+tbody td.hl { background: var(--pink-lt); color: var(--pink); font-weight: 600; }
+
+/* IDENTITY PILL TAGS */
+.pill {
+  display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
+}
+.pill-pyth { background: #fde8e8; color: #d9446b; border: 1px solid #f7c9c9; }
+.pill-quot { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+.pill-double { background: var(--purple-lt); color: var(--purple); border: 1px solid #d4c8ef; }
+.pill-sum { background: var(--pink-lt); color: var(--pink); border: 1px solid var(--pink-mid); }
+.pill-half { background: #d1fae5; color: #059669; border: 1px solid #a7f3d0; }
+.pill-recip { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+
+/* IDENTITY CARD */
+.id-card {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: 14px; padding: 18px 22px; margin-bottom: 12px;
+}
+.id-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; flex-wrap: wrap; }
+.id-title { font-weight: 600; font-size: 0.95rem; color: var(--ink); }
+.id-formula-row {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.92rem;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 9px 14px; margin-top: 6px;
+}
+.id-formula-row + .id-formula-row { margin-top: 8px; }
+
+/* WORKED EXAMPLE (dark header style) */
+.example-card { border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.example-header {
+  background: linear-gradient(135deg, #1e0e35, #3a1f6e);
+  padding: 18px 26px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+}
+.example-header-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.5);
+}
+.example-eq-badge {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.92rem; font-weight: 600;
+  background: rgba(232,79,163,0.22); border: 1px solid rgba(232,79,163,0.4);
+  color: #f9a8d4; padding: 6px 16px; border-radius: 99px;
+}
+.example-body { background: var(--card); }
+.step-row {
+  display: flex; align-items: baseline; gap: 14px; padding: 11px 26px;
+  border-bottom: 1px solid var(--border); transition: background 0.15s;
+}
+.step-row:last-child { border-bottom: none; }
+.step-row:hover { background: var(--bg); }
+.step-n { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--muted); min-width: 20px; flex-shrink: 0; }
+.step-formula { flex: 1; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--ink); }
+.step-formula .katex { font-size: 0.93rem; }
+.step-comment { font-size: 0.76rem; color: var(--muted); font-style: italic; flex-shrink: 0; max-width: 230px; text-align: right; }
+.answer-row { background: var(--pink-lt); border-top: 1.5px solid var(--pink-mid) !important; padding: 13px 26px !important; }
+.answer-row .step-formula { color: var(--pink); font-weight: 700; }
+.answer-row .step-comment { color: var(--pink); }
+
+footer { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--muted); padding-top: 12px; }
+
+@media (max-width: 640px) {
+  body { padding: 24px 16px 60px; }
+  .hero { padding: 36px 24px 32px; }
+  .card { padding: 22px 20px; }
+  .recip-grid, .special-grid { grid-template-columns: 1fr; }
+  .step-comment { display: none; }
+  .example-header { flex-direction: column; align-items: flex-start; }
+  table { font-size: 0.78rem; }
+  thead th, tbody td { padding: 9px 10px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-badge">Trigonometry · Тригонометрія</div>
+  <div class="hero-eyebrow">Self-Study Revision · Самостійне повторення</div>
+  <h1>Тригонометричні<br>рівняння та тотожності</h1>
+  <p class="hero-sub">Trigonometric Equations &amp; Identities — розв'язання базових рівнянь (basic equations), обернені функції (reciprocal functions) та ключові тотожності (key identities).</p>
+</div>
+
+<!-- ═══ SIN/COS/TAN/COT = a ═══ -->
+<div>
+  <div class="sec-label">Solving Basic Equations · Розв'язання базових рівнянь</div>
+  <div class="card">
+    <h2>sin x = a, cos x = a, tg x = a, ctg x = a</h2>
+    <p style="margin-bottom:18px;">Загальні розв'язки (general solutions) для кожного випадку, k ∈ ℤ (k — ціле число).</p>
+
+    <div class="solve-grid">
+
+      <!-- SIN -->
+      <div class="solve-card">
+        <div class="solve-top">
+          <span class="solve-eq">sin x = a</span>
+          <span class="solve-domain">−1 ≤ a ≤ 1</span>
+        </div>
+        <div class="solve-formula">
+          \( x = (-1)^k \arcsin(a) + \pi k,\ k \in \mathbb{Z} \)
+        </div>
+        <div class="solve-formula-deg">
+          <span class="deg-tag">у градусах</span>\( x = (-1)^k \arcsin(a) + 180^\circ k,\ k \in \mathbb{Z} \)
+        </div>
+        <div class="special-toggle">Особливі випадки · Special cases</div>
+        <div class="special-grid">
+          <div class="special-item">
+            <div class="sp-case">sin x = 0</div>
+            <div class="sp-sol">\(x = \pi k\)</div>
+            <div class="sp-sol-deg">\(x = 180^\circ k\)</div>
+          </div>
+          <div class="special-item">
+            <div class="sp-case">sin x = 1</div>
+            <div class="sp-sol">\(x = \tfrac{\pi}{2} + 2\pi k\)</div>
+            <div class="sp-sol-deg">\(x = 90^\circ + 360^\circ k\)</div>
+          </div>
+          <div class="special-item">
+            <div class="sp-case">sin x = −1</div>
+            <div class="sp-sol">\(x = -\tfrac{\pi}{2} + 2\pi k\)</div>
+            <div class="sp-sol-deg">\(x = -90^\circ + 360^\circ k\)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COS -->
+      <div class="solve-card">
+        <div class="solve-top">
+          <span class="solve-eq">cos x = a</span>
+          <span class="solve-domain">−1 ≤ a ≤ 1</span>
+        </div>
+        <div class="solve-formula">
+          \( x = \pm \arccos(a) + 2\pi k,\ k \in \mathbb{Z} \)
+        </div>
+        <div class="solve-formula-deg">
+          <span class="deg-tag">у градусах</span>\( x = \pm \arccos(a) + 360^\circ k,\ k \in \mathbb{Z} \)
+        </div>
+        <div class="special-toggle">Особливі випадки · Special cases</div>
+        <div class="special-grid">
+          <div class="special-item">
+            <div class="sp-case">cos x = 0</div>
+            <div class="sp-sol">\(x = \tfrac{\pi}{2} + \pi k\)</div>
+            <div class="sp-sol-deg">\(x = 90^\circ + 180^\circ k\)</div>
+          </div>
+          <div class="special-item">
+            <div class="sp-case">cos x = 1</div>
+            <div class="sp-sol">\(x = 2\pi k\)</div>
+            <div class="sp-sol-deg">\(x = 360^\circ k\)</div>
+          </div>
+          <div class="special-item">
+            <div class="sp-case">cos x = −1</div>
+            <div class="sp-sol">\(x = \pi + 2\pi k\)</div>
+            <div class="sp-sol-deg">\(x = 180^\circ + 360^\circ k\)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAN -->
+      <div class="solve-card">
+        <div class="solve-top">
+          <span class="solve-eq">tg x = a &nbsp;<span style="color:var(--muted); font-size:0.78rem; font-weight:400;">(або tan x)</span></span>
+          <span class="solve-domain">−∞ &lt; a &lt; +∞</span>
+        </div>
+        <div class="solve-formula">
+          \( x = \arctan(a) + \pi k,\ k \in \mathbb{Z} \)
+        </div>
+        <div class="solve-formula-deg">
+          <span class="deg-tag">у градусах</span>\( x = \arctan(a) + 180^\circ k,\ k \in \mathbb{Z} \)
+        </div>
+      </div>
+
+      <!-- COT -->
+      <div class="solve-card">
+        <div class="solve-top">
+          <span class="solve-eq">ctg x = a &nbsp;<span style="color:var(--muted); font-size:0.78rem; font-weight:400;">(або cot x)</span></span>
+          <span class="solve-domain">−∞ &lt; a &lt; +∞</span>
+        </div>
+        <div class="solve-formula">
+          \( x = \text{arccot}(a) + \pi k,\ k \in \mathbb{Z} \)
+        </div>
+        <div class="solve-formula-deg">
+          <span class="deg-tag">у градусах</span>\( x = \text{arccot}(a) + 180^\circ k,\ k \in \mathbb{Z} \)
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ RECIPROCAL FUNCTIONS ═══ -->
+<div>
+  <div class="sec-label">Reciprocal Functions · Обернені функції</div>
+  <div class="card">
+    <h2>cosec x = a, sec x = a, ctg x = a</h2>
+    <p style="margin-bottom:18px;">Ці рівняння зводяться (reduce) до базових через обернене (reciprocal) співвідношення: ставимо дріб \(\tfrac{1}{a}\) і розв'язуємо як звичайне рівняння.</p>
+
+    <div class="solve-grid">
+
+      <!-- COSEC -->
+      <div class="solve-card">
+        <div class="solve-top">
+          <span class="solve-eq">cosec x = a</span>
+          <span class="solve-domain">a ∉ [−1, 1]</span>
+        </div>
+        <p style="margin-bottom:8px; font-size:0.86rem;">Крок 1 — переписати (rewrite) через sin:</p>
+        <div class="id-formula-row">\( \dfrac{1}{\sin x} = a \ \Rightarrow\ \sin x = \dfrac{1}{a} \)</div>
+        <p style="margin: 10px 0 8px; font-size:0.86rem;">Крок 2 — розв'язати як sin x = a:</p>
+        <div class="solve-formula">
+          \( x = (-1)^k \arcsin\!\left(\dfrac{1}{a}\right) + \pi k,\ k \in \mathbb{Z} \)
+        </div>
+        <div class="solve-formula-deg">
+          <span class="deg-tag">у градусах</span>\( x = (-1)^k \arcsin\!\left(\dfrac{1}{a}\right) + 180^\circ k,\ k \in \mathbb{Z} \)
+        </div>
+      </div>
+
+      <!-- SEC -->
+      <div class="solve-card">
+        <div class="solve-top">
+          <span class="solve-eq">sec x = a</span>
+          <span class="solve-domain">a ∉ [−1, 1]</span>
+        </div>
+        <p style="margin-bottom:8px; font-size:0.86rem;">Крок 1 — переписати через cos:</p>
+        <div class="id-formula-row">\( \dfrac{1}{\cos x} = a \ \Rightarrow\ \cos x = \dfrac{1}{a} \)</div>
+        <p style="margin: 10px 0 8px; font-size:0.86rem;">Крок 2 — розв'язати як cos x = a:</p>
+        <div class="solve-formula">
+          \( x = \pm \arccos\!\left(\dfrac{1}{a}\right) + 2\pi k,\ k \in \mathbb{Z} \)
+        </div>
+        <div class="solve-formula-deg">
+          <span class="deg-tag">у градусах</span>\( x = \pm \arccos\!\left(\dfrac{1}{a}\right) + 360^\circ k,\ k \in \mathbb{Z} \)
+        </div>
+      </div>
+
+      <!-- COT (as 1/tan) -->
+      <div class="solve-card">
+        <div class="solve-top">
+          <span class="solve-eq">ctg x = a</span>
+        </div>
+        <p style="margin-bottom:8px; font-size:0.86rem;">Крок 1 — переписати через tan:</p>
+        <div class="id-formula-row">\( \dfrac{1}{\tan x} = a \ \Rightarrow\ \tan x = \dfrac{1}{a} \)</div>
+        <p style="margin: 10px 0 8px; font-size:0.86rem;">Крок 2 — розв'язати як tan x = a:</p>
+        <div class="solve-formula">
+          \( x = \arctan\!\left(\dfrac{1}{a}\right) + \pi k,\ k \in \mathbb{Z} \)
+        </div>
+        <div class="solve-formula-deg">
+          <span class="deg-tag">у градусах</span>\( x = \arctan\!\left(\dfrac{1}{a}\right) + 180^\circ k,\ k \in \mathbb{Z} \)
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ IDENTITIES ═══ -->
+<div>
+  <div class="sec-label">Trigonometric Identities · Тригонометричні тотожності</div>
+  <div class="card">
+    <h2>Основні тотожності</h2>
+
+    <!-- Reciprocal definitions -->
+    <div class="id-card">
+      <div class="id-head">
+        <div class="id-title">Reciprocal Identities · Обернені співвідношення</div>
+        <span class="pill pill-recip">reciprocal</span>
+      </div>
+      <div class="id-formula-row">\( \sec x = \dfrac{1}{\cos x} \) &nbsp;<span style="color:var(--muted); font-size:0.78rem;">(не визначено при cos x = 0)</span></div>
+      <div class="id-formula-row">\( \text{cosec } x = \dfrac{1}{\sin x} \) &nbsp;<span style="color:var(--muted); font-size:0.78rem;">(не визначено при sin x = 0)</span></div>
+      <div class="id-formula-row">\( \cot x = \dfrac{1}{\tan x} = \dfrac{\cos x}{\sin x} \) &nbsp;<span style="color:var(--muted); font-size:0.78rem;">(не визначено при tan x = 0)</span></div>
+    </div>
+
+    <!-- Quotient identities -->
+    <div class="id-card">
+      <div class="id-head">
+        <div class="id-title">Quotient Identities · Частинні співвідношення</div>
+        <span class="pill pill-quot">quotient</span>
+      </div>
+      <div class="id-formula-row">\( \tan x = \dfrac{\sin x}{\cos x} \)</div>
+      <div class="id-formula-row">\( \cot x = \dfrac{\cos x}{\sin x} \)</div>
+      <div class="id-formula-row">\( \tan x \cdot \cot x = 1 \)</div>
+    </div>
+
+    <!-- Pythagorean identities -->
+    <div class="id-card">
+      <div class="id-head">
+        <div class="id-title">Pythagorean Identities · Тотожності Піфагора</div>
+        <span class="pill pill-pyth">pythagorean</span>
+      </div>
+      <div class="id-formula-row">\( \sin^2 x + \cos^2 x = 1 \)</div>
+      <div class="id-formula-row">\( 1 + \tan^2 x = \sec^2 x = \dfrac{1}{\cos^2 x} \)</div>
+      <div class="id-formula-row">\( 1 + \cot^2 x = \text{cosec}^2 x = \dfrac{1}{\sin^2 x} \)</div>
+    </div>
+
+    <!-- Double angle -->
+    <div class="id-card">
+      <div class="id-head">
+        <div class="id-title">Double Angle Identities · Формули подвійного кута</div>
+        <span class="pill pill-double">double angle</span>
+      </div>
+      <div class="id-formula-row">\( \sin(2x) = 2\sin x \cos x \)</div>
+      <div class="id-formula-row">\( \cos(2x) = \cos^2 x - \sin^2 x \)</div>
+      <div class="id-formula-row">\( \tan(2x) = \dfrac{2\tan x}{1 - \tan^2 x} \)</div>
+    </div>
+
+    <!-- Half-angle / power reduction -->
+    <div class="id-card">
+      <div class="id-head">
+        <div class="id-title">Power-Reduction Identities · Формули зниження степеня</div>
+        <span class="pill pill-half">half angle</span>
+      </div>
+      <div class="id-formula-row">\( \sin^2 x = \dfrac{1 - \cos 2x}{2} \)</div>
+      <div class="id-formula-row">\( \cos^2 x = \dfrac{1 + \cos 2x}{2} \)</div>
+    </div>
+
+    <!-- Compound angle (sum/difference) -->
+    <div class="id-card">
+      <div class="id-head">
+        <div class="id-title">Compound Angle Formulae · Формули додавання кутів</div>
+        <span class="pill pill-sum">sum &amp; difference</span>
+      </div>
+      <div class="id-formula-row">\( \sin(A+B) \equiv \sin A \cos B + \cos A \sin B \)</div>
+      <div class="id-formula-row">\( \sin(A-B) \equiv \sin A \cos B - \cos A \sin B \)</div>
+      <div class="id-formula-row">\( \cos(A+B) \equiv \cos A \cos B - \sin A \sin B \)</div>
+      <div class="id-formula-row">\( \cos(A-B) \equiv \cos A \cos B + \sin A \sin B \)</div>
+      <div class="id-formula-row">\( \tan(A+B) \equiv \dfrac{\tan A + \tan B}{1 - \tan A \tan B} \)</div>
+      <div class="id-formula-row">\( \tan(A-B) \equiv \dfrac{\tan A - \tan B}{1 + \tan A \tan B} \)</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ R-FORM (a sinθ + b cosθ) ═══ -->
+<div>
+  <div class="sec-label">R-Form · Форма R sin(θ ± α)</div>
+  <div class="card">
+    <h2>Expressing a sin θ + b cos θ</h2>
+    <p style="margin-bottom: 16px;">Запис виразу a sin θ + b cos θ у вигляді R sin(θ ± α) або R cos(θ ± α) — зручно для розв'язання рівнянь і пошуку максимуму/мінімуму (max/min).</p>
+
+    <div class="id-card" style="margin-bottom: 0;">
+      <div class="id-formula-row">\( a\sin\theta \pm b\cos\theta = R\sin(\theta \pm \alpha) \)</div>
+      <div class="id-formula-row">\( a\cos\theta \pm b\sin\theta = R\cos(\theta \mp \alpha) \)</div>
+      <div class="id-formula-row">де \( R = \sqrt{a^2 + b^2} \), \(\quad \tan \alpha = \dfrac{b}{a} \)</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ WORKED EXAMPLE ═══ -->
+<div>
+  <div class="sec-label">Worked Example · Приклад розв'язання</div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад · Розв'язання через обернену функцію</div></div>
+      <div class="example-eq-badge">sec x = 2</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row">
+        <span class="step-n">①</span>
+        <span class="step-formula">\(\sec x = 2\)</span>
+        <span class="step-comment">вихідне рівняння</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">②</span>
+        <span class="step-formula">\(\dfrac{1}{\cos x} = 2\)</span>
+        <span class="step-comment">за визначенням sec x</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">③</span>
+        <span class="step-formula">\(\cos x = \dfrac{1}{2}\)</span>
+        <span class="step-comment">обернена величина (reciprocal)</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">④</span>
+        <span class="step-formula">\(x = \pm \arccos\!\left(\dfrac{1}{2}\right) + 2\pi k\)</span>
+        <span class="step-comment">формула розв'язання cos x = a</span>
+      </div>
+      <div class="step-row answer-row">
+        <span class="step-n">✓</span>
+        <span class="step-formula">\(x = \pm \dfrac{\pi}{3} + 2\pi k,\ k \in \mathbb{Z}\)</span>
+        <span class="step-comment">arccos(1/2) = π/3</span>
+      </div>
+      <div class="step-row answer-row">
+        <span class="step-n">✓</span>
+        <span class="step-formula">\(x = \pm 60^\circ + 360^\circ k,\ k \in \mathbb{Z}\)</span>
+        <span class="step-comment">те саме у градусах (degrees)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Trigonometry · Тригонометрія · Self-Study Revision</footer>
+
+</div>
+
+</body>
+</html>
