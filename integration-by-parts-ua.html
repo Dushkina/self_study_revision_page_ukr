@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Інтегрування частинами · Integration by Parts</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '\\(', right: '\\)', display: false}
+    ]
+  });"></script>
+
+<style>
+/* ── DESIGN TOKENS ── */
+:root {
+  --bg:        #f7f4f0;
+  --card:      #ffffff;
+  --pink:      #e84fa3;
+  --purple:    #7c5cbf;
+  --pink-lt:   #fde8f4;
+  --pink-mid:  #f9c9e8;
+  --purple-lt: #ede8f8;
+  --ink:       #1a1228;
+  --muted:     #7a6e82;
+  --border:    #e5dff0;
+  --radius:    20px;
+  --green:     #059669;
+  --green-lt:  #d1fae5;
+  --green-bd:  #a7f3d0;
+  --amber:     #b45309;
+  --amber-lt:  #fef3c7;
+  --amber-bd:  #fde68a;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  padding: 48px 24px 80px;
+}
+
+.page { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+
+/* DIVIDER */
+.divider {
+  height: 2px;
+  background: linear-gradient(90deg, var(--pink), var(--purple));
+  opacity: 0.25;
+  border-radius: 2px;
+}
+
+/* HERO */
+.hero {
+  background: var(--ink);
+  border-radius: var(--radius);
+  padding: 52px 44px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-blob { position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none; }
+.hero-blob-1 { width: 320px; height: 320px; background: rgba(232,79,163,0.28); top: -90px; right: -70px; }
+.hero-blob-2 { width: 260px; height: 260px; background: rgba(124,92,191,0.22); bottom: -70px; left: 30px; }
+.hero-blob-3 { width: 180px; height: 180px; background: rgba(5,150,105,0.15); top: 20px; left: 200px; }
+
+.hero-badge {
+  position: absolute; top: 24px; right: 24px;
+  background: var(--pink); color: #fff;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 99px;
+}
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--pink); margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 4.6vw, 3.2rem);
+  color: #fff; line-height: 1.12; margin-bottom: 16px; position: relative;
+}
+.hero-sub { color: rgba(255,255,255,0.55); font-size: 0.95rem; max-width: 560px; position: relative; }
+
+/* MAIN FORMULA BOX */
+.formula-hero {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(232,79,163,0.35);
+  border-radius: 14px;
+  padding: 18px 28px;
+  margin-top: 22px;
+  text-align: center;
+  position: relative;
+}
+.formula-hero .katex { font-size: 1.5rem; color: #fff; }
+.formula-hero-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(232,79,163,0.8); margin-bottom: 10px;
+}
+
+/* SECTION LABEL */
+.sec-label {
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 18px;
+}
+.sec-label::before { content:''; display:block; width:24px; height:3px; background:var(--pink); border-radius:2px; flex-shrink:0; }
+
+/* CARD */
+.card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 28px 32px; }
+h2 { font-family: 'DM Serif Display', serif; font-size: 1.55rem; color: var(--ink); margin-bottom: 18px; line-height: 1.25; }
+h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+p { color: var(--muted); font-size: 0.93rem; }
+p strong { color: var(--ink); }
+
+/* PILL */
+.pill {
+  display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+  letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
+}
+.pill-poly  { background: var(--green-lt); color: var(--green); border: 1px solid var(--green-bd); }
+.pill-func  { background: var(--amber-lt); color: var(--amber); border: 1px solid var(--amber-bd); }
+.pill-cycle { background: var(--purple-lt); color: var(--purple); border: 1px solid #d4c8ef; }
+.pill-key   { background: var(--pink-lt); color: var(--pink); border: 1px solid var(--pink-mid); }
+.pill-step  { background: var(--pink-lt); color: var(--pink); border: 1px solid var(--pink-mid); }
+
+/* ID CARD */
+.id-card {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: 14px; padding: 18px 22px; margin-bottom: 12px;
+}
+.id-card:last-child { margin-bottom: 0; }
+.id-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; flex-wrap: wrap; }
+.id-title { font-weight: 600; font-size: 0.95rem; color: var(--ink); }
+.id-formula-row {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.92rem;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 9px 14px; margin-top: 6px;
+}
+.id-formula-row + .id-formula-row { margin-top: 8px; }
+
+/* WORKED EXAMPLES */
+.example-card { border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 16px; }
+.example-card:last-child { margin-bottom: 0; }
+.example-header {
+  background: linear-gradient(135deg, #1e0e35, #3a1f6e);
+  padding: 18px 26px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+}
+.example-header-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.5);
+}
+.example-eq-badge {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.92rem; font-weight: 600;
+  background: rgba(232,79,163,0.22); border: 1px solid rgba(232,79,163,0.4);
+  color: #f9a8d4; padding: 6px 16px; border-radius: 99px;
+}
+.example-body { background: var(--card); }
+.step-row {
+  display: flex; align-items: baseline; gap: 14px; padding: 11px 26px;
+  border-bottom: 1px solid var(--border); transition: background 0.15s;
+}
+.step-row:last-child { border-bottom: none; }
+.step-row:hover { background: var(--bg); }
+.step-n { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--muted); min-width: 20px; flex-shrink: 0; }
+.step-formula { flex: 1; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; color: var(--ink); }
+.step-formula .katex { font-size: 0.91rem; }
+.step-comment { font-size: 0.76rem; color: var(--muted); font-style: italic; flex-shrink: 0; max-width: 240px; text-align: right; }
+.answer-row { background: var(--pink-lt) !important; border-top: 1.5px solid var(--pink-mid) !important; }
+.answer-row .step-formula { color: var(--pink); font-weight: 700; }
+.answer-row .step-comment { color: var(--pink); }
+
+/* SUBSTITUTION BOX */
+.sub-box {
+  background: var(--purple-lt); border: 1px solid #d4c8ef;
+  border-radius: 10px; padding: 12px 16px; margin: 10px 0;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4px 20px;
+}
+.sub-box .katex { font-size: 0.88rem; }
+
+/* CYCLIC ALERT */
+.cyclic-alert {
+  background: linear-gradient(135deg, rgba(124,92,191,0.1), rgba(232,79,163,0.08));
+  border: 1.5px solid rgba(124,92,191,0.3);
+  border-radius: 12px; padding: 16px 20px; margin: 14px 0;
+  font-size: 0.9rem; color: var(--ink);
+}
+.cyclic-alert strong { color: var(--purple); }
+
+/* ══════════════════════════════════
+   MIND MAP
+══════════════════════════════════ */
+.mind-map-wrap {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 24px 28px;
+  overflow-x: auto;
+}
+
+.mind-map {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  min-width: 620px;
+  position: relative;
+}
+
+/* Central node */
+.mm-center {
+  background: var(--ink);
+  color: #fff;
+  border-radius: 14px;
+  padding: 14px 28px;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 4px 24px rgba(26,18,40,0.18);
+}
+.mm-center-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--pink);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+/* Connector row */
+.mm-connector-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  width: 100%;
+  position: relative;
+  margin-top: 0;
+}
+
+/* Left branch (Polynomial as u) */
+.mm-branch {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* SVG connectors */
+.mm-svg { width: 100%; overflow: visible; display: block; }
+
+/* Branch header node */
+.mm-branch-node {
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-align: center;
+  width: 90%;
+  max-width: 300px;
+}
+.mm-branch-node.green {
+  background: var(--green-lt); border: 2px solid var(--green); color: var(--green);
+}
+.mm-branch-node.amber {
+  background: var(--amber-lt); border: 2px solid var(--amber); color: var(--amber);
+}
+
+/* Branch label above node */
+.mm-branch-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 8px; text-align: center;
+}
+
+/* Leaf cards */
+.mm-leaves { display: flex; flex-direction: column; gap: 8px; width: 90%; max-width: 300px; margin-top: 10px; }
+.mm-leaf {
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 10px 14px;
+}
+.mm-leaf.green-leaf { border-left: 3px solid var(--green); }
+.mm-leaf.amber-leaf { border-left: 3px solid var(--amber); }
+.mm-leaf-title {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 700;
+  color: var(--ink); margin-bottom: 3px;
+}
+.mm-leaf-desc { font-size: 0.78rem; color: var(--muted); margin-bottom: 4px; }
+.mm-leaf-ex {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.74rem;
+  color: var(--purple); background: var(--purple-lt);
+  border-radius: 6px; padding: 3px 8px; display: inline-block;
+}
+.mm-leaf .katex { font-size: 0.78rem; }
+
+/* Center divider line for mind map */
+.mm-mid-line {
+  display: flex; align-items: stretch; gap: 0;
+  width: 100%; position: relative;
+}
+
+/* ALGORITHM STEPS */
+.algo-list { display: flex; flex-direction: column; gap: 10px; }
+.algo-step {
+  display: flex; gap: 16px; align-items: flex-start;
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: 14px; padding: 16px 20px; transition: border-color 0.2s;
+}
+.algo-step:hover { border-color: var(--pink); }
+.algo-badge {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; font-weight: 700;
+  color: #fff; background: var(--pink); border-radius: 8px;
+  min-width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.algo-badge.purple { background: var(--purple); }
+.algo-body h4 { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+.algo-body p { font-size: 0.85rem; color: var(--muted); }
+.algo-note {
+  display: inline-block; margin-top: 6px;
+  background: var(--pink-lt); border: 1px solid var(--pink-mid);
+  border-radius: 8px; padding: 4px 12px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; color: var(--pink);
+}
+.algo-note.purple { background: var(--purple-lt); border-color: #d4c8ef; color: var(--purple); }
+
+/* HW GRID */
+.hw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.hw-group-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--muted); margin: 20px 0 10px; padding-left: 2px;
+}
+.hw-item {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 12px 14px;
+  cursor: pointer; transition: border-color 0.2s, background 0.2s;
+  -webkit-user-select: none; user-select: none;
+}
+.hw-item:hover { border-color: var(--pink); }
+.hw-item.done { background: var(--pink-lt); border-color: var(--pink-mid); }
+.hw-num { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--muted); min-width: 18px; flex-shrink: 0; }
+.hw-eq { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--ink); flex: 1; line-height: 1.3; }
+.hw-item.done .hw-eq { color: var(--pink); }
+.hw-lv { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; flex-shrink: 0; }
+.lv1 { background: var(--green-lt); color: var(--green); border: 1px solid var(--green-bd); }
+.lv2 { background: var(--amber-lt); color: var(--amber); border: 1px solid var(--amber-bd); }
+.lv3 { background: var(--pink-lt); color: var(--pink); border: 1px solid var(--pink-mid); }
+.lv4 { background: var(--purple-lt); color: var(--purple); border: 1px solid #d4c8ef; }
+.hw-check { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; transition: all 0.2s; color: transparent; flex-shrink: 0; }
+.hw-item.done .hw-check { background: var(--pink); border-color: var(--pink); color: #fff; }
+
+/* PROGRESS */
+.progress-wrap { background: var(--purple-lt); border-radius: 99px; height: 8px; overflow: hidden; margin-bottom: 8px; }
+.progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--pink), var(--purple)); transition: width 0.4s; width: 0%; }
+.progress-text { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--muted); }
+
+/* TABLE */
+table { width: 100%; border-collapse: collapse; font-size: 0.86rem; border-radius: 14px; overflow: hidden; border: 1.5px solid var(--border); }
+thead tr { background: var(--purple-lt); }
+thead th { font-family: 'JetBrains Mono', monospace; font-size: 0.73rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--purple); padding: 11px 14px; text-align: left; }
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #f5f0fc; }
+tbody td { padding: 10px 14px; font-family: 'JetBrains Mono', monospace; color: var(--ink); font-size: 0.83rem; }
+tbody td.desc { font-family: 'Space Grotesk', sans-serif; color: var(--muted); font-size: 0.83rem; }
+tbody td.hl { background: var(--pink-lt); color: var(--pink); font-weight: 600; }
+tbody td.hl-g { background: var(--green-lt); color: var(--green); font-weight: 600; }
+
+footer { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--muted); padding-top: 12px; }
+
+@media (max-width: 640px) {
+  body { padding: 24px 16px 60px; }
+  .hero { padding: 36px 22px 32px; }
+  .card { padding: 22px 18px; }
+  .hw-grid { grid-template-columns: 1fr; }
+  .step-comment { display: none; }
+  .sub-box { grid-template-columns: 1fr; }
+  .example-header { flex-direction: column; align-items: flex-start; }
+  .mind-map-wrap { padding: 20px 12px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-blob hero-blob-3"></div>
+  <div class="hero-badge">Calculus · Інтегральне числення</div>
+  <div class="hero-eyebrow">Self-Study Revision · Самостійне повторення</div>
+  <h1>Інтегрування<br>частинами</h1>
+  <p class="hero-sub">Integration by Parts — потужний метод для інтегралів добутків (products) та трансцендентних функцій (transcendental functions).</p>
+  <div class="formula-hero">
+    <div class="formula-hero-label">Формула · Formula</div>
+    \( \displaystyle \int u \, dv = u \cdot v - \int v \, du \)
+  </div>
+</div>
+
+<!-- ═══ ТЕОРІЯ / THEORY ═══ -->
+<div>
+  <div class="sec-label">Theory · Теорія</div>
+  <div class="card">
+    <h2>Коли і навіщо? · When and why?</h2>
+    <p style="margin-bottom:14px;">Метод <strong>інтегрування частинами</strong> (integration by parts) застосовується, якщо підінтегральний вираз є добутком двох функцій, одна з яких спрощується при диференціюванні (differentiating), а інша — легко інтегрується (integrating).</p>
+    <p>Метод доцільно застосовувати для таких типів інтегралів:</p>
+
+    <div style="margin-top: 16px;">
+      <div class="id-card">
+        <div class="id-head">
+          <div class="id-title">Тип A — поліном × тригонометрія або поліном × експонента</div>
+          <span class="pill pill-poly">u = поліном</span>
+        </div>
+        <div class="id-formula-row">\( \int P_n(x)\cos\alpha x\,dx, \quad \int P_n(x)\sin\alpha x\,dx, \quad \int P_n(x)e^{\alpha x}\,dx \)</div>
+      </div>
+      <div class="id-card">
+        <div class="id-head">
+          <div class="id-title">Тип B — поліном × логарифм або зворотня тригонометрія</div>
+          <span class="pill pill-func">u = функція</span>
+        </div>
+        <div class="id-formula-row">\( \int P_n(x)\ln x\,dx, \quad \int P_n(x)\arcsin x\,dx, \quad \int P_n(x)\arctan x\,dx \)</div>
+      </div>
+      <div class="id-card">
+        <div class="id-head">
+          <div class="id-title">Тип C — повторне інтегрування (cyclic)</div>
+          <span class="pill pill-cycle">повторне · cyclic</span>
+        </div>
+        <div class="id-formula-row">\( \int e^{\alpha x}\cos\beta x\,dx, \quad \int e^{\alpha x}\sin\beta x\,dx \)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ MIND MAP ═══ -->
+<div>
+  <div class="sec-label">Mind Map · Ментальна карта</div>
+
+  <div class="mind-map-wrap">
+    <p style="text-align:center; font-family:'JetBrains Mono',monospace; font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:20px;">Як вибрати u(x)? · How to choose u(x)?</p>
+
+    <div class="mind-map">
+
+      <!-- Central node -->
+      <div class="mm-center">
+        <div class="mm-center-sub">вибір · choice of</div>
+        \( u(x) = \, ? \)
+      </div>
+
+      <!-- SVG connector from center down -->
+      <svg class="mm-svg" height="36" style="max-width:2px; width:2px; flex-shrink:0; margin:0 auto;">
+        <line x1="1" y1="0" x2="1" y2="36" stroke="#e5dff0" stroke-width="2"/>
+      </svg>
+
+      <!-- Horizontal line + two branches -->
+      <div style="display:flex; width:100%; align-items:flex-start; position:relative;">
+
+        <!-- LEFT BRANCH — Polynomial as u -->
+        <div class="mm-branch" style="padding-right: 12px;">
+          <svg width="100%" height="28" style="display:block; margin-bottom:-1px;">
+            <line x1="75%" y1="0" x2="75%" y2="28" stroke="#059669" stroke-width="2"/>
+          </svg>
+          <div class="mm-branch-label" style="color:var(--green);">Тип A · Type A</div>
+          <div class="mm-branch-node green">
+            u(x) = поліном P<sub>n</sub>(x)<br>
+            <span style="font-size:0.78rem; font-weight:400;">(polynomial)</span>
+          </div>
+          <div class="mm-leaves">
+            <div class="mm-leaf green-leaf">
+              <div class="mm-leaf-title">Коли? · When?</div>
+              <div class="mm-leaf-desc">Підінтегральний вираз — добуток <strong>полінома</strong> та sin, cos або e<sup>αx</sup></div>
+              <span class="mm-leaf-ex">\(P_n(x) \cdot \sin\alpha x\)</span>
+            </div>
+            <div class="mm-leaf green-leaf">
+              <div class="mm-leaf-title">Чому? · Why?</div>
+              <div class="mm-leaf-desc">Поліном <strong>спрощується</strong> (simplifies) при диференціюванні: степінь зменшується на 1</div>
+              <span class="mm-leaf-ex">\(P_n(x) \xrightarrow{d} P_{n-1}(x)\)</span>
+            </div>
+            <div class="mm-leaf green-leaf">
+              <div class="mm-leaf-title">dv = ?</div>
+              <div class="mm-leaf-desc">Тригонометрична або експонента частина → легко інтегрується</div>
+              <span class="mm-leaf-ex">\(dv = \cos\alpha x\,dx\)</span>
+            </div>
+            <div class="mm-leaf green-leaf">
+              <div class="mm-leaf-title">Приклади · Examples</div>
+              <div class="mm-leaf-desc">\(\int x\sin x\,dx\) → \(u=x,\;dv=\sin x\,dx\)</div>
+              <div class="mm-leaf-desc" style="margin-top:4px;">\(\int(3x+4)e^{3x}dx\) → \(u=3x+4\)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vertical divider -->
+        <div style="width:2px; background: linear-gradient(to bottom, var(--pink), var(--purple)); opacity:0.2; border-radius:2px; align-self:stretch; flex-shrink:0; margin-top:28px;"></div>
+
+        <!-- RIGHT BRANCH — Function as u -->
+        <div class="mm-branch" style="padding-left: 12px;">
+          <svg width="100%" height="28" style="display:block; margin-bottom:-1px;">
+            <line x1="25%" y1="0" x2="25%" y2="28" stroke="#b45309" stroke-width="2"/>
+          </svg>
+          <div class="mm-branch-label" style="color:var(--amber);">Тип B · Type B</div>
+          <div class="mm-branch-node amber">
+            u(x) = ln x, arcsin x, arctan x<br>
+            <span style="font-size:0.78rem; font-weight:400;">(transcendental function)</span>
+          </div>
+          <div class="mm-leaves">
+            <div class="mm-leaf amber-leaf">
+              <div class="mm-leaf-title">Коли? · When?</div>
+              <div class="mm-leaf-desc">Підінтегральний вираз містить <strong>ln x, arcsin x</strong> або <strong>arctan x</strong></div>
+              <span class="mm-leaf-ex">\(P_n(x)\cdot\ln x\)</span>
+            </div>
+            <div class="mm-leaf amber-leaf">
+              <div class="mm-leaf-title">Чому? · Why?</div>
+              <div class="mm-leaf-desc">Ці функції <strong>спрощуються</strong> при диференціюванні (похідна — раціональна)</div>
+              <span class="mm-leaf-ex">\((\ln x)' = \tfrac{1}{x}\)</span>
+            </div>
+            <div class="mm-leaf amber-leaf">
+              <div class="mm-leaf-title">dv = ?</div>
+              <div class="mm-leaf-desc">Поліном або dx — залишок виразу після u(x)</div>
+              <span class="mm-leaf-ex">\(dv = x^2\,dx \Rightarrow v = \tfrac{x^3}{3}\)</span>
+            </div>
+            <div class="mm-leaf amber-leaf">
+              <div class="mm-leaf-title">Приклади · Examples</div>
+              <div class="mm-leaf-desc">\(\int\ln x\,dx\) → \(u=\ln x,\;dv=dx\)</div>
+              <div class="mm-leaf-desc" style="margin-top:4px;">\(\int x^2\arctan x\,dx\) → \(u=\arctan x\)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom note: Cyclic -->
+      <div style="margin-top: 20px; width: 100%; max-width: 560px;">
+        <div style="text-align:center; font-family:'JetBrains Mono',monospace; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--purple); margin-bottom:8px;">Тип C · Cyclic</div>
+        <div style="background: linear-gradient(135deg, var(--purple-lt), var(--pink-lt)); border: 1.5px solid #d4c8ef; border-radius: 14px; padding: 16px 20px; text-align:center;">
+          <div style="font-weight:700; font-size:0.92rem; color:var(--purple); margin-bottom:6px;">\(\int e^{\alpha x}\sin\beta x\,dx\) та \(\int e^{\alpha x}\cos\beta x\,dx\)</div>
+          <p style="font-size:0.82rem; color:var(--muted);">Можна взяти <strong style="color:var(--purple);">будь-яку</strong> з двох функцій як u(x). Головне — <strong style="color:var(--pink);">не змінювати вибір</strong> при повторному інтегруванні! Після двох ітерацій отримаємо рівняння відносно I (cyclic equation) → розв'язуємо алгебраїчно.</p>
+        </div>
+      </div>
+
+    </div><!-- end .mind-map -->
+  </div><!-- end .mind-map-wrap -->
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ ALGORITHM ═══ -->
+<div>
+  <div class="sec-label">Algorithm · Алгоритм</div>
+  <div class="card">
+    <h2>Покроковий метод · Step-by-Step</h2>
+    <div class="algo-list">
+      <div class="algo-step">
+        <div class="algo-badge">01</div>
+        <div class="algo-body">
+          <h4>Визначити тип інтеграла · Identify the type</h4>
+          <p>Подивитися на структуру підінтегрального виразу: це тип A, B чи C? (polynomial × trig/exp, або ln/arcsin/arctan, або cyclic)</p>
+        </div>
+      </div>
+      <div class="algo-step">
+        <div class="algo-badge">02</div>
+        <div class="algo-body">
+          <h4>Вибрати u(x) та dv · Choose u(x) and dv</h4>
+          <p>Відповідно до типу: A → u = поліном; B → u = ln/arcsin/arctan; C → u = будь-яка (і не змінювати).</p>
+          <span class="algo-note">Правило LIATE: Log → Inverse trig → Algebraic → Trig → Exp</span>
+        </div>
+      </div>
+      <div class="algo-step">
+        <div class="algo-badge purple">03</div>
+        <div class="algo-body">
+          <h4>Знайти du та v · Find du and v</h4>
+          <p>Диференціювати u → отримати du. Інтегрувати dv → отримати v (константу не писати).</p>
+          <span class="algo-note purple">\(du = u'(x)\,dx, \quad v = \int dv\)</span>
+        </div>
+      </div>
+      <div class="algo-step">
+        <div class="algo-badge purple">04</div>
+        <div class="algo-body">
+          <h4>Підставити у формулу · Apply the formula</h4>
+          <p>Записати \(\int u\,dv = u\cdot v - \int v\,du\) та спростити новий інтеграл.</p>
+        </div>
+      </div>
+      <div class="algo-step">
+        <div class="algo-badge">05</div>
+        <div class="algo-body">
+          <h4>Обчислити залишковий інтеграл · Evaluate remaining integral</h4>
+          <p>Якщо потрібно — повторити метод (тип A з поліномом вищого ступеня або тип C).</p>
+          <span class="algo-note">Для типу C: перенести I в одну частину та розділити!</span>
+        </div>
+      </div>
+      <div class="algo-step">
+        <div class="algo-badge">06</div>
+        <div class="algo-body">
+          <h4>Додати константу C · Add constant of integration</h4>
+          <p>Не забути +C наприкінці для невизначеного інтеграла (indefinite integral).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick-reference table -->
+<div class="card">
+  <div class="sec-label">Quick Reference · Довідкова таблиця</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Тип · Type</th>
+        <th>Підінтегральна функція · Integrand</th>
+        <th>u(x) =</th>
+        <th>dv =</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="hl-g">A</td>
+        <td class="desc">\(P_n(x)\cdot\sin\alpha x\) або \(P_n(x)\cdot\cos\alpha x\)</td>
+        <td>\(P_n(x)\)</td>
+        <td>\(\sin(\cos)\,\alpha x\,dx\)</td>
+      </tr>
+      <tr>
+        <td class="hl-g">A</td>
+        <td class="desc">\(P_n(x)\cdot e^{\alpha x}\)</td>
+        <td>\(P_n(x)\)</td>
+        <td>\(e^{\alpha x}dx\)</td>
+      </tr>
+      <tr>
+        <td class="hl">B</td>
+        <td class="desc">\(P_n(x)\cdot\ln x\)</td>
+        <td>\(\ln x\)</td>
+        <td>\(P_n(x)\,dx\)</td>
+      </tr>
+      <tr>
+        <td class="hl">B</td>
+        <td class="desc">\(P_n(x)\cdot\arcsin x\) або \(\arctan x\)</td>
+        <td>\(\arcsin(\arctan) x\)</td>
+        <td>\(P_n(x)\,dx\)</td>
+      </tr>
+      <tr>
+        <td style="color:var(--purple);font-weight:700;">C</td>
+        <td class="desc">\(e^{\alpha x}\sin\beta x\) або \(e^{\alpha x}\cos\beta x\)</td>
+        <td>будь-яка (but consistent!)</td>
+        <td>інша частина · the other</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ WORKED EXAMPLES ═══ -->
+<div>
+  <div class="sec-label">Worked Examples · Розібрані приклади</div>
+
+  <!-- Example 1: x sin x -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 1 · Тип A — поліном × синус</div></div>
+      <div class="example-eq-badge">\(\int x \sin x \, dx\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row">
+        <span class="step-n">①</span>
+        <span class="step-formula">Тип A: \(u = x,\quad dv = \sin x\,dx\)</span>
+        <span class="step-comment">поліном × тригонометрія</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">②</span>
+        <span class="step-formula">\(du = dx;\quad v = \int\sin x\,dx = -\cos x\)</span>
+        <span class="step-comment">диференціюємо u, інтегруємо dv</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">③</span>
+        <span class="step-formula">\(\int x\sin x\,dx = x\cdot(-\cos x) - \int(-\cos x)\,dx\)</span>
+        <span class="step-comment">підставляємо у формулу</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">④</span>
+        <span class="step-formula">\(= -x\cos x + \int\cos x\,dx = -x\cos x + \sin x\)</span>
+        <span class="step-comment">простий залишковий інтеграл</span>
+      </div>
+      <div class="step-row answer-row">
+        <span class="step-n">✓</span>
+        <span class="step-formula">\(\int x\sin x\,dx = -x\cos x + \sin x + C\)</span>
+        <span class="step-comment">додаємо константу</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Example 2: ln x -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 2 · Тип B — логарифм</div></div>
+      <div class="example-eq-badge">\(\int \ln x \, dx\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row">
+        <span class="step-n">①</span>
+        <span class="step-formula">Тип B: \(u = \ln x,\quad dv = dx\)</span>
+        <span class="step-comment">логарифм спрощується при диференціюванні</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">②</span>
+        <span class="step-formula">\(du = \dfrac{dx}{x};\quad v = \int dx = x\)</span>
+        <span class="step-comment">find du and v</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">③</span>
+        <span class="step-formula">\(\int\ln x\,dx = x\ln x - \int x\cdot\dfrac{dx}{x} = x\ln x - \int dx\)</span>
+        <span class="step-comment">apply the formula</span>
+      </div>
+      <div class="step-row answer-row">
+        <span class="step-n">✓</span>
+        <span class="step-formula">\(\int\ln x\,dx = x\ln x - x + C = x(\ln x - 1) + C\)</span>
+        <span class="step-comment">спрощуємо</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Example 3: e^x sin 2x (cyclic) -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 3 · Тип C — повторне інтегрування (cyclic)</div></div>
+      <div class="example-eq-badge">\(\int e^x \sin 2x \, dx\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row">
+        <span class="step-n">①</span>
+        <span class="step-formula">Тип C: \(u = e^x,\quad dv = \sin 2x\,dx\)</span>
+        <span class="step-comment">вибираємо і не змінюємо!</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">②</span>
+        <span class="step-formula">\(du = e^x dx;\quad v = -\dfrac{\cos 2x}{2}\)</span>
+        <span class="step-comment">перше інтегрування</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">③</span>
+        <span class="step-formula">\(I = -\dfrac{e^x\cos 2x}{2} + \dfrac{1}{2}\int e^x\cos 2x\,dx\)</span>
+        <span class="step-comment">застосовуємо формулу</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">④</span>
+        <span class="step-formula">Знову: \(u=e^x,\;dv=\cos 2x\,dx \Rightarrow v=\dfrac{\sin 2x}{2}\)</span>
+        <span class="step-comment">повторне інтегрування частинами!</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">⑤</span>
+        <span class="step-formula">\(I = -\dfrac{e^x\cos 2x}{2} + \dfrac{1}{2}\!\left(\dfrac{e^x\sin 2x}{2} - \dfrac{1}{2}I\right)\)</span>
+        <span class="step-comment">I знову з'являється справа!</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">⑥</span>
+        <span class="step-formula">\(I = -\dfrac{e^x\cos 2x}{2} + \dfrac{e^x\sin 2x}{4} - \dfrac{1}{4}I\)</span>
+        <span class="step-comment">розкриваємо дужки</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">⑦</span>
+        <span class="step-formula">\(\dfrac{5}{4}I = -\dfrac{e^x\cos 2x}{2} + \dfrac{e^x\sin 2x}{4}\)</span>
+        <span class="step-comment">переносимо \(-\tfrac{1}{4}I\) вліво</span>
+      </div>
+      <div class="step-row answer-row">
+        <span class="step-n">✓</span>
+        <span class="step-formula">\(I = \dfrac{e^x}{5}(\sin 2x - 2\cos 2x) + C\)</span>
+        <span class="step-comment">ділимо обидві частини на \(\tfrac{5}{4}\)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Example 4: e^x cos x (classic cyclic) -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 4 · Тип C — класичний цикл</div></div>
+      <div class="example-eq-badge">\(\int e^x \cos x \, dx\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row">
+        <span class="step-n">①</span>
+        <span class="step-formula">\(u = e^x,\quad dv = \cos x\,dx \Rightarrow du = e^x dx,\;v = \sin x\)</span>
+        <span class="step-comment">перший крок</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">②</span>
+        <span class="step-formula">\(I = e^x\sin x - \int e^x\sin x\,dx\)</span>
+        <span class="step-comment">після першого застосування формули</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">③</span>
+        <span class="step-formula">Для \(\int e^x\sin x\,dx\): \(u=e^x,\;dv=\sin x\,dx \Rightarrow v=-\cos x\)</span>
+        <span class="step-comment">повторно — той самий вибір u!</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">④</span>
+        <span class="step-formula">\(I = e^x\sin x - \bigl(-e^x\cos x + \int e^x\cos x\,dx\bigr)\)</span>
+        <span class="step-comment">підставляємо</span>
+      </div>
+      <div class="step-row">
+        <span class="step-n">⑤</span>
+        <span class="step-formula">\(I = e^x\sin x + e^x\cos x - I \;\Rightarrow\; 2I = e^x(\sin x + \cos x)\)</span>
+        <span class="step-comment">cyclic equation! Збираємо I</span>
+      </div>
+      <div class="step-row answer-row">
+        <span class="step-n">✓</span>
+        <span class="step-formula">\(\int e^x\cos x\,dx = \dfrac{e^x(\sin x + \cos x)}{2} + C\)</span>
+        <span class="step-comment">ділимо на 2</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ HOMEWORK ═══ -->
+<div>
+  <div class="sec-label">Homework · Домашнє завдання</div>
+  <div class="card">
+    <h2>Завдання з фотографій</h2>
+    <p style="margin-bottom:16px;">Натисни на інтеграл, щоб відмітити як виконаний. Спочатку визнач тип!</p>
+
+    <div class="progress-wrap">
+      <div class="progress-fill" id="pBar"></div>
+    </div>
+    <div class="progress-text" id="pLabel">0 / 27 виконано</div>
+
+    <!-- ── РІВЕНЬ 1 ── -->
+    <div class="hw-group-label">🟢 Рівень 1 — базові інтеграли (basic)</div>
+    <div class="hw-grid">
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">1</span>
+        <span class="hw-eq">\(\int x\sin x\,dx\)</span>
+        <span class="hw-lv lv1">A</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">2</span>
+        <span class="hw-eq">\(\int \ln x\,dx\)</span>
+        <span class="hw-lv lv1">B</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">3</span>
+        <span class="hw-eq">\(\int x^2\ln x\,dx\)</span>
+        <span class="hw-lv lv1">B</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">4</span>
+        <span class="hw-eq">\(\int xe^x\,dx\)</span>
+        <span class="hw-lv lv1">A</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">5</span>
+        <span class="hw-eq">\(\int x\cos x\,dx\)</span>
+        <span class="hw-lv lv1">A</span>
+        <div class="hw-check">✓</div>
+      </div>
+    </div>
+
+    <!-- ── РІВЕНЬ 2 ── -->
+    <div class="hw-group-label">🟡 Рівень 2 — лінійний поліном × exp/trig</div>
+    <div class="hw-grid">
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">3.</span>
+        <span class="hw-eq">\(\int(3x+4)e^{3x}dx\)</span>
+        <span class="hw-lv lv2">A</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">4.</span>
+        <span class="hw-eq">\(\int(4x-2)\cos 2x\,dx\)</span>
+        <span class="hw-lv lv2">A</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">5.</span>
+        <span class="hw-eq">\(\int(4-16x)\sin 4x\,dx\)</span>
+        <span class="hw-lv lv2">A</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">6.</span>
+        <span class="hw-eq">\(\int(5x-2)e^{3x}dx\)</span>
+        <span class="hw-lv lv2">A</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">7.</span>
+        <span class="hw-eq">\(\int(1-6x)e^{2x}dx\)</span>
+        <span class="hw-lv lv2">A</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">10.</span>
+        <span class="hw-eq">\(\int(2-4x)\sin 2x\,dx\)</span>
+        <span class="hw-lv lv2">A</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">12.</span>
+        <span class="hw-eq">\(\int e^{-2x}(4x-3)\,dx\)</span>
+        <span class="hw-lv lv2">A</span>
+        <div class="hw-check">✓</div>
+      </div>
+    </div>
+
+    <!-- ── РІВЕНЬ 3 ── -->
+    <div class="hw-group-label">🟠 Рівень 3 — вищий ступінь + arctan/arcsin/arccos + спеціальні</div>
+    <div class="hw-grid">
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">1</span>
+        <span class="hw-eq">\(\int x^2 e^x\,dx\)</span>
+        <span class="hw-lv lv3">A²</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">2</span>
+        <span class="hw-eq">\(\int \arctan x\,dx\)</span>
+        <span class="hw-lv lv3">B</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">3</span>
+        <span class="hw-eq">\(\int \dfrac{x}{\cos^2 x}\,dx\)</span>
+        <span class="hw-lv lv3">A</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">4</span>
+        <span class="hw-eq">\(\int \ln(4x^2+1)\,dx\)</span>
+        <span class="hw-lv lv3">B</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">5</span>
+        <span class="hw-eq">\(\int \arcsin x\,dx\)</span>
+        <span class="hw-lv lv3">B</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">6</span>
+        <span class="hw-eq">\(\int \arccos x\,dx\)</span>
+        <span class="hw-lv lv3">B</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">7</span>
+        <span class="hw-eq">\(\int x\cos^2 x\,dx\)</span>
+        <span class="hw-lv lv3">A</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">8</span>
+        <span class="hw-eq">\(\int \arctan\!\sqrt{2x-1}\,dx\)</span>
+        <span class="hw-lv lv3">B</span>
+        <div class="hw-check">✓</div>
+      </div>
+    </div>
+
+    <!-- ── РІВЕНЬ 4 ── -->
+    <div class="hw-group-label">🔴 Рівень 4 — повторне інтегрування (cyclic) + визначені інтеграли</div>
+    <div class="hw-grid">
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">1</span>
+        <span class="hw-eq">\(\int e^x\sin x\,dx\)</span>
+        <span class="hw-lv lv4">C</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">2</span>
+        <span class="hw-eq">\(\int e^x\cos(5x+3)\,dx\)</span>
+        <span class="hw-lv lv4">C</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">3</span>
+        <span class="hw-eq">\(\int e^{ax}\sin(3x-1)\,dx\)</span>
+        <span class="hw-lv lv4">C</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">a</span>
+        <span class="hw-eq">\(\int_0^{\ln 2} xe^{2x}dx\)</span>
+        <span class="hw-lv lv4">∫ₐᵇ</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">b</span>
+        <span class="hw-eq">\(\int_0^{\pi/2} x\sin x\,dx\)</span>
+        <span class="hw-lv lv4">∫ₐᵇ</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">c</span>
+        <span class="hw-eq">\(\int_0^{\pi/2} x\cos x\,dx\)</span>
+        <span class="hw-lv lv4">∫ₐᵇ</span>
+        <div class="hw-check">✓</div>
+      </div>
+      <div class="hw-item" onclick="tog(this)">
+        <span class="hw-num">d</span>
+        <span class="hw-eq">\(\int_1^2 \dfrac{\ln x}{x^2}\,dx\)</span>
+        <span class="hw-lv lv4">∫ₐᵇ</span>
+        <div class="hw-check">✓</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Integration by Parts · Інтегрування частинами · Self-Study Revision</footer>
+
+</div><!-- .page -->
+
+<script>
+function tog(el) {
+  el.classList.toggle('done');
+  const total = document.querySelectorAll('.hw-item').length;
+  const done  = document.querySelectorAll('.hw-item.done').length;
+  document.getElementById('pBar').style.width = Math.round(done/total*100)+'%';
+  document.getElementById('pLabel').textContent = done+' / '+total+' виконано';
+}
+</script>
+</body>
+</html>
