@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binomial Distributions — Cheat Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '\\(', right: '\\)', display: false},
+      {left: '\\[', right: '\\]', display: true}
+    ]
+  });">
+</script>
+<style>
+  :root {
+    --bg: #f7f4f0;
+    --card: #ffffff;
+    --pink: #e84fa3;
+    --pink-light: #fde8f4;
+    --pink-mid: #f9c9e8;
+    --purple: #7c5cbf;
+    --purple-light: #ede8f8;
+    --ink: #1a1228;
+    --muted: #7a6e82;
+    --border: #e5dff0;
+    --accent-green: #2ecfa3;
+    --accent-yellow: #f5c842;
+    --mono: 'JetBrains Mono', monospace;
+    --display: 'DM Serif Display', serif;
+    --body: 'Space Grotesk', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--body);
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 48px 24px;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 36px;
+    background: var(--ink);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: var(--pink);
+    opacity: 0.15;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    right: 40px; bottom: -80px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: var(--purple);
+    opacity: 0.2;
+  }
+  .header-text { position: relative; z-index: 1; }
+  .header-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 6px;
+  }
+  .header-title {
+    font-family: var(--display);
+    font-size: 40px;
+    color: #fff;
+    line-height: 1.1;
+  }
+  .header-title span { color: var(--pink); }
+  .header-badge {
+    position: relative; z-index: 1;
+    background: var(--pink);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 50px;
+    white-space: nowrap;
+  }
+
+  /* ── CHAPTER NAV ── */
+  .chapter-nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .chapter-item {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .chapter-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--pink);
+    background: var(--pink-light);
+    border-radius: 8px;
+    padding: 4px 8px;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .chapter-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px; height: 2px;
+    background: var(--pink);
+    border-radius: 2px;
+  }
+
+  /* ── CONDITIONS CARD ── */
+  .conditions-card {
+    background: var(--card);
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    overflow: hidden;
+  }
+  .conditions-header {
+    background: var(--purple-light);
+    padding: 20px 28px;
+    border-bottom: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .conditions-header h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--purple);
+  }
+  .tag-b {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    background: var(--purple);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+  .conditions-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .conditions-col {
+    padding: 24px 28px;
+  }
+  .conditions-col:first-child {
+    border-right: 1.5px solid var(--border);
+  }
+  .conditions-col .lang-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-bottom: 14px;
+    display: inline-block;
+  }
+  .lang-en { background: #e8f4fd; color: #2567b0; }
+  .lang-ru { background: #fff0e8; color: #c05e1a; }
+
+  .condition-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .condition-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .condition-list li .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--pink);
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+  .condition-list li .dot.purple { background: var(--purple); }
+
+  /* ── FORMULA BLOCK ── */
+  .formula-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .formula-card {
+    background: var(--pink-light);
+    border: 2px solid var(--pink-mid);
+    border-radius: 20px;
+    padding: 26px 28px;
+  }
+  .formula-card.purple-card {
+    background: var(--purple-light);
+    border-color: #d0c4f0;
+  }
+  .formula-card-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .formula-display {
+    font-family: var(--mono);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.6;
+    background: rgba(255,255,255,0.6);
+    border-radius: 12px;
+    padding: 14px 18px;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .formula-display sub, .formula-display sup {
+    font-size: 11px;
+  }
+  .formula-note {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .formula-note strong { color: var(--ink); }
+
+  /* ── PHRASES TABLE ── */
+  .phrases-card {
+    background: var(--card);
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    overflow: hidden;
+  }
+  .phrases-card-header {
+    padding: 20px 28px;
+    background: linear-gradient(135deg, #1a1228 0%, #2d1f4a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .phrases-card-header h2 {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .phrases-card-header p {
+    color: rgba(255,255,255,0.55);
+    font-size: 12px;
+    margin-top: 2px;
+  }
+  .phrases-card-header .icon {
+    font-size: 24px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  thead {
+    background: var(--purple-light);
+  }
+  thead th {
+    padding: 12px 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--purple);
+    text-align: left;
+    border-bottom: 1.5px solid var(--border);
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #faf8ff; }
+  tbody td {
+    padding: 13px 20px;
+    font-size: 13.5px;
+    vertical-align: middle;
+  }
+  td.phrase-cell {
+    font-weight: 600;
+    color: var(--ink);
+  }
+  td.phrase-cell::before {
+    content: '"';
+    color: var(--pink);
+    font-family: var(--display);
+    font-size: 16px;
+  }
+  td.phrase-cell::after {
+    content: '"';
+    color: var(--pink);
+    font-family: var(--display);
+    font-size: 16px;
+  }
+  td.means-cell {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--purple);
+    font-weight: 500;
+  }
+  td.calc-cell {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .pill {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: var(--mono);
+  }
+  .pill-sub { background: #fff0e8; color: #c05e1a; }
+  .pill-direct { background: #e8f7f3; color: #187a5a; }
+
+  /* ── MEAN / VARIANCE ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .stat-card-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .stat-card-formula {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .stat-card-formula .var { color: var(--pink); }
+  .stat-card-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 2px;
+    background: linear-gradient(90deg, var(--pink) 0%, var(--purple) 100%);
+    border-radius: 2px;
+    opacity: 0.25;
+  }
+
+  /* ── WORKED EXAMPLE ── */
+  .worked-header {
+    background: linear-gradient(135deg, #1e0e35 0%, #3a1f6e 100%);
+    border-radius: 20px;
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .worked-header-text h2 {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .worked-header-text p {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+  }
+  .worked-given {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 10px 18px;
+    font-family: var(--mono);
+    font-size: 15px;
+    color: var(--pink);
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  .parts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .part-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .part-card-header {
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .part-letter {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--purple);
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .part-letter.pink-bg { background: var(--pink); }
+  .part-question {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .part-body {
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .step {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .step-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    background: var(--bg);
+    border-radius: 4px;
+    padding: 2px 6px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-content { color: var(--ink); }
+  .step-content .hl { color: var(--purple); font-family: var(--mono); font-weight: 600; }
+  .step-content .hl-pink { color: var(--pink); font-family: var(--mono); font-weight: 600; }
+  .answer-row {
+    background: var(--pink-light);
+    border: 1.5px solid var(--pink-mid);
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .answer-row.purple-ans {
+    background: var(--purple-light);
+    border-color: #d0c4f0;
+  }
+  .answer-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .answer-val {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* ── CUMULATIVE TABLE SECTION ── */
+  .cumul-intro {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 26px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .cumul-intro h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .cumul-intro p {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .cumul-intro p strong { color: var(--ink); }
+
+  .how-to-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .how-step {
+    background: var(--bg);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .how-step-num {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--pink);
+    opacity: 0.5;
+  }
+  .how-step-text {
+    font-size: 12.5px;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+
+  .lookup-table-wrap {
+    background: var(--card);
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    overflow: hidden;
+  }
+  .lookup-table-header {
+    padding: 16px 24px;
+    background: var(--purple-light);
+    border-bottom: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .lookup-table-header h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--purple);
+  }
+  .lookup-table-header span {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .lookup-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 12.5px;
+  }
+  .lookup-table th {
+    background: var(--purple-light);
+    padding: 8px 14px;
+    text-align: center;
+    color: var(--purple);
+    font-weight: 700;
+    border-bottom: 1.5px solid var(--border);
+    border-right: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .lookup-table th:first-child { text-align: left; }
+  .lookup-table td {
+    padding: 8px 14px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    color: var(--ink);
+  }
+  .lookup-table td:first-child { text-align: left; font-weight: 600; color: var(--purple); }
+  .lookup-table tr:last-child td { border-bottom: none; }
+  .lookup-table td.highlighted {
+    background: #fff0fb;
+    color: var(--pink);
+    font-weight: 700;
+    position: relative;
+  }
+  .lookup-table tr.n6-row td { color: var(--muted); background: #fafafa; }
+
+  /* ── TABLE EXAMPLE SOLUTION ── */
+  .table-solution-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 4px;
+    font-size: 11px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .chapter-nav { grid-template-columns: 1fr; }
+    .conditions-body { grid-template-columns: 1fr; }
+    .conditions-col:first-child { border-right: none; border-bottom: 1.5px solid var(--border); }
+    .formula-row { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: 1fr; }
+    .header { flex-direction: column; gap: 16px; align-items: flex-start; }
+    .header-title { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-text">
+      <div class="header-eyebrow">Chapter 1 · Statistics</div>
+      <h1 class="header-title">Binomial<br><span>Distributions</span></h1>
+    </div>
+    <div class="header-badge">\(B(n,\,p)\) Quick Reference</div>
+  </header>
+
+  <!-- CHAPTER NAV -->
+  <nav class="chapter-nav">
+    <div class="chapter-item">
+      <span class="chapter-num">1.1</span>
+      <span class="chapter-name">The Binomial Distribution</span>
+    </div>
+    <div class="chapter-item">
+      <span class="chapter-num">1.2</span>
+      <span class="chapter-name">Cumulative Probabilities</span>
+    </div>
+    <div class="chapter-item">
+      <span class="chapter-num">1.3</span>
+      <span class="chapter-name">Mean &amp; Variance</span>
+    </div>
+  </nav>
+
+  <!-- CONDITIONS -->
+  <div class="section-label">When to use \(B(n,\,p)\)</div>
+  <div class="conditions-card">
+    <div class="conditions-header">
+      <h2>Model <em>X</em> with a Binomial Distribution</h2>
+      <span class="tag-b">\(B(n,\,p)\)</span>
+    </div>
+    <div class="conditions-body">
+      <div class="conditions-col">
+        <span class="lang-tag lang-en">English</span>
+        <ul class="condition-list">
+          <li><span class="dot"></span>Fixed number of trials, <em>n</em></li>
+          <li><span class="dot"></span>Two possible outcomes — success or failure</li>
+          <li><span class="dot"></span>Fixed probability of success, <em>p</em></li>
+          <li><span class="dot"></span>Trials are independent of each other</li>
+        </ul>
+      </div>
+      <div class="conditions-col">
+        <span class="lang-tag lang-ru">Українська</span>
+        <ul class="condition-list">
+          <li><span class="dot purple"></span>Фіксована кількість випробувань <em>n</em></li>
+          <li><span class="dot purple"></span>Два можливих результати — успіх і невдача</li>
+          <li><span class="dot purple"></span>Ймовірність успіху <em>p</em> однакова у кожному випробуванні</li>
+          <li><span class="dot purple"></span>Усі випробування незалежні одне від одного</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORMULAS -->
+  <div class="section-label">Core Formulas</div>
+  <div class="formula-row">
+    <div class="formula-card">
+      <div class="formula-card-label">Probability of exactly r successes</div>
+      <div class="formula-display">
+        \(P(X = r) = \binom{n}{r} p^r (1-p)^{n-r}\)
+      </div>
+      <div class="formula-note">
+        <strong>n</strong> = index (number of trials)<br>
+        <strong>p</strong> = parameter (probability of success)<br>
+        <strong>r</strong> = number of successes
+      </div>
+    </div>
+    <div class="formula-card purple-card">
+      <div class="formula-card-label">Combination coefficient</div>
+      <div class="formula-display">
+        \(\dbinom{n}{k} = \dfrac{n!}{k!\,(n-k)!}\)
+      </div>
+      <div class="formula-note">
+        Equivalent notation:<br>
+        \(\binom{n}{k} = {}^nC_k = C(n,k)\)
+      </div>
+    </div>
+  </div>
+
+  <!-- MEAN / VARIANCE -->
+  <div class="section-label">Mean &amp; Variance — §1.3</div>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-card-label">Mean (Expected Value)</div>
+      <div class="stat-card-formula">\(E(X) = np\)</div>
+      <div class="stat-card-desc">Average number of successes across all trials</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Variance</div>
+      <div class="stat-card-formula">\(\text{Var}(X) = np(1-p)\)</div>
+      <div class="stat-card-desc">Also written as \(npq\), where \(q = 1-p\)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-label">Standard Deviation</div>
+      <div class="stat-card-formula">\(\sigma = \sqrt{np(1-p)}\)</div>
+      <div class="stat-card-desc">Square root of the variance</div>
+    </div>
+  </div>
+
+  <!-- CUMULATIVE PHRASES TABLE -->
+  <div class="section-label">Cumulative Probability — §1.2</div>
+  <div class="phrases-card">
+    <div class="phrases-card-header">
+      <div>
+        <h2>Phrase → Calculation Guide</h2>
+        <p>How to interpret word problems correctly</p>
+      </div>
+      <span class="icon">📋</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Phrase</th>
+          <th>Means</th>
+          <th>Calculation</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="phrase-cell">greater than 5</td>
+          <td class="means-cell">\(X > 5\)</td>
+          <td class="calc-cell">\(1 - P(X \leq 5)\)</td>
+          <td><span class="pill pill-sub">subtract</span></td>
+        </tr>
+        <tr>
+          <td class="phrase-cell">no more than 3</td>
+          <td class="means-cell">\(X \leq 3\)</td>
+          <td class="calc-cell">\(P(X \leq 3)\)</td>
+          <td><span class="pill pill-direct">direct</span></td>
+        </tr>
+        <tr>
+          <td class="phrase-cell">at least 7</td>
+          <td class="means-cell">\(X \geq 7\)</td>
+          <td class="calc-cell">\(1 - P(X \leq 6)\)</td>
+          <td><span class="pill pill-sub">subtract</span></td>
+        </tr>
+        <tr>
+          <td class="phrase-cell">fewer than 10</td>
+          <td class="means-cell">\(X < 10\)</td>
+          <td class="calc-cell">\(P(X \leq 9)\)</td>
+          <td><span class="pill pill-direct">direct</span></td>
+        </tr>
+        <tr>
+          <td class="phrase-cell">at most 8</td>
+          <td class="means-cell">\(X \leq 8\)</td>
+          <td class="calc-cell">\(P(X \leq 8)\)</td>
+          <td><span class="pill pill-direct">direct</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- HOW TO USE TABLES -->
+  <div class="section-label">§1.2 · Using Cumulative Probability Tables</div>
+
+  <div class="cumul-intro">
+    <h3>What is a cumulative probability table?</h3>
+    <p>The table gives you <strong>\(P(X \leq x)\)</strong> directly — the sum of all individual probabilities from 0 up to and including x. For \(X \sim B(n,p)\), tables are organised by <strong>n</strong> (rows) and <strong>p</strong> (columns). You can also use the <strong>Binomial CD</strong> function on your calculator.</p>
+    <div class="how-to-steps">
+      <div class="how-step">
+        <div class="how-step-num">01</div>
+        <div class="how-step-text"><strong>Find your n.</strong> Locate the block of rows for your n value (e.g. n = 5).</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">02</div>
+        <div class="how-step-text"><strong>Find your p.</strong> Move across to the column matching your probability of success.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">03</div>
+        <div class="how-step-text"><strong>Read the x-row.</strong> The value is P(X ≤ x). For non-direct forms, apply complement or subtraction.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLE EXTRACT -->
+  <div class="lookup-table-wrap">
+    <div class="lookup-table-header">
+      <h3>Extract from Binomial Cumulative Tables — \(P(X \leq x)\)</h3>
+      <span>★ Highlighted: \(B(5,\,0.3)\) → \(P(X \leq 2) = 0.8369\)</span>
+    </div>
+    <table class="lookup-table">
+      <thead>
+        <tr>
+          <th>n, x</th>
+          <th>p = 0.05</th>
+          <th>p = 0.10</th>
+          <th>p = 0.15</th>
+          <th>p = 0.20</th>
+          <th>p = 0.25</th>
+          <th>p = 0.30</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>n=5, x=0</td><td>0.7738</td><td>0.5905</td><td>0.4437</td><td>0.3277</td><td>0.2373</td><td>0.1681</td></tr>
+        <tr><td>x=1</td><td>0.9774</td><td>0.9185</td><td>0.8352</td><td>0.7373</td><td>0.6328</td><td>0.5282</td></tr>
+        <tr><td>x=2</td><td>0.9988</td><td>0.9914</td><td>0.9734</td><td>0.9421</td><td>0.8965</td><td class="highlighted">0.8369</td></tr>
+        <tr><td>x=3</td><td>1.0000</td><td>0.9995</td><td>0.9978</td><td>0.9933</td><td>0.9844</td><td>0.9692</td></tr>
+        <tr><td>x=4</td><td>1.0000</td><td>1.0000</td><td>0.9999</td><td>0.9997</td><td>0.9990</td><td>0.9976</td></tr>
+        <tr class="n6-row"><td>n=6, x=0</td><td>0.7351</td><td>0.5314</td><td>0.3771</td><td>0.2621</td><td>0.1780</td><td>0.1176</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- WORKED EXAMPLE 6: X ~ B(20, 0.4) -->
+  <div class="worked-header">
+    <div class="worked-header-text">
+      <h2>Example 6 — Worked Solution</h2>
+      <p>Using cumulative tables or Binomial CD on calculator</p>
+    </div>
+    <div class="worked-given">\(X \sim B(20,\, 0.4)\)</div>
+  </div>
+
+  <div class="parts-grid">
+    <!-- a -->
+    <div class="part-card">
+      <div class="part-card-header">
+        <span class="part-letter pink-bg">a</span>
+        <span class="part-question">\(P(X \leq 7) = ?\)</span>
+      </div>
+      <div class="part-body">
+        <div class="step"><span class="step-num">type</span><span class="step-content"><span class="hl">Direct lookup</span> — already in ≤ form</span></div>
+        <div class="step"><span class="step-num">table</span><span class="step-content">Find n=20, p=0.40, row x=7</span></div>
+        <div class="step"><span class="step-num">note</span><span class="step-content">Or use Binomial CD on calculator with n=20, p=0.4, x=7</span></div>
+        <div class="answer-row purple-ans"><span class="answer-label">Answer</span><span class="answer-val">\(P(X \leq 7) = 0.4159\)</span></div>
+      </div>
+    </div>
+    <!-- b -->
+    <div class="part-card">
+      <div class="part-card-header">
+        <span class="part-letter pink-bg">b</span>
+        <span class="part-question">\(P(X < 6) = ?\)</span>
+      </div>
+      <div class="part-body">
+        <div class="step"><span class="step-num">key rule</span><span class="step-content">\(X\) takes only <span class="hl">whole numbers</span>, so \(X < 6\) means \(X \leq 5\)</span></div>
+        <div class="step"><span class="step-num">rewrite</span><span class="step-content">\(P(X < 6)\) = <span class="hl-pink">\(P(X \leq 5)\)</span></span></div>
+        <div class="step"><span class="step-num">table</span><span class="step-content">Find n=20, p=0.40, row x=5</span></div>
+        <div class="answer-row purple-ans"><span class="answer-label">Answer</span><span class="answer-val">\(P(X < 6) = P(X \leq 5) = 0.1256\)</span></div>
+      </div>
+    </div>
+    <!-- c -->
+    <div class="part-card" style="grid-column: 1 / -1;">
+      <div class="part-card-header">
+        <span class="part-letter pink-bg">c</span>
+        <span class="part-question">\(P(X \geq 15) = ?\)</span>
+      </div>
+      <div class="part-body">
+        <div class="step"><span class="step-num">rewrite</span><span class="step-content">Tables only give \(P(X \leq x)\), so use the complement rule: \(P(X \geq 15) = \)<span class="hl-pink">\(1 - P(X \leq 14)\)</span></span></div>
+        <div class="step"><span class="step-num">table</span><span class="step-content">Find \(n=20,\, p=0.40\), row \(x=14\) → \(P(X \leq 14) = 0.9984\)</span></div>
+        <div class="step"><span class="step-num">calc</span><span class="step-content">\(1 - 0.9984 = \)<span class="hl">\(0.0016\)</span></span></div>
+        <div class="answer-row purple-ans"><span class="answer-label">Answer</span><span class="answer-val">\(P(X \geq 15) = 1 - 0.9984 = 0.0016\)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <span>Chapter 1 · Binomial Distributions</span>
+    <span>\(B(n,p)\) · \(P(X=r)=\binom{n}{r}p^r(1-p)^{n-r}\)</span>
+  </footer>
+
+</div>
+</body>
+</html>
