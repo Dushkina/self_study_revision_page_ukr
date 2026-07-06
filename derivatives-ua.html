@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Таблиця похідних · Derivatives Reference</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{
+    delimiters:[
+      {left:'$$',right:'$$',display:true},
+      {left:'\\(',right:'\\)',display:false}
+    ]
+  });">
+</script>
+
+<style>
+:root {
+  --bg:        #f7f4f0;
+  --card:      #ffffff;
+  --pink:      #e84fa3;
+  --purple:    #7c5cbf;
+  --pink-lt:   #fde8f4;
+  --pink-mid:  #f9c9e8;
+  --purple-lt: #ede8f8;
+  --ink:       #1a1228;
+  --muted:     #7a6e82;
+  --border:    #e5dff0;
+  --radius:    20px;
+  --green:     #059669;
+  --green-lt:  #d1fae5;
+  --green-bd:  #a7f3d0;
+  --amber:     #b45309;
+  --amber-lt:  #fef3c7;
+  --amber-bd:  #fde68a;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  padding: 48px 24px 80px;
+}
+
+.page { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+
+/* DIVIDER */
+.divider {
+  height: 2px;
+  background: linear-gradient(90deg, var(--pink), var(--purple));
+  opacity: 0.25; border-radius: 2px; margin: 4px 0;
+}
+
+/* HERO */
+.hero {
+  background: var(--ink);
+  border-radius: var(--radius);
+  padding: 52px 44px 48px;
+  position: relative; overflow: hidden;
+}
+.hero-blob { position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none; }
+.hero-blob-1 { width: 320px; height: 320px; background: rgba(232,79,163,0.28); top: -80px; right: -60px; }
+.hero-blob-2 { width: 240px; height: 240px; background: rgba(124,92,191,0.22); bottom: -60px; left: 40px; }
+.hero-blob-3 { width: 160px; height: 160px; background: rgba(5,150,105,0.14); top: 30px; left: 220px; }
+.hero-badge {
+  position: absolute; top: 24px; right: 24px;
+  background: var(--pink); color: #fff;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 99px;
+}
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--pink); margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 4.6vw, 3.1rem);
+  color: #fff; line-height: 1.12; margin-bottom: 16px;
+}
+.hero-sub { color: rgba(255,255,255,0.55); font-size: 0.95rem; max-width: 540px; }
+
+/* DEF BOX inside hero */
+.hero-def {
+  margin-top: 24px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(232,79,163,0.35);
+  border-radius: 14px; padding: 16px 22px; text-align: center;
+}
+.hero-def-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(232,79,163,0.8); margin-bottom: 10px;
+}
+.hero-def .katex { font-size: 1.15rem; color: #fff; }
+
+/* SECTION LABEL */
+.sec-label {
+  display: flex; align-items: center; gap: 12px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 18px;
+}
+.sec-label::before { content:''; display:block; width:24px; height:3px; background:var(--pink); border-radius:2px; flex-shrink:0; }
+
+/* CARD */
+.card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 28px 32px; }
+h2 { font-family: 'DM Serif Display', serif; font-size: 1.55rem; color: var(--ink); margin-bottom: 18px; line-height: 1.25; }
+p { color: var(--muted); font-size: 0.93rem; }
+p strong { color: var(--ink); }
+
+/* KEY RULE */
+.key-rule {
+  background: linear-gradient(135deg, var(--pink-lt), var(--purple-lt));
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  padding: 26px 30px;
+}
+.key-rule-title {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--pink); margin-bottom: 10px;
+}
+.key-rule p { color: var(--ink); font-size: 0.96rem; }
+.key-rule .hl { color: var(--pink); font-weight: 700; }
+.key-rule .hl-p { color: var(--purple); font-weight: 700; }
+
+/* ID CARD */
+.id-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; padding: 18px 22px; margin-bottom: 12px; }
+.id-card:last-child { margin-bottom: 0; }
+.id-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; flex-wrap: wrap; }
+.id-title { font-weight: 600; font-size: 0.95rem; color: var(--ink); }
+.id-formula-row {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.92rem;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 9px 14px; margin-top: 6px;
+}
+.id-formula-row + .id-formula-row { margin-top: 8px; }
+
+/* PILL */
+.pill { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
+.pill-pink   { background: var(--pink-lt); color: var(--pink); border: 1px solid var(--pink-mid); }
+.pill-purple { background: var(--purple-lt); color: var(--purple); border: 1px solid #d4c8ef; }
+.pill-green  { background: var(--green-lt); color: var(--green); border: 1px solid var(--green-bd); }
+.pill-amber  { background: var(--amber-lt); color: var(--amber); border: 1px solid var(--amber-bd); }
+
+/* TWO-COL FORMULA TABLE */
+.table-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.table-col { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.table-col-head {
+  padding: 12px 18px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: #fff;
+}
+.tch-pink   { background: var(--pink); }
+.tch-purple { background: var(--purple); }
+.t-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; border-bottom: 1px solid var(--border);
+  transition: background 0.12s;
+}
+.t-row:last-child { border-bottom: none; }
+.t-row:hover { background: var(--bg); }
+.t-num { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--muted); min-width: 20px; flex-shrink: 0; }
+.t-left { flex: 1; font-size: 0.86rem; }
+.t-arr { color: var(--border); font-size: 0.75rem; flex-shrink: 0; }
+.t-right { flex: 1; font-size: 0.86rem; color: var(--pink); }
+.t-left .katex, .t-right .katex { font-size: 0.86rem; }
+
+/* RULES GRID */
+.rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.rule-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; padding: 20px 22px; transition: border-color 0.15s; }
+.rule-card:hover { border-color: var(--pink); }
+.rule-card-label { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+.rcl-pink   { color: var(--pink); }
+.rcl-purple { color: var(--purple); }
+.rcl-green  { color: var(--green); }
+.rcl-amber  { color: var(--amber); }
+.rule-card p { font-size: 0.8rem; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+.rule-card .katex-display { margin: 8px 0 0; }
+
+/* USE CARDS */
+.use-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.use-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; padding: 18px 18px; }
+.use-icon { font-size: 1.4rem; margin-bottom: 8px; }
+.use-card h4 { font-size: 0.92rem; font-weight: 600; color: var(--ink); margin-bottom: 5px; }
+.use-card p { font-size: 0.8rem; }
+
+/* ALGO STEPS */
+.algo-list { display: flex; flex-direction: column; gap: 10px; }
+.algo-step { display: flex; gap: 16px; align-items: flex-start; background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; padding: 16px 20px; transition: border-color 0.2s; }
+.algo-step:hover { border-color: var(--pink); }
+.algo-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; font-weight: 700; color: #fff; background: var(--pink); border-radius: 8px; min-width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.algo-badge.purple { background: var(--purple); }
+.algo-body h4 { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+.algo-body p { font-size: 0.85rem; color: var(--muted); }
+.algo-note { display: inline-block; margin-top: 6px; background: var(--pink-lt); border: 1px solid var(--pink-mid); border-radius: 8px; padding: 4px 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; color: var(--pink); }
+.algo-note.purple { background: var(--purple-lt); border-color: #d4c8ef; color: var(--purple); }
+
+/* EXAMPLE CARD (dark header) */
+.example-card { border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 14px; }
+.example-card:last-child { margin-bottom: 0; }
+.example-header { background: linear-gradient(135deg, #1e0e35, #3a1f6e); padding: 18px 26px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.example-header-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+.example-eq-badge { font-family: 'JetBrains Mono', monospace; font-size: 0.92rem; font-weight: 600; background: rgba(232,79,163,0.22); border: 1px solid rgba(232,79,163,0.4); color: #f9a8d4; padding: 6px 16px; border-radius: 99px; }
+.example-body { background: var(--card); }
+.step-row { display: flex; align-items: baseline; gap: 14px; padding: 11px 26px; border-bottom: 1px solid var(--border); transition: background 0.15s; }
+.step-row:last-child { border-bottom: none; }
+.step-row:hover { background: var(--bg); }
+.step-n { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--muted); min-width: 20px; flex-shrink: 0; }
+.step-formula { flex: 1; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; color: var(--ink); }
+.step-formula .katex { font-size: 0.91rem; }
+.step-comment { font-size: 0.76rem; color: var(--muted); font-style: italic; flex-shrink: 0; max-width: 240px; text-align: right; }
+.answer-row { background: var(--pink-lt) !important; border-top: 1.5px solid var(--pink-mid) !important; }
+.answer-row .step-formula { color: var(--pink); font-weight: 700; }
+.answer-row .step-comment { color: var(--pink); }
+
+/* TABLE */
+table { width: 100%; border-collapse: collapse; font-size: 0.86rem; border-radius: 14px; overflow: hidden; border: 1.5px solid var(--border); }
+thead tr { background: var(--purple-lt); }
+thead th { font-family: 'JetBrains Mono', monospace; font-size: 0.73rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--purple); padding: 11px 14px; text-align: left; }
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #f5f0fc; }
+tbody td { padding: 10px 14px; font-family: 'JetBrains Mono', monospace; color: var(--ink); font-size: 0.83rem; }
+tbody td.desc { font-family: 'Space Grotesk', sans-serif; color: var(--muted); font-size: 0.83rem; }
+tbody td.hl  { background: var(--pink-lt); color: var(--pink); font-weight: 600; }
+
+footer { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--muted); padding-top: 12px; }
+
+@media(max-width:640px){
+  body { padding: 24px 16px 60px; }
+  .hero { padding: 36px 22px 32px; }
+  .card { padding: 22px 18px; }
+  .table-2col, .rules-grid, .use-grid { grid-template-columns: 1fr; }
+  .step-comment { display: none; }
+  .example-header { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-blob hero-blob-3"></div>
+  <div class="hero-badge">Математичний аналіз · Calculus</div>
+  <div class="hero-eyebrow">Self-Study Reference · Довідник</div>
+  <h1>Таблиця<br>похідних функцій</h1>
+  <p class="hero-sub">Означення, застосування, правила диференціювання та повні таблиці похідних основних і складених функцій — Derivatives Reference.</p>
+  <div class="hero-def">
+    <div class="hero-def-label">Означення похідної · Definition of Derivative</div>
+    $$f'(x) = \lim_{\Delta x \to 0} \frac{f(x+\Delta x)-f(x)}{\Delta x}$$
+  </div>
+</div>
+
+<!-- ══ §1 ОЗНАЧЕННЯ ══ -->
+<div>
+  <div class="sec-label">§1 · Означення та геометричний зміст · Definition</div>
+  <div class="card">
+    <h2>Що таке похідна?</h2>
+    <p style="margin-bottom:14px;"><strong>Похідна функції</strong> \(f(x)\) в точці \(x_0\) — це границя відношення приросту функції \(\Delta y\) до приросту аргументу \(\Delta x\), коли \(\Delta x \to 0\).</p>
+
+    <div class="id-card">
+      <div class="id-head">
+        <div class="id-title">Означення · Definition</div>
+        <span class="pill pill-pink">limit</span>
+      </div>
+      <div class="id-formula-row">$$f'(x_0) = \lim_{\Delta x \to 0} \frac{\Delta y}{\Delta x} = \lim_{\Delta x \to 0} \frac{f(x_0+\Delta x)-f(x_0)}{\Delta x}$$</div>
+    </div>
+
+    <div class="id-card">
+      <div class="id-head">
+        <div class="id-title">Геометричний зміст · Geometric meaning</div>
+        <span class="pill pill-purple">tangent</span>
+      </div>
+      <p style="font-size:0.88rem; color:var(--muted);">Похідна \(f'(x_0)\) — нахил (кутовий коефіцієнт) дотичної до графіка в точці \((x_0,\,f(x_0))\).</p>
+      <div class="id-formula-row">\(\text{Рівняння дотичної:} \quad y = f(x_0) + f'(x_0)(x - x_0)\)</div>
+      <div class="id-formula-row">\(\text{Рівняння нормалі:} \quad y = f(x_0) - \dfrac{1}{f'(x_0)}(x - x_0)\)</div>
+    </div>
+
+    <div class="id-card">
+      <div class="id-head">
+        <div class="id-title">Фізичний зміст · Physical meaning</div>
+        <span class="pill pill-green">physics</span>
+      </div>
+      <div class="id-formula-row">\(s'(t) = v(t)\) — миттєва швидкість (instant velocity)</div>
+      <div class="id-formula-row">\(v'(t) = a(t)\) — миттєве прискорення (acceleration)</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ §2 ЗАСТОСУВАННЯ ══ -->
+<div>
+  <div class="sec-label">§2 · Застосування · Applications</div>
+  <div class="card">
+    <h2>Де використовують похідну?</h2>
+    <div class="use-grid">
+      <div class="use-card">
+        <div class="use-icon">📈</div>
+        <h4>Швидкість зміни</h4>
+        <p>Показує, як швидко змінюється функція в даній точці.</p>
+      </div>
+      <div class="use-card">
+        <div class="use-icon">🔍</div>
+        <h4>Екстремуми</h4>
+        <p>Максимум/мінімум: \(f'(x)=0\) або \(f'(x)\) не існує.</p>
+      </div>
+      <div class="use-card">
+        <div class="use-icon">📉</div>
+        <h4>Монотонність</h4>
+        <p>\(f'>0\) — зростає; \(f'<0\) — спадає.</p>
+      </div>
+      <div class="use-card">
+        <div class="use-icon">📐</div>
+        <h4>Дотична</h4>
+        <p>Рівняння дотичної і нормалі до кривої.</p>
+      </div>
+      <div class="use-card">
+        <div class="use-icon">⚙️</div>
+        <h4>Оптимізація</h4>
+        <p>Задачі фізики, економіки, інженерії.</p>
+      </div>
+      <div class="use-card">
+        <div class="use-icon">∫</div>
+        <h4>Зв'язок з інтегралом</h4>
+        <p>Теорема Ньютона–Лейбніца: \((F(x))'=f(x)\).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ §3 ВЛАСТИВОСТІ ══ -->
+<div>
+  <div class="sec-label">§3 · Властивості · Properties</div>
+  <div class="card">
+    <h2>Основні властивості похідної</h2>
+
+    <div class="id-card">
+      <div class="id-head"><div class="id-title">Лінійність · Linearity</div><span class="pill pill-pink">linear</span></div>
+      <div class="id-formula-row">\((af + bg)' = af' + bg', \quad a,b = \text{const}\)</div>
+      <div class="id-formula-row">\((C)' = 0\) — похідна константи дорівнює нулю</div>
+    </div>
+
+    <div class="id-card">
+      <div class="id-head"><div class="id-title">Power Rule · Степенева функція</div><span class="pill pill-purple">power</span></div>
+      <div class="id-formula-row">\((x^n)' = n\,x^{n-1}\) — для будь-якого дійсного \(n\)</div>
+      <div class="id-formula-row">\((x^2)'=2x, \quad (x^3)'=3x^2, \quad (\sqrt{x})'=\dfrac{1}{2\sqrt{x}}, \quad \left(\dfrac{1}{x}\right)'=-\dfrac{1}{x^2}\)</div>
+    </div>
+
+    <div class="id-card">
+      <div class="id-head"><div class="id-title">Неперервність · Continuity</div><span class="pill pill-green">continuity</span></div>
+      <p style="font-size:0.88rem;">Якщо функція має похідну в точці \(x_0\), то вона неперервна в цій точці. Зворотне твердження хибне.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ §4 ПРАВИЛА (cards) ══ -->
+<div>
+  <div class="sec-label">§4 · Правила диференціювання · Differentiation Rules</div>
+  <div class="rules-grid">
+
+    <div class="rule-card">
+      <div class="rule-card-label rcl-green">Сума і різниця · Sum &amp; Difference</div>
+      $$(u \pm v)' = u' \pm v'$$
+      <p>Похідна суми (різниці) = сума (різниця) похідних.</p>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-card-label rcl-amber">Product Rule · Правило добутку</div>
+      $$(uv)' = u'v + uv'$$
+      <p>де \(u=u(x)\), \(v=v(x)\). Похідна добутку двох функцій.</p>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-card-label rcl-pink">Quotient Rule · Правило частки</div>
+      $$\left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$$
+      <p>де \(v \neq 0\). «Верхня' × нижня − верхня × нижня'» / нижня².</p>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-card-label rcl-purple">Chain Rule · Правило ланцюжка</div>
+      $$\frac{dy}{dx} = \frac{dy}{du}\cdot\frac{du}{dx}$$
+      <p>де \(y=f(u)\), \(u=g(x)\). Похідна зовнішньої × похідна внутрішньої.</p>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-card-label rcl-green">Обернена · Inverse function</div>
+      $$\frac{dy}{dx} = \dfrac{1}{\;\dfrac{dx}{dy}\;}$$
+      <p>Якщо \(y=f(x)\) строго монотонна і диференційовна.</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ §5 ТАБЛИЦЯ ОСНОВНИХ ══ -->
+<div>
+  <div class="sec-label">§5 · Таблиця основних похідних · Basic Derivatives Table</div>
+  <div class="table-2col">
+
+    <!-- Прості -->
+    <div class="table-col">
+      <div class="table-col-head tch-pink">Прості функції · f(x)</div>
+      <div class="t-row"><span class="t-num">1</span><span class="t-left">\((C)'\)</span><span class="t-arr">→</span><span class="t-right">\(0\)</span></div>
+      <div class="t-row"><span class="t-num">2</span><span class="t-left">\((x)'\)</span><span class="t-arr">→</span><span class="t-right">\(1\)</span></div>
+      <div class="t-row"><span class="t-num">3</span><span class="t-left">\((x^n)'\)</span><span class="t-arr">→</span><span class="t-right">\(n\,x^{n-1}\)</span></div>
+      <div class="t-row"><span class="t-num">4</span><span class="t-left">\((\sqrt{x})'\)</span><span class="t-arr">→</span><span class="t-right">\(\dfrac{1}{2\sqrt{x}}\)</span></div>
+      <div class="t-row"><span class="t-num">5</span><span class="t-left">\(\left(\dfrac{1}{x}\right)'\)</span><span class="t-arr">→</span><span class="t-right">\(-\dfrac{1}{x^2}\)</span></div>
+      <div class="t-row"><span class="t-num">6</span><span class="t-left">\((a^x)'\)</span><span class="t-arr">→</span><span class="t-right">\(a^x \ln a\)</span></div>
+      <div class="t-row"><span class="t-num">7</span><span class="t-left">\((e^x)'\)</span><span class="t-arr">→</span><span class="t-right">\(e^x\)</span></div>
+      <div class="t-row"><span class="t-num">8</span><span class="t-left">\((e^{kx})'\)</span><span class="t-arr">→</span><span class="t-right">\(k\,e^{kx}\)</span></div>
+      <div class="t-row"><span class="t-num">9</span><span class="t-left">\((\log_a x)'\)</span><span class="t-arr">→</span><span class="t-right">\(\dfrac{1}{x\ln a}\)</span></div>
+      <div class="t-row"><span class="t-num">10</span><span class="t-left">\((\ln x)'\)</span><span class="t-arr">→</span><span class="t-right">\(\dfrac{1}{x}\)</span></div>
+      <div class="t-row"><span class="t-num">11</span><span class="t-left">\((\lg x)'\)</span><span class="t-arr">→</span><span class="t-right">\(\dfrac{1}{x\ln 10}\)</span></div>
+    </div>
+
+    <!-- Складені u=u(x) -->
+    <div class="table-col">
+      <div class="table-col-head tch-purple">Складені функції, \(u=u(x)\)</div>
+      <div class="t-row"><span class="t-num">1a</span><span class="t-left">\((C)'\)</span><span class="t-arr">→</span><span class="t-right">\(0\)</span></div>
+      <div class="t-row"><span class="t-num">2a</span><span class="t-left">\((u)'\)</span><span class="t-arr">→</span><span class="t-right">\(u'\)</span></div>
+      <div class="t-row"><span class="t-num">3a</span><span class="t-left">\((u^n)'\)</span><span class="t-arr">→</span><span class="t-right">\(n\,u^{n-1}\cdot u'\)</span></div>
+      <div class="t-row"><span class="t-num">4a</span><span class="t-left">\((\sqrt{u})'\)</span><span class="t-arr">→</span><span class="t-right">\(\dfrac{u'}{2\sqrt{u}}\)</span></div>
+      <div class="t-row"><span class="t-num">5a</span><span class="t-left">\(\left(\dfrac{1}{u}\right)'\)</span><span class="t-arr">→</span><span class="t-right">\(-\dfrac{u'}{u^2}\)</span></div>
+      <div class="t-row"><span class="t-num">6a</span><span class="t-left">\((a^u)'\)</span><span class="t-arr">→</span><span class="t-right">\(a^u \ln a \cdot u'\)</span></div>
+      <div class="t-row"><span class="t-num">7a</span><span class="t-left">\((e^u)'\)</span><span class="t-arr">→</span><span class="t-right">\(e^u \cdot u'\)</span></div>
+      <div class="t-row"><span class="t-num">8a</span><span class="t-left">\((e^{ku})'\)</span><span class="t-arr">→</span><span class="t-right">\(k\,e^{ku}\cdot u'\)</span></div>
+      <div class="t-row"><span class="t-num">9a</span><span class="t-left">\((\log_a u)'\)</span><span class="t-arr">→</span><span class="t-right">\(\dfrac{u'}{u\ln a}\)</span></div>
+      <div class="t-row"><span class="t-num">10a</span><span class="t-left">\((\ln u)'\)</span><span class="t-arr">→</span><span class="t-right">\(\dfrac{u'}{u}\)</span></div>
+      <div class="t-row"><span class="t-num">11a</span><span class="t-left">\((\lg u)'\)</span><span class="t-arr">→</span><span class="t-right">\(\dfrac{u'}{u\ln 10}\)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ §6 ТРИГОНОМЕТРІЯ ══ -->
+<div>
+  <div class="sec-label">§6 · Тригонометричні похідні · Trig Derivatives</div>
+  <div class="table-2col">
+
+    <div class="table-col">
+      <div class="table-col-head tch-pink">Прості · f(x)</div>
+      <div class="t-row"><span class="t-num">10</span><span class="t-left">\((\sin x)'\)</span><span class="t-arr">→</span><span class="t-right">\(\cos x\)</span></div>
+      <div class="t-row"><span class="t-num">11</span><span class="t-left">\((\cos x)'\)</span><span class="t-arr">→</span><span class="t-right">\(-\sin x\)</span></div>
+      <div class="t-row"><span class="t-num">12</span><span class="t-left">\((\operatorname{tg} x)' = (\tan x)'\)</span><span class="t-arr">→</span><span class="t-right">\(\dfrac{1}{\cos^2 x}\)</span></div>
+      <div class="t-row"><span class="t-num">13</span><span class="t-left">\((\operatorname{ctg} x)' = (\cot x)'\)</span><span class="t-arr">→</span><span class="t-right">\(-\dfrac{1}{\sin^2 x}\)</span></div>
+      <div class="t-row"><span class="t-num">14</span><span class="t-left">\((\sec x)'\)</span><span class="t-arr">→</span><span class="t-right">\(\sec x\tan x\)</span></div>
+      <div class="t-row"><span class="t-num">15</span><span class="t-left">\((\csc x)' = (\operatorname{cosec}\, x)'\)</span><span class="t-arr">→</span><span class="t-right">\(-\csc x\cot x\)</span></div>
+      <div class="t-row"><span class="t-num">—</span><span class="t-left">\((\sin kx)'\)</span><span class="t-arr">→</span><span class="t-right">\(k\cos kx\)</span></div>
+      <div class="t-row"><span class="t-num">—</span><span class="t-left">\((\cos kx)'\)</span><span class="t-arr">→</span><span class="t-right">\(-k\sin kx\)</span></div>
+      <div class="t-row"><span class="t-num">—</span><span class="t-left">\((\tan kx)'\)</span><span class="t-arr">→</span><span class="t-right">\(k\sec^2 kx\)</span></div>
+    </div>
+
+    <div class="table-col">
+      <div class="table-col-head tch-purple">Складені, \(u=u(x)\)</div>
+      <div class="t-row"><span class="t-num">10a</span><span class="t-left">\((\sin u)'\)</span><span class="t-arr">→</span><span class="t-right">\(\cos u \cdot u'\)</span></div>
+      <div class="t-row"><span class="t-num">11a</span><span class="t-left">\((\cos u)'\)</span><span class="t-arr">→</span><span class="t-right">\(-\sin u \cdot u'\)</span></div>
+      <div class="t-row"><span class="t-num">12a</span><span class="t-left">\((\operatorname{tg} u)'\)</span><span class="t-arr">→</span><span class="t-right">\(\dfrac{u'}{\cos^2 u}\)</span></div>
+      <div class="t-row"><span class="t-num">13a</span><span class="t-left">\((\operatorname{ctg} u)'\)</span><span class="t-arr">→</span><span class="t-right">\(-\dfrac{u'}{\sin^2 u}\)</span></div>
+      <div class="t-row"><span class="t-num">14a</span><span class="t-left">\((\sec u)'\)</span><span class="t-arr">→</span><span class="t-right">\(\sec u\tan u\cdot u'\)</span></div>
+      <div class="t-row"><span class="t-num">15a</span><span class="t-left">\((\csc u)'\)</span><span class="t-arr">→</span><span class="t-right">\(-\csc u\cot u\cdot u'\)</span></div>
+      <div class="t-row"><span class="t-num">—</span><span class="t-left">\((\sin^2 x)'\)</span><span class="t-arr">→</span><span class="t-right">\(\sin 2x\)</span></div>
+      <div class="t-row"><span class="t-num">—</span><span class="t-left">\((\cos^2 x)'\)</span><span class="t-arr">→</span><span class="t-right">\(-\sin 2x\)</span></div>
+      <div class="t-row"><span class="t-num">—</span><span class="t-left">\((\sin^n u)'\)</span><span class="t-arr">→</span><span class="t-right">\(n\sin^{n-1}u\cos u\cdot u'\)</span></div>
+    </div>
+  </div>
+
+  <!-- Пояснення sec / csc / cot -->
+  <div class="id-card" style="margin-top:14px;">
+    <div class="id-head">
+      <div class="id-title">Що таке sec, csc (cosec), cot (ctg)? · Reciprocal functions</div>
+      <span class="pill pill-purple">визначення</span>
+    </div>
+    <p style="font-size:0.88rem; margin-bottom:10px;">Це <strong>обернені тригонометричні функції</strong> (reciprocal trig functions) — не плутати з оберненими (arcsin/arccos/arctan)!</p>
+    <div class="id-formula-row">\(\sec x = \dfrac{1}{\cos x}\) — секанс (secant). Не визначений, коли \(\cos x = 0\)</div>
+    <div class="id-formula-row">\(\csc x = \operatorname{cosec}\, x = \dfrac{1}{\sin x}\) — косеканс (cosecant). Не визначений, коли \(\sin x = 0\)</div>
+    <div class="id-formula-row">\(\cot x = \operatorname{ctg}\, x = \dfrac{\cos x}{\sin x} = \dfrac{1}{\tan x}\) — котангенс (cotangent). Не визначений, коли \(\sin x = 0\)</div>
+    <p style="font-size:0.82rem; margin-top:10px; color:var(--muted);">Тому \((\sec x)' = \left(\dfrac{1}{\cos x}\right)'\) — можна вивести через правило частки → отримаємо \(\sec x\tan x\).</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ §7 ОБЕРНЕНІ ТРИГОНОМЕТРИЧНІ ══ -->
+<div>
+  <div class="sec-label">§7 · Обернені тригонометричні · Inverse Trig</div>
+  <div class="table-2col">
+
+    <div class="table-col">
+      <div class="table-col-head tch-pink">Прості · f(x)</div>
+      <div class="t-row"><span class="t-num">14</span><span class="t-left">\((\arcsin x)'\)</span><span class="t-arr">→</span><span class="t-right">\(\dfrac{1}{\sqrt{1-x^2}}\)</span></div>
+      <div class="t-row"><span class="t-num">15</span><span class="t-left">\((\arccos x)'\)</span><span class="t-arr">→</span><span class="t-right">\(-\dfrac{1}{\sqrt{1-x^2}}\)</span></div>
+      <div class="t-row"><span class="t-num">16</span><span class="t-left">\((\operatorname{arctg} x)'\)</span><span class="t-arr">→</span><span class="t-right">\(\dfrac{1}{1+x^2}\)</span></div>
+      <div class="t-row"><span class="t-num">17</span><span class="t-left">\((\operatorname{arcctg} x)'\)</span><span class="t-arr">→</span><span class="t-right">\(-\dfrac{1}{1+x^2}\)</span></div>
+    </div>
+
+    <div class="table-col">
+      <div class="table-col-head tch-purple">Складені, \(u=u(x)\)</div>
+      <div class="t-row"><span class="t-num">14a</span><span class="t-left">\((\arcsin u)'\)</span><span class="t-arr">→</span><span class="t-right">\(\dfrac{u'}{\sqrt{1-u^2}}\)</span></div>
+      <div class="t-row"><span class="t-num">15a</span><span class="t-left">\((\arccos u)'\)</span><span class="t-arr">→</span><span class="t-right">\(-\dfrac{u'}{\sqrt{1-u^2}}\)</span></div>
+      <div class="t-row"><span class="t-num">16a</span><span class="t-left">\((\operatorname{arctg} u)'\)</span><span class="t-arr">→</span><span class="t-right">\(\dfrac{u'}{1+u^2}\)</span></div>
+      <div class="t-row"><span class="t-num">17a</span><span class="t-left">\((\operatorname{arcctg} u)'\)</span><span class="t-arr">→</span><span class="t-right">\(-\dfrac{u'}{1+u^2}\)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ §8 ЗВЕДЕНА ТАБЛИЦЯ СКЛАДЕНИХ ══ -->
+<div>
+  <div class="sec-label">§8 · Зведена таблиця складених функцій · Composite Functions Summary</div>
+  <div class="card">
+    <h2>Всі похідні складених функцій \(u = u(x)\)</h2>
+    <p style="margin-bottom:18px;">Тут зібрані всі формули для складених функцій \(f(u(x))\), де \(u'= \dfrac{du}{dx}\). Кожна — це <strong>chain rule</strong> у дії.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Функція</th>
+          <th>Похідна складеної</th>
+          <th>Тип</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>\((u^n)'\)</td><td>\(n\,u^{n-1}\cdot u'\)</td><td class="desc">степінь</td></tr>
+        <tr><td>\((\sqrt{u})'\)</td><td>\(\dfrac{u'}{2\sqrt{u}}\)</td><td class="desc">корінь</td></tr>
+        <tr><td>\(\left(\dfrac{1}{u}\right)'\)</td><td>\(-\dfrac{u'}{u^2}\)</td><td class="desc">обернена</td></tr>
+        <tr><td>\((e^u)'\)</td><td>\(e^u\cdot u'\)</td><td class="desc">експонента</td></tr>
+        <tr><td>\((a^u)'\)</td><td>\(a^u\ln a\cdot u'\)</td><td class="desc">показникова</td></tr>
+        <tr><td>\((\ln u)'\)</td><td>\(\dfrac{u'}{u}\)</td><td class="desc">логарифм</td></tr>
+        <tr><td>\((\log_a u)'\)</td><td>\(\dfrac{u'}{u\ln a}\)</td><td class="desc">логарифм за основою a</td></tr>
+        <tr><td>\((\sin u)'\)</td><td>\(\cos u\cdot u'\)</td><td class="desc">синус</td></tr>
+        <tr><td>\((\cos u)'\)</td><td>\(-\sin u\cdot u'\)</td><td class="desc">косинус</td></tr>
+        <tr><td>\((\operatorname{tg}\, u)' = (\tan u)'\)</td><td>\(\dfrac{u'}{\cos^2 u}\)</td><td class="desc">тангенс</td></tr>
+        <tr><td>\((\operatorname{ctg}\, u)' = (\cot u)'\)</td><td>\(-\dfrac{u'}{\sin^2 u}\)</td><td class="desc">котангенс</td></tr>
+        <tr><td>\((\sec u)'\)</td><td>\(\sec u\tan u\cdot u'\)</td><td class="desc">секанс</td></tr>
+        <tr><td>\((\csc u)' = (\operatorname{cosec}\, u)'\)</td><td>\(-\csc u\cot u\cdot u'\)</td><td class="desc">косеканс</td></tr>
+        <tr><td>\((\arcsin u)'\)</td><td>\(\dfrac{u'}{\sqrt{1-u^2}}\)</td><td class="desc">арксинус</td></tr>
+        <tr><td>\((\arccos u)'\)</td><td>\(-\dfrac{u'}{\sqrt{1-u^2}}\)</td><td class="desc">арккосинус</td></tr>
+        <tr><td>\((\operatorname{arctg}\, u)'\)</td><td>\(\dfrac{u'}{1+u^2}\)</td><td class="desc">арктангенс</td></tr>
+        <tr><td>\((\operatorname{arcctg}\, u)'\)</td><td>\(-\dfrac{u'}{1+u^2}\)</td><td class="desc">арккотангенс</td></tr>
+      </tbody>
+    </table>
+
+    <div class="id-card" style="margin-top:16px; margin-bottom:0;">
+      <div class="id-head">
+        <div class="id-title">Пам'ятка · Reminder</div>
+        <span class="pill pill-pink">chain rule</span>
+      </div>
+      <p style="font-size:0.88rem;">Для кожної формули вище: <strong>спочатку диференціюємо зовнішню функцію</strong> (залишаючи \(u\) як аргумент), потім <strong>множимо на \(u'\)</strong>. Це і є правило ланцюжка.</p>
+      <div class="id-formula-row">\(\bigl[f(u(x))\bigr]' = \underbrace{f'(u)}_{\text{зовнішня}} \cdot \underbrace{u'}_{\text{внутрішня}}\)</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ §9 ПРИКЛАДИ ══ -->
+<div>
+  <div class="sec-label">§9 · Розібрані приклади · Worked Examples</div>
+
+  <!-- Ex 1 -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 1 · Правило ланцюжка — степінь</div></div>
+      <div class="example-eq-badge">\(y = 4(5x^3+2)^6\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">Зовнішня: \(u^6\), внутрішня: \(v=5x^3+2\)</span><span class="step-comment">визначаємо структуру</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(u'=24v^5,\quad v'=15x^2\)</span><span class="step-comment">диференціюємо кожну</span></div>
+      <div class="step-row"><span class="step-n">③</span><span class="step-formula">\(y'=24(5x^3+2)^5\cdot 15x^2\)</span><span class="step-comment">chain rule</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(y' = 360x^2(5x^3+2)^5\)</span><span class="step-comment">спрощуємо</span></div>
+    </div>
+  </div>
+
+  <!-- Ex 2 -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 2 · Корінь від функції</div></div>
+      <div class="example-eq-badge">\(y = \sqrt{9x-4}\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(y=(9x-4)^{1/2}\), зовнішня: \(\square^{1/2}\), внутрішня: \(9x-4\)</span><span class="step-comment">записуємо як степінь</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(y'=\tfrac{1}{2}(9x-4)^{-1/2}\cdot 9 = \dfrac{9}{2\sqrt{9x-4}}\)</span><span class="step-comment">chain rule</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(y' = \dfrac{9}{2\sqrt{9x-4}}\)</span></div>
+    </div>
+  </div>
+
+  <!-- Ex 3 -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 3 · Логарифм від тригонометрії</div></div>
+      <div class="example-eq-badge">\(y = \ln(\cos x)\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">Зовнішня: \(\ln(\square)\), внутрішня: \(\cos x\)</span><span class="step-comment">шаблон \(\ln(g(x))\)</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(y'=\dfrac{1}{\cos x}\cdot(-\sin x)\)</span><span class="step-comment">\((\ln\square)'=1/\square\), \((\cos x)'=-\sin x\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(y' = -\dfrac{\sin x}{\cos x} = -\tan x\)</span><span class="step-comment">спрощуємо</span></div>
+    </div>
+  </div>
+
+  <!-- Ex 4 -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 4 · Правило добутку</div></div>
+      <div class="example-eq-badge">\(y = x^2 e^{3x}\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(u=x^2,\quad v=e^{3x}\)</span><span class="step-comment">виділяємо множники</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(u'=2x,\quad v'=3e^{3x}\)</span><span class="step-comment">диференціюємо кожен</span></div>
+      <div class="step-row"><span class="step-n">③</span><span class="step-formula">\(y'=u'v+uv'=2x\cdot e^{3x}+x^2\cdot 3e^{3x}\)</span><span class="step-comment">product rule</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(y' = e^{3x}(2x+3x^2) = xe^{3x}(2+3x)\)</span><span class="step-comment">виносимо спільний множник</span></div>
+    </div>
+  </div>
+
+  <!-- Ex 5 -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 5 · Правило частки</div></div>
+      <div class="example-eq-badge">\(y = \dfrac{\sin x}{x^2}\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(u=\sin x,\quad v=x^2\)</span><span class="step-comment">чисельник і знаменник</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(u'=\cos x,\quad v'=2x\)</span></div>
+      <div class="step-row"><span class="step-n">③</span><span class="step-formula">\(y'=\dfrac{u'v-uv'}{v^2}=\dfrac{\cos x\cdot x^2-\sin x\cdot 2x}{x^4}\)</span><span class="step-comment">quotient rule</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(y' = \dfrac{x\cos x - 2\sin x}{x^3}\)</span><span class="step-comment">ділимо на x</span></div>
+    </div>
+  </div>
+
+  <!-- ── RECIPROCAL TRIG ── -->
+
+  <!-- Ex 6: cot 4x -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 6 · Reciprocal trig · 2a</div></div>
+      <div class="example-eq-badge">\(y = \cot 4x\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">Шаблон: \((\cot u)'=-\dfrac{u'}{\sin^2 u}\), де \(u=4x\)</span><span class="step-comment">chain rule для ctg</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(u'=(4x)'=4\)</span><span class="step-comment">похідна внутрішньої</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(y' = -\dfrac{4}{\sin^2 4x}\)</span><span class="step-comment">підставляємо</span></div>
+    </div>
+  </div>
+
+  <!-- Ex 7: cosec 4x -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 7 · Reciprocal trig · 2c</div></div>
+      <div class="example-eq-badge">\(y = \csc 4x\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">Шаблон: \((\csc u)'=-\csc u\cot u\cdot u'\), де \(u=4x\)</span><span class="step-comment">chain rule для cosec</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(u'=4\)</span><span class="step-comment">похідна внутрішньої</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(y' = -4\csc 4x\cot 4x\)</span><span class="step-comment">підставляємо</span></div>
+    </div>
+  </div>
+
+  <!-- Ex 8: sec² 3x -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 8 · Reciprocal trig · 2d — подвійний ланцюжок</div></div>
+      <div class="example-eq-badge">\(y = \sec^2 3x\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(y = (\sec 3x)^2\) — зовнішня: \(\square^2\), внутрішня: \(\sec 3x\)</span><span class="step-comment">виділяємо структуру</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">Chain rule перший рівень: \(y'=2\sec 3x\cdot(\sec 3x)'\)</span><span class="step-comment">power rule</span></div>
+      <div class="step-row"><span class="step-n">③</span><span class="step-formula">\((\sec 3x)'=\sec 3x\tan 3x\cdot 3\) — другий рівень ланцюжка</span><span class="step-comment">\((\sec u)'=\sec u\tan u\cdot u'\)</span></div>
+      <div class="step-row"><span class="step-n">④</span><span class="step-formula">\(y'=2\sec 3x\cdot 3\sec 3x\tan 3x\)</span><span class="step-comment">множимо</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(y' = 6\sec^2 3x\tan 3x\)</span><span class="step-comment">спрощуємо</span></div>
+    </div>
+  </div>
+
+  <!-- Ex 9: √(cot x) -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 9 · Reciprocal trig · 3b — корінь</div></div>
+      <div class="example-eq-badge">\(y = \sqrt{\cot x}\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(y=(\cot x)^{1/2}\) — зовнішня: \(\square^{1/2}\), внутрішня: \(\cot x\)</span><span class="step-comment">записуємо як степінь</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\((\cot x)'=-\dfrac{1}{\sin^2 x}\)</span><span class="step-comment">похідна cot x</span></div>
+      <div class="step-row"><span class="step-n">③</span><span class="step-formula">\(y'=\dfrac{1}{2}(\cot x)^{-1/2}\cdot\left(-\dfrac{1}{\sin^2 x}\right)\)</span><span class="step-comment">chain rule</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(y' = -\dfrac{1}{2\sin^2 x\,\sqrt{\cot x}}\)</span><span class="step-comment">відрицательний знак зберігаємо</span></div>
+    </div>
+  </div>
+
+  <!-- Ex 10: sec³ x -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 10 · Reciprocal trig · 3e — степінь</div></div>
+      <div class="example-eq-badge">\(y = \sec^3 x\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(y=(\sec x)^3\) — зовнішня: \(\square^3\), внутрішня: \(\sec x\)</span><span class="step-comment">виділяємо структуру</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\((\sec x)'=\sec x\tan x\)</span><span class="step-comment">похідна sec x</span></div>
+      <div class="step-row"><span class="step-n">③</span><span class="step-formula">\(y'=3(\sec x)^2\cdot\sec x\tan x\)</span><span class="step-comment">chain rule: \(3\square^2\cdot(\sec x)'\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(y' = 3\sec^3 x\tan x\)</span><span class="step-comment">спрощуємо</span></div>
+    </div>
+  </div>
+
+  <!-- ── INVERSE TRIG ── -->
+
+  <!-- Ex 11: arctan(x/2) -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 11 · Inverse trig · 9b</div></div>
+      <div class="example-eq-badge">\(y = \arctan\!\left(\dfrac{x}{2}\right)\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">Шаблон: \((\arctan u)'=\dfrac{u'}{1+u^2}\), де \(u=\dfrac{x}{2}\)</span><span class="step-comment">inverse trig chain rule</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(u'=\dfrac{1}{2}\)</span><span class="step-comment">похідна \(\tfrac{x}{2}\)</span></div>
+      <div class="step-row"><span class="step-n">③</span><span class="step-formula">\(y'=\dfrac{\tfrac{1}{2}}{1+\left(\tfrac{x}{2}\right)^2}=\dfrac{\tfrac{1}{2}}{1+\tfrac{x^2}{4}}\)</span><span class="step-comment">підставляємо</span></div>
+      <div class="step-row"><span class="step-n">④</span><span class="step-formula">\(=\dfrac{\tfrac{1}{2}}{\tfrac{4+x^2}{4}}=\dfrac{1}{2}\cdot\dfrac{4}{4+x^2}\)</span><span class="step-comment">спільний знаменник</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(y' = \dfrac{2}{4+x^2}\)</span><span class="step-comment">спрощуємо</span></div>
+    </div>
+  </div>
+
+  <!-- Ex 12: arcsin 3x -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 12 · Inverse trig · 9c</div></div>
+      <div class="example-eq-badge">\(y = \arcsin 3x\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">Шаблон: \((\arcsin u)'=\dfrac{u'}{\sqrt{1-u^2}}\), де \(u=3x\)</span><span class="step-comment">inverse trig chain rule</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(u'=3\)</span><span class="step-comment">похідна \(3x\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(y' = \dfrac{3}{\sqrt{1-(3x)^2}} = \dfrac{3}{\sqrt{1-9x^2}}\)</span><span class="step-comment">підставляємо</span></div>
+    </div>
+  </div>
+
+  <!-- Ex 13: arccos x² -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 13 · Inverse trig · 9h</div></div>
+      <div class="example-eq-badge">\(y = \arccos x^2\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">Шаблон: \((\arccos u)'=-\dfrac{u'}{\sqrt{1-u^2}}\), де \(u=x^2\)</span><span class="step-comment">inverse trig chain rule</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(u'=2x\)</span><span class="step-comment">похідна \(x^2\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(y' = -\dfrac{2x}{\sqrt{1-x^4}}\)</span><span class="step-comment">підставляємо \((x^2)^2=x^4\)</span></div>
+    </div>
+  </div>
+
+  <!-- Ex 14: e^(arctan x) -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 14 · Inverse trig + exp · 9l — подвійний ланцюжок</div></div>
+      <div class="example-eq-badge">\(y = e^{\arctan x}\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">Зовнішня: \(e^{\square}\), внутрішня: \(u=\arctan x\)</span><span class="step-comment">виділяємо структуру</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\((e^u)'=e^u\cdot u'\)</span><span class="step-comment">шаблон exp</span></div>
+      <div class="step-row"><span class="step-n">③</span><span class="step-formula">\(u'=(\arctan x)'=\dfrac{1}{1+x^2}\)</span><span class="step-comment">похідна arctan x</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(y' = e^{\arctan x}\cdot\dfrac{1}{1+x^2} = \dfrac{e^{\arctan x}}{1+x^2}\)</span><span class="step-comment">підставляємо</span></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>Таблиця похідних функцій · Derivatives Reference · Математичний аналіз · Calculus</footer>
+
+</div><!-- .page -->
+</body>
+</html>
