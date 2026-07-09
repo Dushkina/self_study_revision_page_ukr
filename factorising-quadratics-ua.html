@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Розкладання на множники · Factorising Quadratics</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false});">
+</script>
+
+<style>
+:root{
+  --bg:#f7f4f0;--card:#ffffff;
+  --pink:#e84fa3;--purple:#7c5cbf;
+  --pink-lt:#fde8f4;--pink-mid:#f9c9e8;--purple-lt:#ede8f8;
+  --ink:#1a1228;--muted:#7a6e82;--border:#e5dff0;--radius:20px;
+  --green:#059669;--green-lt:#d1fae5;--green-bd:#a7f3d0;
+  --amber:#b45309;--amber-lt:#fef3c7;--amber-bd:#fde68a;
+  --red:#dc2626;--red-lt:#fee2e2;--red-bd:#fca5a5;
+  --blue:#0369a1;--blue-lt:#e0f2fe;--blue-bd:#bae6fd;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:16px;line-height:1.7;padding:48px 24px 80px;}
+.page{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:28px;}
+.divider{height:2px;background:linear-gradient(90deg,var(--pink),var(--purple));opacity:.22;border-radius:2px;}
+
+/* HERO */
+.hero{background:var(--ink);border-radius:var(--radius);padding:52px 44px 48px;position:relative;overflow:hidden;}
+.hero-blob{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;}
+.hero-blob-1{width:320px;height:320px;background:rgba(232,79,163,.28);top:-80px;right:-60px;}
+.hero-blob-2{width:240px;height:240px;background:rgba(124,92,191,.22);bottom:-60px;left:40px;}
+.hero-blob-3{width:160px;height:160px;background:rgba(5,150,105,.14);top:20px;left:220px;}
+.hero-badge{position:absolute;top:24px;right:24px;background:var(--pink);color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:5px 14px;border-radius:99px;}
+.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--pink);margin-bottom:14px;}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4.6vw,3.1rem);color:#fff;line-height:1.12;margin-bottom:14px;}
+.hero-sub{color:rgba(255,255,255,.55);font-size:.95rem;max-width:540px;margin-bottom:22px;}
+.hero-formula{background:rgba(255,255,255,.07);border:1px solid rgba(232,79,163,.35);border-radius:14px;padding:14px 22px;text-align:center;}
+.hero-formula-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(232,79,163,.8);margin-bottom:8px;}
+.hero-formula .katex{font-size:1.1rem;color:#fff;}
+
+/* SEC LABEL */
+.sec-label{display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;}
+.sec-label::before{content:'';display:block;width:24px;height:3px;background:var(--pink);border-radius:2px;flex-shrink:0;}
+
+/* CARDS */
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px 32px;}
+h2{font-family:'DM Serif Display',serif;font-size:1.55rem;color:var(--ink);margin-bottom:16px;line-height:1.25;}
+p{color:var(--muted);font-size:.93rem;}p strong{color:var(--ink);}
+
+/* PILLS */
+.pill{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.63rem;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;}
+.pill-pink  {background:var(--pink-lt);color:var(--pink);border:1px solid var(--pink-mid);}
+.pill-purple{background:var(--purple-lt);color:var(--purple);border:1px solid #d4c8ef;}
+.pill-green {background:var(--green-lt);color:var(--green);border:1px solid var(--green-bd);}
+.pill-amber {background:var(--amber-lt);color:var(--amber);border:1px solid var(--amber-bd);}
+.pill-blue  {background:var(--blue-lt);color:var(--blue);border:1px solid var(--blue-bd);}
+
+/* KEY RULE */
+.key-rule{background:linear-gradient(135deg,var(--pink-lt),var(--purple-lt));border:1.5px solid var(--border);border-radius:var(--radius);padding:22px 28px;}
+.key-rule-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--pink);margin-bottom:10px;}
+.key-rule p{color:var(--ink);font-size:.93rem;margin-bottom:8px;}
+.key-rule p:last-child{margin-bottom:0;}
+.key-rule .hl{color:var(--pink);font-weight:700;}
+.key-rule .hlp{color:var(--purple);font-weight:700;}
+.key-rule .hlg{color:var(--green);font-weight:700;}
+.key-rule .hla{color:var(--amber);font-weight:700;}
+
+/* ID CARD */
+.id-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px;}
+.id-card:last-child{margin-bottom:0;}
+.id-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;flex-wrap:wrap;}
+.id-title{font-weight:600;font-size:.95rem;color:var(--ink);}
+.id-formula-row{font-family:'JetBrains Mono',monospace;font-size:.88rem;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 14px;margin-top:6px;}
+.id-formula-row+.id-formula-row{margin-top:6px;}
+
+/* MIND MAP — tree */
+.mind-map{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px 20px 24px;overflow-x:auto;}
+.mm-root{display:flex;flex-direction:column;align-items:center;min-width:620px;}
+.mm-center{background:var(--ink);color:#fff;border-radius:14px;padding:13px 26px;font-family:'DM Serif Display',serif;font-size:1.05rem;text-align:center;box-shadow:0 4px 20px rgba(26,18,40,.18);z-index:2;}
+.mm-center sub-label{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--pink);letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px;}
+.mm-branches{display:flex;width:100%;align-items:flex-start;margin-top:0;}
+.mm-branch{flex:1;display:flex;flex-direction:column;align-items:center;padding:0 6px;}
+.mm-connector{width:2px;background:var(--border);height:28px;margin:0 auto;}
+.mm-branch-node{border-radius:12px;padding:12px 14px;font-weight:700;font-size:.88rem;text-align:center;width:100%;max-width:240px;}
+.mm-branch-node.pink-n{background:var(--pink-lt);border:2px solid var(--pink);color:var(--pink);}
+.mm-branch-node.purple-n{background:var(--purple-lt);border:2px solid var(--purple);color:var(--purple);}
+.mm-branch-node.green-n{background:var(--green-lt);border:2px solid var(--green);color:var(--green);}
+.mm-branch-node.amber-n{background:var(--amber-lt);border:2px solid var(--amber);color:var(--amber);}
+.mm-leaves{display:flex;flex-direction:column;gap:7px;width:100%;max-width:240px;margin-top:8px;}
+.mm-leaf{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;}
+.mm-leaf.pink-leaf{border-left:3px solid var(--pink);}
+.mm-leaf.purple-leaf{border-left:3px solid var(--purple);}
+.mm-leaf.green-leaf{border-left:3px solid var(--green);}
+.mm-leaf.amber-leaf{border-left:3px solid var(--amber);}
+.mm-leaf-title{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.mm-leaf-desc{font-size:.76rem;color:var(--muted);line-height:1.4;margin-bottom:4px;}
+.mm-leaf-ex{font-family:'JetBrains Mono',monospace;font-size:.72rem;background:var(--purple-lt);color:var(--purple);border-radius:6px;padding:3px 8px;display:inline-block;}
+.mm-leaf .katex,.mm-leaf-ex .katex{font-size:.72rem;}
+
+/* ALGO */
+.algo-list{display:flex;flex-direction:column;gap:10px;}
+.algo-step{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:15px 20px;transition:border-color .2s;}
+.algo-step:hover{border-color:var(--pink);}
+.algo-badge{font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:700;color:#fff;background:var(--pink);border-radius:8px;min-width:34px;height:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.algo-badge.purple{background:var(--purple);}
+.algo-badge.green{background:var(--green);}
+.algo-badge.amber{background:var(--amber);}
+.algo-body h4{font-size:.94rem;font-weight:600;color:var(--ink);margin-bottom:3px;}
+.algo-body p{font-size:.83rem;color:var(--muted);}
+.algo-note{display:inline-block;margin-top:5px;background:var(--pink-lt);border:1px solid var(--pink-mid);border-radius:8px;padding:4px 12px;font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--pink);}
+.algo-note.purple{background:var(--purple-lt);border-color:#d4c8ef;color:var(--purple);}
+.algo-note.green{background:var(--green-lt);border-color:var(--green-bd);color:var(--green);}
+.algo-note.amber{background:var(--amber-lt);border-color:var(--amber-bd);color:var(--amber);}
+
+/* EXAMPLE CARD */
+.example-card{border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:14px;}
+.example-card:last-child{margin-bottom:0;}
+.example-header{background:linear-gradient(135deg,#1e0e35,#3a1f6e);padding:16px 26px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.example-header-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);}
+.example-eq-badge{font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:600;background:rgba(232,79,163,.22);border:1px solid rgba(232,79,163,.4);color:#f9a8d4;padding:5px 14px;border-radius:99px;}
+.example-body{background:var(--card);}
+.step-row{display:flex;align-items:baseline;gap:14px;padding:10px 26px;border-bottom:1px solid var(--border);transition:background .15s;}
+.step-row:last-child{border-bottom:none;}
+.step-row:hover{background:var(--bg);}
+.step-n{font-family:'JetBrains Mono',monospace;font-size:.64rem;color:var(--muted);min-width:20px;flex-shrink:0;}
+.step-formula{flex:1;font-size:.88rem;color:var(--ink);}
+.step-formula .katex{font-size:.9rem;}
+.step-comment{font-size:.74rem;color:var(--muted);font-style:italic;flex-shrink:0;max-width:240px;text-align:right;}
+.answer-row{background:var(--pink-lt)!important;border-top:1.5px solid var(--pink-mid)!important;}
+.answer-row .step-formula{color:var(--pink);font-weight:700;}
+.answer-row .step-comment{color:var(--pink);}
+
+/* CASE GRID */
+.case-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:14px;}
+.case-col{border-radius:14px;overflow:hidden;border:1.5px solid var(--border);}
+.case-head{padding:12px 18px;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#fff;}
+.ch-pink{background:var(--pink);}
+.ch-green{background:var(--green);}
+.ch-purple{background:var(--purple);}
+.ch-amber{background:var(--amber);}
+.case-body{background:var(--card);padding:14px 18px;}
+.case-body p{font-size:.84rem;color:var(--muted);margin-bottom:6px;}
+.case-body p:last-child{margin-bottom:0;}
+.case-body strong{color:var(--ink);}
+.case-formula{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;margin:8px 0;text-align:center;}
+
+/* HW */
+.hw-group-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:20px 0 10px;}
+.hw-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.hw-item{display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:11px 14px;cursor:pointer;transition:border-color .2s,background .2s;-webkit-user-select:none;user-select:none;}
+.hw-item:hover{border-color:var(--pink);}
+.hw-item.done{background:var(--pink-lt);border-color:var(--pink-mid);}
+.hw-num{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--muted);min-width:20px;flex-shrink:0;}
+.hw-eq{font-size:.88rem;color:var(--ink);flex:1;line-height:1.4;}
+.hw-lv{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;padding:2px 8px;border-radius:99px;flex-shrink:0;}
+.lv1{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bd);}
+.lv2{background:var(--pink-lt);color:var(--pink);border:1px solid var(--pink-mid);}
+.lv3{background:var(--amber-lt);color:var(--amber);border:1px solid var(--amber-bd);}
+.lv4{background:var(--blue-lt);color:var(--blue);border:1px solid var(--blue-bd);}
+.hw-check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.68rem;transition:all .2s;color:transparent;flex-shrink:0;}
+.hw-item.done .hw-check{background:var(--pink);border-color:var(--pink);color:#fff;}
+
+/* PROGRESS */
+.progress-wrap{background:var(--purple-lt);border-radius:99px;height:8px;overflow:hidden;margin-bottom:8px;}
+.progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--pink),var(--purple));transition:width .4s;width:0%;}
+.progress-text{font-family:'JetBrains Mono',monospace;font-size:.73rem;color:var(--muted);margin-bottom:4px;}
+
+/* QUIZ */
+.quiz-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:12px;}
+.quiz-card:last-child{margin-bottom:0;}
+.quiz-q{font-size:.97rem;font-weight:600;color:var(--ink);margin-bottom:12px;line-height:1.5;}
+.quiz-q .katex{font-size:.97rem;}
+.quiz-opts{display:flex;gap:8px;flex-wrap:wrap;}
+.quiz-opt{padding:8px 16px;border-radius:99px;border:1.5px solid var(--border);background:var(--bg);font-family:'Space Grotesk',sans-serif;font-size:.85rem;font-weight:600;color:var(--ink);cursor:pointer;transition:all .15s;-webkit-user-select:none;user-select:none;}
+.quiz-opt:hover:not(:disabled){border-color:var(--pink);background:var(--pink-lt);color:var(--pink);}
+.quiz-opt .katex{font-size:.85rem;}
+.quiz-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green);}
+.quiz-opt.wrong  {background:var(--red-lt);border-color:var(--red);color:var(--red);}
+.quiz-opt.reveal {background:var(--green-lt);border-color:var(--green);color:var(--green);border-style:dashed;}
+.quiz-opt:disabled{cursor:default;}
+.quiz-fb{font-family:'JetBrains Mono',monospace;font-size:.74rem;border-radius:8px;padding:6px 12px;margin-top:8px;display:none;}
+.quiz-fb.show{display:block;}
+.quiz-fb.ok{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bd);}
+.quiz-fb.err{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bd);}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.score-badge{font-family:'JetBrains Mono',monospace;font-size:.76rem;padding:4px 14px;border-radius:99px;background:var(--purple-lt);color:var(--purple);border:1px solid #d4c8ef;font-weight:700;}
+.restart-btn{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border:none;border-radius:99px;padding:10px 24px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;margin-top:12px;transition:opacity .2s;display:none;}
+.restart-btn:hover{opacity:.85;}
+
+footer{text-align:center;font-family:'JetBrains Mono',monospace;font-size:.73rem;color:var(--muted);padding-top:12px;}
+
+@media(max-width:640px){
+  body{padding:24px 14px 60px;}
+  .hero{padding:36px 20px 32px;}
+  .card{padding:20px 16px;}
+  .hw-grid,.case-grid{grid-template-columns:1fr;}
+  .step-comment{display:none;}
+  .example-header{flex-direction:column;align-items:flex-start;}
+  .mm-root{min-width:0;}
+  .mm-branches{flex-direction:column;gap:14px;}
+  .mm-branch{max-width:100%;}
+  .mm-branch-node,.mm-leaves{max-width:100%;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-blob hero-blob-3"></div>
+  <div class="hero-badge">Algebra · Алгебра</div>
+  <div class="hero-eyebrow">Self-Study Revision · Самостійне повторення</div>
+  <h1>Розкладання на<br>множники · Factorising</h1>
+  <p class="hero-sub">Чотири випадки розкладання квадратного тричлена: повний, без вільного члена, без середнього члена та різниця квадратів. Два методи залежно від коефіцієнта \(a\).</p>
+  <div class="hero-formula">
+    <div class="hero-formula-label">Загальна форма · General form</div>
+    \( ax^2 + bx + c = (\ldots)(\ldots) \)
+  </div>
+</div>
+
+<!-- ══ §1 MIND MAP ══ -->
+<div>
+  <div class="sec-label">§1 · Карта рішень · Decision Map</div>
+  <div class="mind-map">
+    <div class="mm-root">
+      <div class="mm-center">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--pink);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;">з чого починати · start here</div>
+        \(ax^2+bx+c\) — визначити тип
+      </div>
+      <div style="width:2px;height:26px;background:var(--border);margin:0 auto;"></div>
+      <div class="mm-branches">
+
+        <!-- BRANCH 1 -->
+        <div class="mm-branch">
+          <div class="mm-branch-node pink-n">Загальний випадок<br>\(a,b,c \neq 0\)</div>
+          <div class="mm-leaves">
+            <div class="mm-leaf pink-leaf">
+              <div class="mm-leaf-title">Якщо \(a=1\) · If \(a=1\)</div>
+              <div class="mm-leaf-desc">Метод двох чисел: знайти \(p,q\): \(p+q=b\) і \(p\cdot q=c\)</div>
+              <span class="mm-leaf-ex">\(x^2+5x+6=(x+2)(x+3)\)</span>
+            </div>
+            <div class="mm-leaf pink-leaf">
+              <div class="mm-leaf-title">Якщо \(a\neq 1\) · If \(a\neq 1\)</div>
+              <div class="mm-leaf-desc">AC-метод: знайти \(p,q\): \(p+q=b\) і \(p\cdot q=ac\), потім розбити середній член</div>
+              <span class="mm-leaf-ex">\(2x^2+5x+3=(2x+3)(x+1)\)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- BRANCH 2 -->
+        <div class="mm-branch">
+          <div class="mm-branch-node green-n">\(c=0\)<br>Немає вільного члена</div>
+          <div class="mm-leaves">
+            <div class="mm-leaf green-leaf">
+              <div class="mm-leaf-title">Винести \(x\) за дужки</div>
+              <div class="mm-leaf-desc">Завжди можна винести \(x\) (або \(ax\)) як спільний множник</div>
+              <span class="mm-leaf-ex">\(ax^2+bx=x(ax+b)\)</span>
+            </div>
+            <div class="mm-leaf green-leaf">
+              <div class="mm-leaf-title">Приклад · Example</div>
+              <div class="mm-leaf-desc">\(x^2+7x=x(x+7)\) та \(3x^2-6x=3x(x-2)\)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BRANCH 3a: b=0, + -->
+        <div class="mm-branch">
+          <div class="mm-branch-node amber-n">\(b=0,\;c>0\)<br>\(ax^2+c\)</div>
+          <div class="mm-leaves">
+            <div class="mm-leaf amber-leaf">
+              <div class="mm-leaf-title">Неможливо розкласти</div>
+              <div class="mm-leaf-desc">Сума квадратів не розкладається на дійсні лінійні множники</div>
+              <span class="mm-leaf-ex">\(x^2+4\) — prime</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- BRANCH 3b: b=0, - -->
+        <div class="mm-branch">
+          <div class="mm-branch-node purple-n">\(b=0,\;c<0\)<br>\(ax^2-c\)</div>
+          <div class="mm-leaves">
+            <div class="mm-leaf purple-leaf">
+              <div class="mm-leaf-title">Різниця квадратів · DoS</div>
+              <div class="mm-leaf-desc">Якщо вираз є різницею двох квадратів: \(A^2-B^2=(A+B)(A-B)\)</div>
+              <span class="mm-leaf-ex">\(x^2-9=(x+3)(x-3)\)</span>
+            </div>
+            <div class="mm-leaf purple-leaf">
+              <div class="mm-leaf-title">Формула · Formula</div>
+              <div class="mm-leaf-desc">\(a^2x^2-c=(ax+\sqrt{c})(ax-\sqrt{c})\), якщо \(c\) є повним квадратом</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ §2 ВИПАДОК a=1 ══ -->
+<div>
+  <div class="sec-label">§2 · Коефіцієнт \(a=1\) · When \(a=1\)</div>
+  <div class="key-rule">
+    <div class="key-rule-title">⚡ Метод двох чисел · Two-numbers method</div>
+    <p>Для \(x^2+bx+c\) знайти <span class="hl">два числа \(p\) і \(q\)</span> такі, що:</p>
+    <p>\(\hlp{p+q=b}\) (сума = коефіцієнт при \(x\)) &nbsp;·&nbsp; \(\hl{p\cdot q=c}\) (добуток = вільний член)</p>
+    <p>Тоді: \(x^2+bx+c=(x+p)(x+q)\)</p>
+  </div>
+  <div class="card" style="margin-top:14px;">
+    <h2>Алгоритм · Algorithm (\(a=1\))</h2>
+    <div class="algo-list">
+      <div class="algo-step"><div class="algo-badge">01</div><div class="algo-body"><h4>Визначити \(b\) і \(c\) · Identify \(b\) and \(c\)</h4><p>Записати коефіцієнти: перевірити знаки.</p><span class="algo-note">\(x^2+9x+14 \Rightarrow b=9,\;c=14\)</span></div></div>
+      <div class="algo-step"><div class="algo-badge">02</div><div class="algo-body"><h4>Пари дільників \(c\) · Factor pairs of \(c\)</h4><p>Перерахувати пари чисел з добутком \(c\) (враховувати від'ємні!).</p><span class="algo-note">\(14: (1,14),(2,7),(-1,-14),(-2,-7)\)</span></div></div>
+      <div class="algo-step"><div class="algo-badge purple">03</div><div class="algo-body"><h4>Вибрати пару з сумою \(b\) · Pick pair with sum \(=b\)</h4><span class="algo-note purple">\(2+7=9=b \checkmark \Rightarrow (x+2)(x+7)\)</span></div></div>
+      <div class="algo-step"><div class="algo-badge green">04</div><div class="algo-body"><h4>Перевірити розкриттям · Check by expanding</h4><p>\((x+2)(x+7)=x^2+9x+14 \checkmark\)</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Examples a=1 -->
+<div>
+  <div class="sec-label">Приклади · Examples (\(a=1\))</div>
+  <div class="example-card">
+    <div class="example-header"><div><div class="example-header-label">Приклад 1</div></div><div class="example-eq-badge">\(x^2+7x+12\)</div></div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(b=7,\;c=12\): пари дільників 12 → \((3,4)\): \(3+4=7\checkmark\)</span><span class="step-comment">шукаємо пару</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(x^2+7x+12=(x+3)(x+4)\)</span></div>
+    </div>
+  </div>
+  <div class="example-card">
+    <div class="example-header"><div><div class="example-header-label">Приклад 2 — від'ємний \(b\)</div></div><div class="example-eq-badge">\(x^2-5x+6\)</div></div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(b=-5,\;c=6\): \(c>0, b<0\) → обидва від'ємні</span><span class="step-comment">both negative</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\((-2)+(-3)=-5\checkmark,\;(-2)\cdot(-3)=6\checkmark\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(x^2-5x+6=(x-2)(x-3)\)</span></div>
+    </div>
+  </div>
+  <div class="example-card">
+    <div class="example-header"><div><div class="example-header-label">Приклад 3 — від'ємний \(c\)</div></div><div class="example-eq-badge">\(x^2+2x-15\)</div></div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(c<0\) → числа різних знаків: \((5,-3)\): \(5+(-3)=2\checkmark\)</span><span class="step-comment">opposite signs</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(x^2+2x-15=(x+5)(x-3)\)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ §3 ВИПАДОК a≠1 ══ -->
+<div>
+  <div class="sec-label">§3 · Коефіцієнт \(a\neq 1\) · When \(a\neq 1\) — AC-метод</div>
+  <div class="key-rule">
+    <div class="key-rule-title">⚡ AC-метод · Splitting the Middle Term</div>
+    <p>Для \(ax^2+bx+c\) знайти <span class="hl">два числа \(p\) і \(q\)</span> такі, що:</p>
+    <p><span class="hlp">\(p+q=b\)</span> &nbsp;·&nbsp; <span class="hlg">\(p\cdot q=a\cdot c\)</span> &nbsp;(добуток = \(a\cdot c\), <em>не просто \(c\)!</em>)</p>
+    <p>Потім розбити \(bx\) на \(px+qx\) і <span class="hla">винести спільні множники попарно</span>.</p>
+  </div>
+  <div class="card" style="margin-top:14px;">
+    <h2>Алгоритм · Algorithm (\(a\neq 1\))</h2>
+    <div class="algo-list">
+      <div class="algo-step"><div class="algo-badge">01</div><div class="algo-body"><h4>Обчислити \(a\cdot c\) · Multiply \(a\times c\)</h4><span class="algo-note">\(2x^2-x-15: a\cdot c=2\cdot(-15)=-30\)</span></div></div>
+      <div class="algo-step"><div class="algo-badge">02</div><div class="algo-body"><h4>Знайти \(p,q\) з сумою \(b\) · Find \(p,q\) with sum \(=b\)</h4><p>Перебрати дільники \(a\cdot c\).</p><span class="algo-note">\(-30: (5,-6)\to 5+(-6)=-1=b\checkmark\)</span></div></div>
+      <div class="algo-step"><div class="algo-badge purple">03</div><div class="algo-body"><h4>Розбити середній член · Split middle term</h4><span class="algo-note purple">\(2x^2+5x-6x-15\)</span></div></div>
+      <div class="algo-step"><div class="algo-badge green">04</div><div class="algo-body"><h4>Винести попарно · Factorise in pairs</h4><span class="algo-note green">\(x(2x+5)-3(2x+5)=(2x+5)(x-3)\)</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Examples a≠1 -->
+<div>
+  <div class="sec-label">Приклади · Examples (\(a\neq 1\))</div>
+  <div class="example-card">
+    <div class="example-header"><div><div class="example-header-label">Приклад 4 — AC-метод</div></div><div class="example-eq-badge">\(2x^2+5x+3\)</div></div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(a\cdot c=2\cdot 3=6\); пара \((2,3)\): \(2+3=5=b\checkmark\)</span><span class="step-comment">ac-метод</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(2x^2+2x+3x+3\)</span><span class="step-comment">split middle term</span></div>
+      <div class="step-row"><span class="step-n">③</span><span class="step-formula">\(2x(x+1)+3(x+1)\)</span><span class="step-comment">factorise in pairs</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(2x^2+5x+3=(2x+3)(x+1)\)</span></div>
+    </div>
+  </div>
+  <div class="example-card">
+    <div class="example-header"><div><div class="example-header-label">Приклад 5 — від'ємний \(c\)</div></div><div class="example-eq-badge">\(3x^2-5x-2\)</div></div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(a\cdot c=3\cdot(-2)=-6\); пара \((1,-6)\): \(1+(-6)=-5=b\checkmark\)</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(3x^2+x-6x-2=x(3x+1)-2(3x+1)\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(3x^2-5x-2=(3x+1)(x-2)\)</span></div>
+    </div>
+  </div>
+  <div class="example-card">
+    <div class="example-header"><div><div class="example-header-label">Приклад 6 — спочатку НСД</div></div><div class="example-eq-badge">\(6x^2-27x+30\)</div></div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">⚠</span><span class="step-formula">НСД = 3 → виносимо спочатку</span><span class="step-comment">always check GCF first!</span></div>
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(3(2x^2-9x+10)\)</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">AC: \(2\cdot10=20\); пара \((-4,-5)\): \(-4+(-5)=-9\checkmark\)</span></div>
+      <div class="step-row"><span class="step-n">③</span><span class="step-formula">\(3(2x^2-4x-5x+10)=3[2x(x-2)-5(x-2)]\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(6x^2-27x+30=3(2x-5)(x-2)\)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ §4 НЕПОВНІ ФОРМИ ══ -->
+<div>
+  <div class="sec-label">§4 · Неповні форми · Incomplete Quadratics</div>
+  <div class="card">
+    <h2>Коли відсутній один з членів?</h2>
+    <p style="margin-bottom:16px;">Квадратний тричлен називається <strong>неповним</strong>, якщо відсутній член \(bx\) або вільний член \(c\).</p>
+    <div class="case-grid">
+
+      <div class="case-col">
+        <div class="case-head ch-green">Випадок: \(c=0\)</div>
+        <div class="case-body">
+          <p><strong>Форма:</strong> \(ax^2+bx\) (немає вільного члена)</p>
+          <p><strong>Дія:</strong> виносимо \(x\) за дужки</p>
+          <div class="case-formula">\(ax^2+bx=x(ax+b)\)</div>
+          <p>✅ \(x^2+7x=x(x+7)\)</p>
+          <p>✅ \(3x^2-6x=3x(x-2)\)</p>
+          <p>✅ \(2x^2+8x=2x(x+4)\)</p>
+        </div>
+      </div>
+
+      <div class="case-col">
+        <div class="case-head ch-purple">Випадок: \(b=0,\;c<0\)</div>
+        <div class="case-body">
+          <p><strong>Форма:</strong> \(ax^2-c\) (різниця квадратів)</p>
+          <p><strong>Формула:</strong> \(A^2-B^2=(A+B)(A-B)\)</p>
+          <div class="case-formula">\(x^2-k^2=(x+k)(x-k)\)</div>
+          <p>✅ \(x^2-9=(x+3)(x-3)\)</p>
+          <p>✅ \(x^2-25=(x+5)(x-5)\)</p>
+          <p>✅ \(4x^2-49=(2x+7)(2x-7)\)</p>
+        </div>
+      </div>
+
+      <div class="case-col">
+        <div class="case-head ch-amber">Випадок: \(b=0,\;c>0\)</div>
+        <div class="case-body">
+          <p><strong>Форма:</strong> \(ax^2+c\) (сума квадратів)</p>
+          <p><strong>Дія:</strong> не розкладається на дійсні множники!</p>
+          <div class="case-formula">\(x^2+k^2\) — prime over ℝ</div>
+          <p>❌ \(x^2+4\) — не розкладається</p>
+          <p>❌ \(x^2+9\) — не розкладається</p>
+          <p style="color:var(--amber);">⚠ Не плутати з різницею квадратів!</p>
+        </div>
+      </div>
+
+      <div class="case-col">
+        <div class="case-head ch-pink">Підказка за знаками · Sign guide</div>
+        <div class="case-body">
+          <p>\(b>0,\;c>0\) → \((x+p)(x+q)\), \(p,q>0\)</p>
+          <p>\(b<0,\;c>0\) → \((x-p)(x-q)\), \(p,q>0\)</p>
+          <p>\(c<0\) → числа різних знаків</p>
+          <div class="case-formula">\(|p|>|q|\), якщо \(|b|\) великий</div>
+          <p>✅ \(x^2-3x-10=(x-5)(x+2)\)</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Extra examples incomplete -->
+<div>
+  <div class="sec-label">Приклади неповних форм · Incomplete Quadratic Examples</div>
+  <div class="example-card">
+    <div class="example-header"><div><div class="example-header-label">Приклад 7 · \(c=0\)</div></div><div class="example-eq-badge">\(x^2+7x\)</div></div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">Немає вільного члена → виносимо \(x\)</span><span class="step-comment">no constant term</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(x^2+7x=x(x+7)\)</span></div>
+    </div>
+  </div>
+  <div class="example-card">
+    <div class="example-header"><div><div class="example-header-label">Приклад 8 · Різниця квадратів</div></div><div class="example-eq-badge">\(x^2-16\)</div></div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(b=0,\;c<0\) → різниця квадратів: \(x^2-4^2\)</span><span class="step-comment">difference of squares</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(x^2-16=(x+4)(x-4)\)</span></div>
+    </div>
+  </div>
+  <div class="example-card">
+    <div class="example-header"><div><div class="example-header-label">Приклад 9 · Різниця квадратів (\(a\neq 1\))</div></div><div class="example-eq-badge">\(4x^2-49\)</div></div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(4x^2=(2x)^2,\;49=7^2\) → \((2x)^2-7^2\)</span><span class="step-comment">identify squares</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(4x^2-49=(2x+7)(2x-7)\)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ HOMEWORK ══ -->
+<div>
+  <div class="sec-label">Домашнє завдання · Homework</div>
+  <div class="card">
+    <h2>Завдання для відпрацювання</h2>
+    <p style="margin-bottom:16px;">Натисни на завдання, щоб відмітити як виконане. Спочатку визнач тип!</p>
+    <div class="progress-wrap"><div class="progress-fill" id="pBar"></div></div>
+    <div class="progress-text" id="pLabel">0 / 20 виконано</div>
+
+    <div class="hw-group-label">🟢 \(a=1\) — метод двох чисел · Two-numbers method</div>
+    <div class="hw-grid">
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">1.</span><span class="hw-eq">\(x^2+7x+10\)</span><span class="hw-lv lv1">a=1</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">2.</span><span class="hw-eq">\(x^2+10x+21\)</span><span class="hw-lv lv1">a=1</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">3.</span><span class="hw-eq">\(y^2+12y+35\)</span><span class="hw-lv lv1">a=1</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">4.</span><span class="hw-eq">\(a^2-3a-10\)</span><span class="hw-lv lv1">a=1</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">5.</span><span class="hw-eq">\(z^2+z-6\)</span><span class="hw-lv lv1">a=1</span><div class="hw-check">✓</div></div>
+    </div>
+
+    <div class="hw-group-label">🔴 \(a\neq 1\) — AC-метод · AC-method</div>
+    <div class="hw-grid">
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">6.</span><span class="hw-eq">\(2x^2+7x+3\)</span><span class="hw-lv lv2">a≠1</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">7.</span><span class="hw-eq">\(3x^2-5x-2\)</span><span class="hw-lv lv2">a≠1</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">8.</span><span class="hw-eq">\(3x^2+8x+4\)</span><span class="hw-lv lv2">a≠1</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">9.</span><span class="hw-eq">\(2x^2-x-15\)</span><span class="hw-lv lv2">a≠1</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">10.</span><span class="hw-eq">\(6x^2+7x+2\)</span><span class="hw-lv lv2">a≠1</span><div class="hw-check">✓</div></div>
+    </div>
+
+    <div class="hw-group-label">🟡 \(b=0\) — різниця квадратів та сума · DoS & Sum of squares</div>
+    <div class="hw-grid">
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">11.</span><span class="hw-eq">\(x^2-25\)</span><span class="hw-lv lv3">b=0</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">12.</span><span class="hw-eq">\(x^2-36\)</span><span class="hw-lv lv3">b=0</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">13.</span><span class="hw-eq">\(9x^2-4\)</span><span class="hw-lv lv3">b=0</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">14.</span><span class="hw-eq">\(16x^2-1\)</span><span class="hw-lv lv3">b=0</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">15.</span><span class="hw-eq">\(x^2+9\) — неможливо розкласти?</span><span class="hw-lv lv3">b=0</span><div class="hw-check">✓</div></div>
+    </div>
+
+    <div class="hw-group-label">🔵 \(c=0\) — вільного члена немає · No constant term</div>
+    <div class="hw-grid">
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">16.</span><span class="hw-eq">\(x^2+7x\)</span><span class="hw-lv lv4">c=0</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">17.</span><span class="hw-eq">\(3x^2-6x\)</span><span class="hw-lv lv4">c=0</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">18.</span><span class="hw-eq">\(2x^2+8x\)</span><span class="hw-lv lv4">c=0</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">19.</span><span class="hw-eq">\(5x^2-15x\)</span><span class="hw-lv lv4">c=0</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">20.</span><span class="hw-eq">\(4x^2+12x\)</span><span class="hw-lv lv4">c=0</span><div class="hw-check">✓</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ QUIZ ══ -->
+<div>
+  <div class="sec-label">Тест · Quick Quiz — Який метод? · Which method?</div>
+  <div class="card">
+    <h2>5 питань · 5 Questions</h2>
+    <p style="margin-bottom:18px;">Вибери правильний метод або відповідь для кожного виразу.</p>
+    <div class="progress-row">
+      <div>
+        <div class="progress-wrap" style="width:200px;"><div class="progress-fill" id="qBar"></div></div>
+        <div class="progress-text" id="qLabel">0 / 5 відповідей</div>
+      </div>
+      <div class="score-badge" id="qScore">Рахунок: 0</div>
+    </div>
+    <div id="quizWrap"></div>
+    <button class="restart-btn" id="restBtn" onclick="buildQuiz()">Пройти ще раз</button>
+  </div>
+</div>
+
+<footer>Factorising Quadratics · Розкладання на множники · Algebra · Self-Study</footer>
+
+</div><!-- .page -->
+
+<script>
+function tog(el){
+  el.classList.toggle('done');
+  const total=document.querySelectorAll('.hw-item').length;
+  const done=document.querySelectorAll('.hw-item.done').length;
+  document.getElementById('pBar').style.width=Math.round(done/total*100)+'%';
+  document.getElementById('pLabel').textContent=done+' / '+total+' виконано';
+}
+
+// QUIZ — asks which METHOD to use
+const QUIZ=[
+  {
+    q:'Який метод для \\(x^2+8x+15\\)? · Which method for \\(x^2+8x+15\\)?',
+    opts:['AC-метод (split middle term)','Різниця квадратів (DoS)','Метод двох чисел (\\(a=1\\))','Винести \\(x\\) за дужки'],
+    ansIdx:2,
+    hint:'a=1 → метод двох чисел: p+q=8, p·q=15 → (3,5) → (x+3)(x+5)'
+  },
+  {
+    q:'Який метод для \\(3x^2+7x+2\\)? · Which method?',
+    opts:['Метод двох чисел (\\(a=1\\))','Винести \\(x\\)','Різниця квадратів (DoS)','AC-метод (\\(a\\neq 1\\))'],
+    ansIdx:3,
+    hint:'a=3≠1 → AC-метод: a·c=6, пара (1,6): 1+6=7 → split → (3x+1)(x+2)'
+  },
+  {
+    q:'Який метод для \\(x^2-49\\)? · Which method?',
+    opts:['AC-метод','Метод двох чисел','Різниця квадратів \\(A^2-B^2\\)','Винести \\(x\\)'],
+    ansIdx:2,
+    hint:'b=0, c<0 → різниця квадратів: x²−7²=(x+7)(x−7)'
+  },
+  {
+    q:'Який метод для \\(2x^2+6x\\)? · Which method?',
+    opts:['AC-метод','Винести спільний множник \\(2x\\)','Метод двох чисел','Різниця квадратів'],
+    ansIdx:1,
+    hint:'c=0 → виносимо 2x за дужки: 2x²+6x=2x(x+3)'
+  },
+  {
+    q:'Що з виразом \\(x^2+16\\)? · What about \\(x^2+16\\)?',
+    opts:['Розкладається як \\((x+4)(x+4)\\)','AC-метод дає розклад','Неможливо розкласти над \\(\\mathbb{R}\\)','Різниця квадратів'],
+    ansIdx:2,
+    hint:'b=0, c>0 → сума квадратів. Не розкладається над ℝ — prime!'
+  },
+];
+
+let qAns=0,qScore=0;
+
+function buildQuiz(){
+  qAns=0;qScore=0;
+  document.getElementById('qBar').style.width='0%';
+  document.getElementById('qLabel').textContent='0 / 5 відповідей';
+  document.getElementById('qScore').textContent='Рахунок: 0';
+  document.getElementById('restBtn').style.display='none';
+  const wrap=document.getElementById('quizWrap');
+  wrap.innerHTML='';
+  QUIZ.forEach((q,qi)=>{
+    const card=document.createElement('div');
+    card.className='quiz-card';card.id='qc'+qi;
+    const optsHTML=q.opts.map((o,oi)=>
+      `<button class="quiz-opt" data-idx="${oi}" onclick="qAns_fn(${qi},${oi})">${o}</button>`
+    ).join('');
+    card.innerHTML=`<div class="quiz-q">${qi+1}. ${q.q}</div><div class="quiz-opts">${optsHTML}</div><div class="quiz-fb" id="qfb${qi}"></div>`;
+    wrap.appendChild(card);
+  });
+  if(window.renderMathInElement){
+    renderMathInElement(wrap,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'$$',right:'$$',display:true}],throwOnError:false});
+  }
+}
+
+function qAns_fn(qi,chosenIdx){
+  const card=document.getElementById('qc'+qi);
+  if(card.dataset.done)return;
+  card.dataset.done='1';
+  const q=QUIZ[qi];
+  const btns=card.querySelectorAll('.quiz-opt');
+  const correct=q.ansIdx;
+  btns.forEach(b=>{b.disabled=true;if(+b.dataset.idx===correct)b.classList.add(chosenIdx===correct?'correct':'reveal');});
+  const fb=document.getElementById('qfb'+qi);
+  if(chosenIdx===correct){
+    btns[chosenIdx].classList.remove('reveal');btns[chosenIdx].classList.add('correct');
+    fb.textContent='✓ Правильно! '+q.hint;fb.className='quiz-fb show ok';qScore++;
+  }else{
+    btns[chosenIdx].classList.add('wrong');
+    fb.textContent='✗ Неправильно. '+q.hint;fb.className='quiz-fb show err';
+  }
+  qAns++;
+  document.getElementById('qScore').textContent='Рахунок: '+qScore;
+  document.getElementById('qBar').style.width=Math.round(qAns/QUIZ.length*100)+'%';
+  document.getElementById('qLabel').textContent=qAns+' / '+QUIZ.length+' відповідей';
+  if(qAns===QUIZ.length)setTimeout(()=>document.getElementById('restBtn').style.display='inline-block',500);
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  if(window.renderMathInElement){
+    renderMathInElement(document.body,{
+      delimiters:[{left:'\\(',right:'\\)',display:false},{left:'$$',right:'$$',display:true}],
+      throwOnError:false
+    });
+  }
+  buildQuiz();
+});
+</script>
+</body>
+</html>
