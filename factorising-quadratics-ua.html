@@ -70,6 +70,10 @@ p{color:var(--muted);font-size:.93rem;}p strong{color:var(--ink);}
 .key-rule .hlp{color:var(--purple);font-weight:700;}
 .key-rule .hlg{color:var(--green);font-weight:700;}
 .key-rule .hla{color:var(--amber);font-weight:700;}
+span.hl {color:var(--pink);font-weight:700;}
+span.hlp{color:var(--purple);font-weight:700;}
+span.hlg{color:var(--green);font-weight:700;}
+span.hla{color:var(--amber);font-weight:700;}
 
 /* ID CARD */
 .id-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px;}
@@ -279,7 +283,7 @@ footer{text-align:center;font-family:'JetBrains Mono',monospace;font-size:.73rem
             <div class="mm-leaf amber-leaf">
               <div class="mm-leaf-title">Неможливо розкласти</div>
               <div class="mm-leaf-desc">Сума квадратів не розкладається на дійсні лінійні множники</div>
-              <span class="mm-leaf-ex">\(x^2+4\)</span>
+              <span class="mm-leaf-ex">\(x^2+4\) — prime</span>
             </div>
           </div>
         </div>
@@ -313,7 +317,7 @@ footer{text-align:center;font-family:'JetBrains Mono',monospace;font-size:.73rem
   <div class="key-rule">
     <div class="key-rule-title">⚡ Метод двох чисел · Two-numbers method</div>
     <p>Для \(x^2+bx+c\) знайти <span class="hl">два числа \(p\) і \(q\)</span> такі, що:</p>
-    <p>\(\hl {p+q=b}\) (сума = коефіцієнт при \(x\)) &nbsp;·&nbsp; \(\hl {p\cdot q=c}\) (добуток = вільний член)</p>
+    <p><span class="hlp">\(p+q=b\)</span> (сума = коефіцієнт при \(x\)) &nbsp;·&nbsp; <span class="hl">\(p\cdot q=c\)</span> (добуток = вільний член)</p>
     <p>Тоді: \(x^2+bx+c=(x+p)(x+q)\)</p>
   </div>
   <div class="card" style="margin-top:14px;">
