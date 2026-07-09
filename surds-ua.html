@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Спрощення коренів · Simplifying Surds</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{
+    delimiters:[
+      {left:'$$',right:'$$',display:true},
+      {left:'\\(',right:'\\)',display:false}
+    ],
+    throwOnError:false
+  });">
+</script>
+
+<style>
+:root{
+  --bg:#f7f4f0;--card:#ffffff;
+  --pink:#e84fa3;--purple:#7c5cbf;
+  --pink-lt:#fde8f4;--pink-mid:#f9c9e8;--purple-lt:#ede8f8;
+  --ink:#1a1228;--muted:#7a6e82;--border:#e5dff0;--radius:20px;
+  --green:#059669;--green-lt:#d1fae5;--green-bd:#a7f3d0;
+  --amber:#b45309;--amber-lt:#fef3c7;--amber-bd:#fde68a;
+  --red:#dc2626;--red-lt:#fee2e2;--red-bd:#fca5a5;
+  --blue:#0369a1;--blue-lt:#e0f2fe;--blue-bd:#bae6fd;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:16px;line-height:1.7;padding:48px 24px 80px;}
+.page{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:28px;}
+.divider{height:2px;background:linear-gradient(90deg,var(--pink),var(--purple));opacity:.25;border-radius:2px;}
+
+/* HERO */
+.hero{background:var(--ink);border-radius:var(--radius);padding:52px 44px 48px;position:relative;overflow:hidden;}
+.hero-blob{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;}
+.hero-blob-1{width:320px;height:320px;background:rgba(232,79,163,.28);top:-80px;right:-60px;}
+.hero-blob-2{width:240px;height:240px;background:rgba(124,92,191,.22);bottom:-60px;left:40px;}
+.hero-blob-3{width:160px;height:160px;background:rgba(5,150,105,.15);top:20px;left:220px;}
+.hero-badge{position:absolute;top:24px;right:24px;background:var(--pink);color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:5px 14px;border-radius:99px;}
+.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--pink);margin-bottom:14px;}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4.6vw,3.1rem);color:#fff;line-height:1.12;margin-bottom:16px;}
+.hero-sub{color:rgba(255,255,255,.55);font-size:.95rem;max-width:540px;}
+.hero-formulas{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px;}
+.hero-formula-box{background:rgba(255,255,255,.07);border:1px solid rgba(232,79,163,.35);border-radius:12px;padding:12px 18px;text-align:center;}
+.hero-formula-box .katex{font-size:1.05rem;color:#fff;}
+.hero-formula-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(232,79,163,.8);margin-bottom:8px;}
+
+/* SEC LABEL */
+.sec-label{display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;}
+.sec-label::before{content:'';display:block;width:24px;height:3px;background:var(--pink);border-radius:2px;flex-shrink:0;}
+
+/* CARD */
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px 32px;}
+h2{font-family:'DM Serif Display',serif;font-size:1.55rem;color:var(--ink);margin-bottom:18px;line-height:1.25;}
+p{color:var(--muted);font-size:.93rem;}
+p strong{color:var(--ink);}
+
+/* PILL */
+.pill{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;}
+.pill-pink  {background:var(--pink-lt);color:var(--pink);border:1px solid var(--pink-mid);}
+.pill-purple{background:var(--purple-lt);color:var(--purple);border:1px solid #d4c8ef;}
+.pill-green {background:var(--green-lt);color:var(--green);border:1px solid var(--green-bd);}
+.pill-amber {background:var(--amber-lt);color:var(--amber);border:1px solid var(--amber-bd);}
+
+/* KEY RULE */
+.key-rule{background:linear-gradient(135deg,var(--pink-lt),var(--purple-lt));border:1.5px solid var(--border);border-radius:var(--radius);padding:24px 28px;}
+.key-rule-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--pink);margin-bottom:10px;}
+.key-rule p{color:var(--ink);font-size:.95rem;}
+.key-rule .hl{color:var(--pink);font-weight:700;}
+.key-rule .hlp{color:var(--purple);font-weight:700;}
+
+/* ID CARD */
+.id-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px;}
+.id-card:last-child{margin-bottom:0;}
+.id-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;flex-wrap:wrap;}
+.id-title{font-weight:600;font-size:.95rem;color:var(--ink);}
+.id-formula-row{font-family:'JetBrains Mono',monospace;font-size:.9rem;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 14px;margin-top:6px;}
+.id-formula-row+.id-formula-row{margin-top:8px;}
+
+/* ALGO */
+.algo-list{display:flex;flex-direction:column;gap:10px;}
+.algo-step{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:16px 20px;transition:border-color .2s;}
+.algo-step:hover{border-color:var(--pink);}
+.algo-badge{font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:700;color:#fff;background:var(--pink);border-radius:8px;min-width:34px;height:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.algo-badge.purple{background:var(--purple);}
+.algo-badge.green{background:var(--green);}
+.algo-body h4{font-size:.95rem;font-weight:600;color:var(--ink);margin-bottom:4px;}
+.algo-body p{font-size:.85rem;color:var(--muted);}
+.algo-note{display:inline-block;margin-top:6px;background:var(--pink-lt);border:1px solid var(--pink-mid);border-radius:8px;padding:4px 12px;font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--pink);}
+.algo-note.purple{background:var(--purple-lt);border-color:#d4c8ef;color:var(--purple);}
+.algo-note.green{background:var(--green-lt);border-color:var(--green-bd);color:var(--green);}
+
+/* EXAMPLE CARD */
+.example-card{border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:14px;}
+.example-card:last-child{margin-bottom:0;}
+.example-header{background:linear-gradient(135deg,#1e0e35,#3a1f6e);padding:18px 26px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.example-header-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);}
+.example-eq-badge{font-family:'JetBrains Mono',monospace;font-size:.92rem;font-weight:600;background:rgba(232,79,163,.22);border:1px solid rgba(232,79,163,.4);color:#f9a8d4;padding:6px 16px;border-radius:99px;}
+.example-body{background:var(--card);}
+.step-row{display:flex;align-items:baseline;gap:14px;padding:11px 26px;border-bottom:1px solid var(--border);transition:background .15s;}
+.step-row:last-child{border-bottom:none;}
+.step-row:hover{background:var(--bg);}
+.step-n{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--muted);min-width:20px;flex-shrink:0;}
+.step-formula{flex:1;font-size:.9rem;color:var(--ink);}
+.step-formula .katex{font-size:.91rem;}
+.step-comment{font-size:.76rem;color:var(--muted);font-style:italic;flex-shrink:0;max-width:240px;text-align:right;}
+.answer-row{background:var(--pink-lt)!important;border-top:1.5px solid var(--pink-mid)!important;}
+.answer-row .step-formula{color:var(--pink);font-weight:700;}
+.answer-row .step-comment{color:var(--pink);}
+
+/* HW */
+.hw-group-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:22px 0 10px;padding-left:2px;}
+.hw-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.hw-item{display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;cursor:pointer;transition:border-color .2s,background .2s;-webkit-user-select:none;user-select:none;}
+.hw-item:hover{border-color:var(--pink);}
+.hw-item.done{background:var(--pink-lt);border-color:var(--pink-mid);}
+.hw-num{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--muted);min-width:22px;flex-shrink:0;}
+.hw-eq{font-size:.9rem;color:var(--ink);flex:1;line-height:1.4;}
+.hw-item.done .hw-eq .katex{color:var(--pink);}
+.hw-lv{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;padding:2px 8px;border-radius:99px;flex-shrink:0;}
+.lv1{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bd);}
+.lv2{background:var(--purple-lt);color:var(--purple);border:1px solid #d4c8ef;}
+.lv3{background:var(--amber-lt);color:var(--amber);border:1px solid var(--amber-bd);}
+.hw-check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.7rem;transition:all .2s;color:transparent;flex-shrink:0;}
+.hw-item.done .hw-check{background:var(--pink);border-color:var(--pink);color:#fff;}
+
+/* PROGRESS */
+.progress-wrap{background:var(--purple-lt);border-radius:99px;height:8px;overflow:hidden;margin-bottom:8px;}
+.progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--pink),var(--purple));transition:width .4s;width:0%;}
+.progress-text{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--muted);margin-bottom:4px;}
+
+/* QUIZ */
+.quiz-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:12px;}
+.quiz-card:last-child{margin-bottom:0;}
+.quiz-q{font-size:.98rem;font-weight:600;color:var(--ink);margin-bottom:14px;line-height:1.5;}
+.quiz-q .katex{font-size:.98rem;}
+.quiz-opts{display:flex;gap:8px;flex-wrap:wrap;}
+.quiz-opt{padding:8px 16px;border-radius:99px;border:1.5px solid var(--border);background:var(--bg);font-size:.86rem;font-weight:600;color:var(--ink);cursor:pointer;transition:all .15s;-webkit-user-select:none;user-select:none;}
+.quiz-opt:hover:not(:disabled){border-color:var(--pink);background:var(--pink-lt);color:var(--pink);}
+.quiz-opt .katex{font-size:.86rem;}
+.quiz-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green);}
+.quiz-opt.wrong  {background:var(--red-lt);border-color:var(--red);color:var(--red);}
+.quiz-opt.reveal {background:var(--green-lt);border-color:var(--green);color:var(--green);border-style:dashed;}
+.quiz-opt:disabled{cursor:default;}
+.quiz-fb{font-family:'JetBrains Mono',monospace;font-size:.76rem;border-radius:8px;padding:6px 12px;margin-top:8px;display:none;}
+.quiz-fb.show{display:block;}
+.quiz-fb.ok{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bd);}
+.quiz-fb.err{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bd);}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.score-badge{font-family:'JetBrains Mono',monospace;font-size:.78rem;padding:4px 14px;border-radius:99px;background:var(--purple-lt);color:var(--purple);border:1px solid #d4c8ef;font-weight:700;}
+.restart-btn{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border:none;border-radius:99px;padding:10px 24px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;margin-top:12px;transition:opacity .2s;display:none;}
+.restart-btn:hover{opacity:.85;}
+
+/* COMPARE GRID */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+.compare-col{border-radius:14px;overflow:hidden;border:1.5px solid var(--border);}
+.compare-head{padding:12px 18px;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#fff;}
+.ch-pink{background:var(--pink);}
+.ch-purple{background:var(--purple);}
+.ch-green{background:var(--green);}
+.ch-amber{background:var(--amber);}
+.compare-body{background:var(--card);padding:16px 18px;}
+.compare-body p{font-size:.86rem;color:var(--muted);margin-bottom:6px;}
+.compare-body p:last-child{margin-bottom:0;}
+.compare-body strong{color:var(--ink);}
+.compare-formula{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;margin:8px 0;text-align:center;font-size:.88rem;}
+
+footer{text-align:center;font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--muted);padding-top:12px;}
+
+@media(max-width:640px){
+  body{padding:24px 16px 60px;}
+  .hero{padding:36px 22px 32px;}
+  .card{padding:22px 18px;}
+  .hw-grid,.compare-grid{grid-template-columns:1fr;}
+  .hero-formulas{grid-template-columns:1fr;}
+  .step-comment{display:none;}
+  .example-header{flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-blob hero-blob-3"></div>
+  <div class="hero-badge">Algebra · Алгебра</div>
+  <div class="hero-eyebrow">Self-Study Revision · Самостійне повторення</div>
+  <h1>Спрощення<br>коренів · Surds</h1>
+  <p class="hero-sub">Властивості квадратних коренів, множення та ділення сурдів, зведення подібних доданків і спрощення виразів з коренями — з прикладами та практикою.</p>
+  <div class="hero-formulas">
+    <div class="hero-formula-box">
+      <div class="hero-formula-label">Добуток · Product</div>
+      \( \sqrt{a}\cdot\sqrt{b} = \sqrt{ab} \)
+    </div>
+    <div class="hero-formula-box">
+      <div class="hero-formula-label">Квадрат · Square</div>
+      \( \sqrt{a}\cdot\sqrt{a} = (\sqrt{a})^2 = a \)
+    </div>
+    <div class="hero-formula-box">
+      <div class="hero-formula-label">Частка · Quotient</div>
+      \( \dfrac{\sqrt{a}}{\sqrt{b}} = \sqrt{\dfrac{a}{b}} \)
+    </div>
+    <div class="hero-formula-box">
+      <div class="hero-formula-label">Подібні · Like surds</div>
+      \( a\sqrt{n} + b\sqrt{n} = (a+b)\sqrt{n} \)
+    </div>
+  </div>
+</div>
+
+<!-- ══ §1 ВЛАСТИВОСТІ ══ -->
+<div>
+  <div class="sec-label">§1 · Основні властивості · Key Properties</div>
+  <div class="card">
+    <h2>Три правила роботи з коренями</h2>
+    <p style="margin-bottom:16px;">Ці три тотожності — основа всіх спрощень. Їх треба знати напам'ять.</p>
+
+    <div class="id-card">
+      <div class="id-head">
+        <div class="id-title">Правило 1 · Product rule (множення)</div>
+        <span class="pill pill-pink">√a · √b</span>
+      </div>
+      <div class="id-formula-row">\(\sqrt{a}\cdot\sqrt{b} = \sqrt{ab}\)</div>
+      <div class="id-formula-row">\(\sqrt{3}\cdot\sqrt{5} = \sqrt{15}\)</div>
+    </div>
+
+    <div class="id-card">
+      <div class="id-head">
+        <div class="id-title">Правило 2 · Square of a surd (квадрат кореня)</div>
+        <span class="pill pill-purple">(√a)² = a</span>
+      </div>
+      <div class="id-formula-row">\(\sqrt{a}\cdot\sqrt{a} = (\sqrt{a})^2 = a\)</div>
+      <div class="id-formula-row">\((\sqrt{5})^2 = 5, \quad (\sqrt{7})^2 = 7, \quad (\sqrt{12})^2 = 12\)</div>
+    </div>
+
+    <div class="id-card">
+      <div class="id-head">
+        <div class="id-title">Правило 3 · Quotient rule (ділення)</div>
+        <span class="pill pill-green">√a / √b</span>
+      </div>
+      <div class="id-formula-row">\(\dfrac{\sqrt{a}}{\sqrt{b}} = \sqrt{\dfrac{a}{b}}\)</div>
+      <div class="id-formula-row">\(\sqrt{\dfrac{1}{9}} = \dfrac{\sqrt{1}}{\sqrt{9}} = \dfrac{1}{3}\)</div>
+    </div>
+
+    <div class="key-rule" style="margin-top:14px;">
+      <div class="key-rule-title">⚠ Важливо · Important</div>
+      <p>Ці правила працюють лише для <span class="hl">множення та ділення</span>. Для суми та різниці <span class="hlp">НЕ можна</span> писати \(\sqrt{a+b} = \sqrt{a}+\sqrt{b}\) — це хибно!</p>
+      <p style="margin-top:8px;">\(\sqrt{9+16} \neq \sqrt{9}+\sqrt{16} \;\longrightarrow\; \sqrt{25}=5 \neq 3+4=7\)</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ §2 СТЕПІНЬ КОРЕНЯ ══ -->
+<div>
+  <div class="sec-label">§2 · Зведення кореня у степінь · Powers of Surds</div>
+  <div class="key-rule">
+    <div class="key-rule-title">⚡ Головне правило · Key rule</div>
+    <p>При зведенні \((\sqrt{a})^n\) розкладаємо як добуток \(n\) коренів:</p>
+    <p style="margin-top:8px;">\((\sqrt{a})^2 = a \quad\) | \(\quad (\sqrt{a})^3 = a\sqrt{a} \quad\) | \(\quad (\sqrt{a})^4 = a^2\)</p>
+    <p style="margin-top:8px;">Для \((k\sqrt{a})^2\): <span class="hl">окремо зводимо k у квадрат і a у квадрат</span> → \(k^2 \cdot a\)</p>
+  </div>
+  <div class="card" style="margin-top:14px;">
+    <h2>Алгоритм · Algorithm</h2>
+    <div class="algo-list">
+      <div class="algo-step">
+        <div class="algo-badge">01</div>
+        <div class="algo-body">
+          <h4>Розкласти \((\sqrt{a})^n\) як добуток · Expand as product</h4>
+          <p>Записати корінь \(n\) разів множення.</p>
+          <span class="algo-note">\((\sqrt{3})^3 = \sqrt{3}\cdot\sqrt{3}\cdot\sqrt{3}\)</span>
+        </div>
+      </div>
+      <div class="algo-step">
+        <div class="algo-badge">02</div>
+        <div class="algo-body">
+          <h4>Згрупувати пари · Group pairs of √a·√a = a</h4>
+          <p>Кожна пара \(\sqrt{a}\cdot\sqrt{a} = a\).</p>
+          <span class="algo-note">\(\sqrt{3}\cdot\sqrt{3}\cdot\sqrt{3} = 3\cdot\sqrt{3} = 3\sqrt{3}\)</span>
+        </div>
+      </div>
+      <div class="algo-step">
+        <div class="algo-badge purple">03</div>
+        <div class="algo-body">
+          <h4>Для \((k\sqrt{a})^2\) · Square of form \(k\sqrt{a}\)</h4>
+          <p>Зводимо кожен множник окремо: \(k^2 \cdot (\sqrt{a})^2 = k^2 \cdot a\)</p>
+          <span class="algo-note purple">\((3\sqrt{2})^2 = 3^2\cdot(\sqrt{2})^2 = 9\cdot 2 = 18\)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXAMPLES — powers -->
+<div>
+  <div class="sec-label">Приклади · Worked Examples — Powers of Surds</div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 1 · Квадрат кореня</div></div>
+      <div class="example-eq-badge">\((\sqrt{3})^2\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\((\sqrt{3})^2 = \sqrt{3}\cdot\sqrt{3}\)</span><span class="step-comment">розкриваємо як добуток</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= 3\)</span><span class="step-comment">\(\sqrt{a}\cdot\sqrt{a}=a\)</span></div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 2 · Куб кореня</div></div>
+      <div class="example-eq-badge">\((\sqrt{3})^3\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\((\sqrt{3})^3 = \sqrt{3}\cdot\sqrt{3}\cdot\sqrt{3}\)</span><span class="step-comment">три множники</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= 3\cdot\sqrt{3}\)</span><span class="step-comment">перша пара дає 3</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= 3\sqrt{3}\)</span></div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 3 · 5-й степінь</div></div>
+      <div class="example-eq-badge">\((\sqrt{3})^5\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\((\sqrt{3})^5 = \sqrt{3}\cdot\sqrt{3}\cdot\sqrt{3}\cdot\sqrt{3}\cdot\sqrt{3}\)</span><span class="step-comment">п'ять множників</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= 3\cdot 3\cdot\sqrt{3} = 9\sqrt{3}\)</span><span class="step-comment">дві пари → 3·3=9</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= 9\sqrt{3}\)</span></div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 4 · Квадрат \((k\sqrt{a})^2\)</div></div>
+      <div class="example-eq-badge">\((3\sqrt{2})^2\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\((3\sqrt{2})^2 = 3^2\cdot(\sqrt{2})^2\)</span><span class="step-comment">кожен множник окремо</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= 9\cdot 2\)</span><span class="step-comment">\(3^2=9,\;(\sqrt{2})^2=2\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= 18\)</span></div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 5 · Множення \(k\sqrt{a}\times m\sqrt{a}\)</div></div>
+      <div class="example-eq-badge">\(3\sqrt{2}\times 4\sqrt{2}\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(3\sqrt{2}\times 4\sqrt{2} = 3\times 4\times\sqrt{2}\times\sqrt{2}\)</span><span class="step-comment">перегрупуємо</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= 12\times 2\)</span><span class="step-comment">\(\sqrt{2}\times\sqrt{2}=2\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= 24\)</span></div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 6 · Від'ємний множник</div></div>
+      <div class="example-eq-badge">\(3\sqrt{3}\times(-2\sqrt{3})\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(3\sqrt{3}\times(-2\sqrt{3}) = 3\times(-2)\times\sqrt{3}\times\sqrt{3}\)</span><span class="step-comment">перегрупуємо</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= -6\times 3\)</span><span class="step-comment">\(\sqrt{3}\times\sqrt{3}=3\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= -18\)</span></div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 7 · Дріб у квадраті</div></div>
+      <div class="example-eq-badge">\(\left(\dfrac{4}{\sqrt{2}}\right)^2\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(\left(\dfrac{4}{\sqrt{2}}\right)^2 = \dfrac{4^2}{(\sqrt{2})^2}\)</span><span class="step-comment">зводимо чисельник і знаменник</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= \dfrac{16}{2}\)</span><span class="step-comment">\(4^2=16,\;(\sqrt{2})^2=2\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= 8\)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ §3 ПОДІБНІ ДОДАНКИ ══ -->
+<div>
+  <div class="sec-label">§3 · Подібні доданки · Adding & Subtracting Like Surds</div>
+  <div class="key-rule">
+    <div class="key-rule-title">⚡ Правило · Rule</div>
+    <p>Як і в алгебрі — збираємо <span class="hl">подібні доданки (like terms)</span>:</p>
+    <p style="margin-top:8px;">\(a\sqrt{n}+b\sqrt{n} = (a+b)\sqrt{n}\)</p>
+    <p style="margin-top:4px;">\(a\sqrt{n}-b\sqrt{n} = (a-b)\sqrt{n}\)</p>
+    <p style="margin-top:8px;">Різні корені <span class="hlp">(unlike surds)</span> — як різні змінні, не можна спростити: \(\sqrt{2}+\sqrt{3}\) лишається у такому вигляді.</p>
+  </div>
+  <div class="card" style="margin-top:14px;">
+    <h2>Алгоритм · Algorithm</h2>
+    <div class="algo-list">
+      <div class="algo-step">
+        <div class="algo-badge">01</div>
+        <div class="algo-body">
+          <h4>Визначити подібні корені · Identify like surds</h4>
+          <p>Групуємо доданки з однаковим підкореневим виразом.</p>
+          <span class="algo-note">\(3\sqrt{2}+5\sqrt{3}+2\sqrt{2}\) → \(3\sqrt{2}\) і \(2\sqrt{2}\) — подібні</span>
+        </div>
+      </div>
+      <div class="algo-step">
+        <div class="algo-badge purple">02</div>
+        <div class="algo-body">
+          <h4>Зібрати коефіцієнти · Collect coefficients</h4>
+          <p>Додаємо або віднімаємо коефіцієнти, корінь не змінюємо.</p>
+          <span class="algo-note purple">\((3+2)\sqrt{2}+5\sqrt{3} = 5\sqrt{2}+5\sqrt{3}\)</span>
+        </div>
+      </div>
+      <div class="algo-step">
+        <div class="algo-badge green">03</div>
+        <div class="algo-body">
+          <h4>Розкрити дужки, якщо потрібно · Expand brackets first</h4>
+          <p>Якщо є дужки зі знаком мінус — спочатку змінюємо знаки всіх доданків у дужках.</p>
+          <span class="algo-note green">\(\sqrt{3}-(2-\sqrt{3}) = \sqrt{3}-2+\sqrt{3} = 2\sqrt{3}-2\)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXAMPLES — adding surds -->
+<div>
+  <div class="sec-label">Приклади · Worked Examples — Adding & Subtracting</div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 8 · Прості подібні</div></div>
+      <div class="example-eq-badge">\(3\sqrt{2}+7\sqrt{2}\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">Подібні доданки з \(\sqrt{2}\): коефіцієнти 3 і 7</span><span class="step-comment">like surds</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= (3+7)\sqrt{2} = 10\sqrt{2}\)</span></div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 9 · Різниця з дужками</div></div>
+      <div class="example-eq-badge">\(\sqrt{3}-(2-\sqrt{3})\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(= \sqrt{3}-2+\sqrt{3}\)</span><span class="step-comment">розкриваємо дужки (мінус змінює знаки)</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= 2\sqrt{3}-2\)</span><span class="step-comment">збираємо \(\sqrt{3}\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= 2\sqrt{3}-2\)</span></div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 10 · Кілька різних коренів</div></div>
+      <div class="example-eq-badge">\(5\sqrt{2}-\sqrt{3}+\sqrt{2}-\sqrt{3}\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">Групуємо: \((5\sqrt{2}+\sqrt{2}) + (-\sqrt{3}-\sqrt{3})\)</span><span class="step-comment">separate groups</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= 6\sqrt{2}-2\sqrt{3}\)</span></div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 11 · Розкрити дві дужки</div></div>
+      <div class="example-eq-badge">\(2(\sqrt{3}+1)+3(1-\sqrt{3})\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(= 2\sqrt{3}+2+3-3\sqrt{3}\)</span><span class="step-comment">розкриваємо обидві дужки</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= (2-3)\sqrt{3}+(2+3)\)</span><span class="step-comment">збираємо like terms</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= -\sqrt{3}+5\)</span></div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 12 · Складний вираз з дужками</div></div>
+      <div class="example-eq-badge">\(3(\sqrt{3}-\sqrt{2})-(\sqrt{2}-\sqrt{3})\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(= 3\sqrt{3}-3\sqrt{2}-\sqrt{2}+\sqrt{3}\)</span><span class="step-comment">розкриваємо дужки</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">Групуємо: \((3+1)\sqrt{3}+(-3-1)\sqrt{2}\)</span><span class="step-comment">like terms</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= 4\sqrt{3}-4\sqrt{2}\)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ HOMEWORK ══ -->
+<div>
+  <div class="sec-label">Домашнє завдання · Homework</div>
+  <div class="card">
+    <h2>Завдання для відпрацювання</h2>
+    <p style="margin-bottom:16px;">Натисни на завдання, щоб відмітити як виконане.</p>
+    <div class="progress-wrap"><div class="progress-fill" id="pBar"></div></div>
+    <div class="progress-text" id="pLabel">0 / 20 виконано</div>
+
+    <!-- SQUARES -->
+    <div class="hw-group-label">🟢 Зведення у квадрат · Squaring — Спростити · Simplify</div>
+    <div class="hw-grid" id="hwGrid1">
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">1.</span><span class="hw-eq">\((2\sqrt{2})^2\)</span><span class="hw-lv lv1">square</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">2.</span><span class="hw-eq">\((4\sqrt{2})^2\)</span><span class="hw-lv lv1">square</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">3.</span><span class="hw-eq">\((2\sqrt{3})^2\)</span><span class="hw-lv lv1">square</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">4.</span><span class="hw-eq">\((3\sqrt{3})^2\)</span><span class="hw-lv lv1">square</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">5.</span><span class="hw-eq">\((2\sqrt{5})^2\)</span><span class="hw-lv lv1">square</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">6.</span><span class="hw-eq">\((3\sqrt{5})^2\)</span><span class="hw-lv lv1">square</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">7.</span><span class="hw-eq">\((-4\sqrt{2})^2\)</span><span class="hw-lv lv1">square</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">8.</span><span class="hw-eq">\((-7\sqrt{3})^2\)</span><span class="hw-lv lv1">square</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">9.</span><span class="hw-eq">\(5\sqrt{3}\times 2\sqrt{3}\)</span><span class="hw-lv lv1">square</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">10.</span><span class="hw-eq">\(\sqrt{2}\times(-3\sqrt{2})\)</span><span class="hw-lv lv1">square</span><div class="hw-check">✓</div></div>
+    </div>
+
+    <!-- ADDING/SUBTRACTING -->
+    <div class="hw-group-label">🔵 Додавання та віднімання · Adding & Subtracting</div>
+    <div class="hw-grid">
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">11.</span><span class="hw-eq">\(11\sqrt{3}-8\sqrt{3}\)</span><span class="hw-lv lv2">add/sub</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">12.</span><span class="hw-eq">\(6\sqrt{5}-7\sqrt{5}\)</span><span class="hw-lv lv2">add/sub</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">13.</span><span class="hw-eq">\(-\sqrt{2}+2\sqrt{2}\)</span><span class="hw-lv lv2">add/sub</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">14.</span><span class="hw-eq">\(-\sqrt{2}-(3+\sqrt{2})\)</span><span class="hw-lv lv2">add/sub</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">15.</span><span class="hw-eq">\(\sqrt{7}-2\sqrt{2}+\sqrt{7}-\sqrt{2}\)</span><span class="hw-lv lv2">add/sub</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">16.</span><span class="hw-eq">\(3\sqrt{3}-\sqrt{2}-(1-\sqrt{2})\)</span><span class="hw-lv lv2">add/sub</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">17.</span><span class="hw-eq">\(3(\sqrt{3}-1)-2(2-\sqrt{3})\)</span><span class="hw-lv lv3">brackets</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">18.</span><span class="hw-eq">\(2(\sqrt{3}+1)+3(1-\sqrt{3})\)</span><span class="hw-lv lv3">brackets</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">19.</span><span class="hw-eq">\(\left(\dfrac{1}{\sqrt{3}}\right)^2\)</span><span class="hw-lv lv3">fraction</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">20.</span><span class="hw-eq">\(\left(\dfrac{10}{\sqrt{5}}\right)^2\)</span><span class="hw-lv lv3">fraction</span><div class="hw-check">✓</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ QUIZ ══ -->
+<div>
+  <div class="sec-label">Тест · Quick Quiz</div>
+  <div class="card">
+    <h2>5 питань · 5 Questions</h2>
+    <p style="margin-bottom:18px;">Вибери правильну відповідь · Choose the correct answer</p>
+    <div class="progress-row">
+      <div>
+        <div class="progress-wrap" style="width:200px;"><div class="progress-fill" id="qBar"></div></div>
+        <div class="progress-text" id="qLabel">0 / 5 відповіді</div>
+      </div>
+      <div class="score-badge" id="qScore">Рахунок: 0</div>
+    </div>
+    <div id="quizWrap"></div>
+    <button class="restart-btn" id="restBtn" onclick="buildQuiz()">Пройти ще раз</button>
+  </div>
+</div>
+
+<footer>Спрощення коренів · Simplifying Surds · Algebra · Self-Study</footer>
+
+</div><!-- .page -->
+
+<script>
+// ── HW progress ─────────────────────────────────────────────────
+function tog(el) {
+  el.classList.toggle('done');
+  if (el.classList.contains('done')) {
+    el.querySelectorAll('.katex').forEach(k => k.style.color = 'var(--pink)');
+  } else {
+    el.querySelectorAll('.katex').forEach(k => k.style.color = '');
+  }
+  const total = document.querySelectorAll('.hw-item').length;
+  const done  = document.querySelectorAll('.hw-item.done').length;
+  document.getElementById('pBar').style.width = Math.round(done/total*100)+'%';
+  document.getElementById('pLabel').textContent = done+' / '+total+' виконано';
+}
+
+// ── QUIZ DATA ────────────────────────────────────────────────────
+// ansIdx: index of correct answer in opts array (shuffled per question)
+const QUIZ = [
+  {
+    q:      'Спростити · Simplify: \\(\\,(\\sqrt{5})^2\\,\\)',
+    opts:   ['\\(25\\)', '\\(\\sqrt{10}\\)', '\\(5\\sqrt{5}\\)', '\\(5\\)'],
+    ansIdx: 3,
+    hint:   '(√5)² = √5·√5 = 5 — квадрат кореня дорівнює підкореневому виразу'
+  },
+  {
+    q:      'Спростити · Simplify: \\(\\,(3\\sqrt{2})^2\\,\\)',
+    opts:   ['\\(18\\)', '\\(6\\sqrt{2}\\)', '\\(9\\sqrt{2}\\)', '\\(9\\cdot 4\\)'],
+    ansIdx: 0,
+    hint:   '(3√2)² = 3²·(√2)² = 9·2 = 18'
+  },
+  {
+    q:      'Спростити · Simplify: \\(\\,3\\sqrt{2}\\times 4\\sqrt{2}\\,\\)',
+    opts:   ['\\(12\\sqrt{4}\\)', '\\(12\\)', '\\(24\\)', '\\(12\\sqrt{2}\\)'],
+    ansIdx: 2,
+    hint:   '3×4×√2×√2 = 12×2 = 24'
+  },
+  {
+    q:      'Спростити · Simplify: \\(\\,5\\sqrt{3}+3\\sqrt{3}-\\sqrt{3}\\,\\)',
+    opts:   ['\\(7\\sqrt{3}\\)', '\\(8\\sqrt{9}\\)', '\\(7\\sqrt{9}\\)', '\\(9\\sqrt{3}\\)'],
+    ansIdx: 0,
+    hint:   '(5+3−1)√3 = 7√3 — збираємо подібні доданки'
+  },
+  {
+    q:      'Спростити · Simplify: \\(\\,\\sqrt{3}-(2-\\sqrt{3})\\,\\)',
+    opts:   ['\\(-2\\)', '\\(2\\sqrt{3}+2\\)', '\\(2\\sqrt{3}-2\\)', '\\(-2\\sqrt{3}\\)'],
+    ansIdx: 2,
+    hint:   '√3 − 2 + √3 = 2√3 − 2 — мінус перед дужкою змінює знаки'
+  },
+];
+
+let qAns = 0, qScore = 0;
+
+function buildQuiz() {
+  qAns = 0; qScore = 0;
+  document.getElementById('qBar').style.width = '0%';
+  document.getElementById('qLabel').textContent = '0 / 5 відповіді';
+  document.getElementById('qScore').textContent = 'Рахунок: 0';
+  document.getElementById('restBtn').style.display = 'none';
+
+  const wrap = document.getElementById('quizWrap');
+  wrap.innerHTML = '';
+
+  QUIZ.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-card';
+    card.id = 'qc' + qi;
+
+    const optsHTML = q.opts.map((o, oi) =>
+      `<button class="quiz-opt" data-idx="${oi}" onclick="qAnswer(${qi},${oi})">${o}</button>`
+    ).join('');
+
+    card.innerHTML =
+      `<div class="quiz-q">${qi+1}. ${q.q}</div>` +
+      `<div class="quiz-opts">${optsHTML}</div>` +
+      `<div class="quiz-fb" id="qfb${qi}"></div>`;
+    wrap.appendChild(card);
+  });
+
+  if (window.renderMathInElement) {
+    renderMathInElement(wrap, {
+      delimiters: [
+        {left:'\\(',right:'\\)',display:false},
+        {left:'$$',right:'$$',display:true}
+      ],
+      throwOnError: false
+    });
+  }
+}
+
+function qAnswer(qi, chosenIdx) {
+  const card = document.getElementById('qc' + qi);
+  if (card.dataset.done) return;
+  card.dataset.done = '1';
+
+  const q = QUIZ[qi];
+  const btns = card.querySelectorAll('.quiz-opt');
+  const correct = q.ansIdx;
+
+  btns.forEach(b => {
+    b.disabled = true;
+    if (+b.dataset.idx === correct) {
+      b.classList.add(chosenIdx === correct ? 'correct' : 'reveal');
+    }
+  });
+
+  const fb = document.getElementById('qfb' + qi);
+  if (chosenIdx === correct) {
+    btns[chosenIdx].classList.remove('reveal');
+    btns[chosenIdx].classList.add('correct');
+    fb.textContent = '✓ Правильно! ' + q.hint;
+    fb.className = 'quiz-fb show ok';
+    qScore++;
+  } else {
+    btns[chosenIdx].classList.add('wrong');
+    fb.textContent = '✗ Неправильно. ' + q.hint;
+    fb.className = 'quiz-fb show err';
+  }
+
+  qAns++;
+  document.getElementById('qScore').textContent = 'Рахунок: ' + qScore;
+  document.getElementById('qBar').style.width = Math.round(qAns / QUIZ.length * 100) + '%';
+  document.getElementById('qLabel').textContent = qAns + ' / ' + QUIZ.length + ' відповіді';
+  if (qAns === QUIZ.length) {
+    setTimeout(() => document.getElementById('restBtn').style.display = 'inline-block', 500);
+  }
+}
+
+// ── INIT ─────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left:'\\(',right:'\\)',display:false},
+        {left:'$$',right:'$$',display:true}
+      ],
+      throwOnError: false
+    });
+  }
+  buildQuiz();
+});
+</script>
+</body>
+</html>
