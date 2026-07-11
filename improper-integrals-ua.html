@@ -242,7 +242,7 @@ footer{text-align:center;font-family:'JetBrains Mono',monospace;font-size:.73rem
     <div class="def-box purple-box" style="margin-top:12px;">
       <div class="def-label dl-purple">Означення 2 · Обидві межі нескінченні</div>
       <p>Для будь-якого \(C \in \mathbb{R}\):</p>
-      <div class="formula-block">$$\int_{-\infty}^{+\infty} f(x)\,dx = \int_{-\infty}^{C} f(x)\,dx + \int_{C}^{+\infty} f(x)\,dx \{3}$$</div>
+      <div class="formula-block">$$\int_{-\infty}^{+\infty} f(x)\,dx = \int_{-\infty}^{C} f(x)\,dx + \int_{C}^{+\infty} f(x)\,dx \tag{3}$$</div>
       <p>Інтеграл <span class="hlp">збігається</span> тоді і тільки тоді, коли <strong>обидва</strong> інтеграли справа збігаються.</p>
     </div>
 
@@ -361,17 +361,17 @@ footer{text-align:center;font-family:'JetBrains Mono',monospace;font-size:.73rem
 
     <div class="def-box green-box" style="margin-top:14px;">
       <div class="def-label dl-green">Випадок 1: \(x = a\) — особлива точка</div>
-      <div class="formula-block">$$\int_a^b f(x)\,dx = \lim_{\varepsilon\to+0}\int_{a+\varepsilon}^b f(x)\,dx \$$</div>
+      <div class="formula-block">$$\int_a^b f(x)\,dx = \lim_{\varepsilon\to+0}\int_{a+\varepsilon}^b f(x)\,dx \}$$</div>
     </div>
 
     <div class="def-box pink-box" style="margin-top:10px;">
       <div class="def-label dl-pink">Випадок 2: \(x = b\) — особлива точка</div>
-      <div class="formula-block">$$\int_a^b f(x)\,dx = \lim_{\varepsilon\to+0}\int_a^{b-\varepsilon} f(x)\,dx \$$</div>
+      <div class="formula-block">$$\int_a^b f(x)\,dx = \lim_{\varepsilon\to+0}\int_a^{b-\varepsilon} f(x)\,dx \}$$</div>
     </div>
 
     <div class="def-box purple-box" style="margin-top:10px;">
       <div class="def-label dl-purple">Випадок 3: \(x = c \in (a,b)\) — особлива точка всередині</div>
-      <div class="formula-block">$$\int_a^b f(x)\,dx = \int_a^c f(x)\,dx + \int_c^b f(x)\,dx \$$</div>
+      <div class="formula-block">$$\int_a^b f(x)\,dx = \int_a^c f(x)\,dx + \int_c^b f(x)\,dx \$$}</div>
       <p>Збігається, якщо <strong>обидва</strong> інтеграли справа збігаються.</p>
     </div>
   </div>
