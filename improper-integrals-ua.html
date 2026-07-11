@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Невласні інтеграли · Improper Integrals</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{
+    delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}],
+    throwOnError:false
+  });">
+</script>
+
+<style>
+:root{
+  --bg:#f7f4f0;--card:#fff;
+  --pink:#e84fa3;--purple:#7c5cbf;
+  --pink-lt:#fde8f4;--pink-mid:#f9c9e8;--purple-lt:#ede8f8;
+  --ink:#1a1228;--muted:#7a6e82;--border:#e5dff0;--radius:20px;
+  --green:#059669;--green-lt:#d1fae5;--green-bd:#a7f3d0;
+  --amber:#b45309;--amber-lt:#fef3c7;--amber-bd:#fde68a;
+  --red:#dc2626;--red-lt:#fee2e2;--red-bd:#fca5a5;
+  --blue:#0369a1;--blue-lt:#e0f2fe;--blue-bd:#bae6fd;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:16px;line-height:1.7;padding:48px 24px 80px;}
+.page{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:28px;}
+.divider{height:2px;background:linear-gradient(90deg,var(--pink),var(--purple));opacity:.22;border-radius:2px;}
+
+/* HERO */
+.hero{background:var(--ink);border-radius:var(--radius);padding:52px 44px 48px;position:relative;overflow:hidden;}
+.hero-blob{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;}
+.hero-blob-1{width:320px;height:320px;background:rgba(232,79,163,.28);top:-80px;right:-60px;}
+.hero-blob-2{width:240px;height:240px;background:rgba(124,92,191,.22);bottom:-60px;left:40px;}
+.hero-blob-3{width:160px;height:160px;background:rgba(5,150,105,.14);top:20px;left:220px;}
+.hero-badge{position:absolute;top:24px;right:24px;background:var(--pink);color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:5px 14px;border-radius:99px;}
+.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--pink);margin-bottom:14px;}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,4.4vw,3rem);color:#fff;line-height:1.12;margin-bottom:14px;}
+.hero-sub{color:rgba(255,255,255,.55);font-size:.94rem;max-width:540px;margin-bottom:22px;}
+.hero-pills{display:flex;gap:10px;flex-wrap:wrap;}
+.hero-pill{padding:7px 16px;border-radius:99px;font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:600;border:1.5px solid;}
+.hp-pink{background:rgba(232,79,163,.18);border-color:rgba(232,79,163,.4);color:#f9a8d4;}
+.hp-green{background:rgba(5,150,105,.18);border-color:rgba(5,150,105,.4);color:#6ee7b7;}
+
+/* SEC LABEL */
+.sec-label{display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;}
+.sec-label::before{content:'';display:block;width:24px;height:3px;background:var(--pink);border-radius:2px;flex-shrink:0;}
+.sec-label.green::before{background:var(--green);}
+.sec-label.purple::before{background:var(--purple);}
+.sec-label.amber::before{background:var(--amber);}
+
+/* CARD */
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px 32px;}
+h2{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--ink);margin-bottom:16px;line-height:1.25;}
+h3{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--ink);margin-bottom:10px;}
+p{color:var(--muted);font-size:.93rem;margin-bottom:10px;}
+p:last-child{margin-bottom:0;}
+p strong{color:var(--ink);}
+
+/* KEY RULE */
+.key-rule{background:linear-gradient(135deg,var(--pink-lt),var(--purple-lt));border:1.5px solid var(--border);border-radius:var(--radius);padding:22px 28px;}
+.key-rule-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--pink);margin-bottom:10px;}
+.key-rule p{color:var(--ink);}
+.hl{color:var(--pink);font-weight:700;}
+.hlp{color:var(--purple);font-weight:700;}
+.hlg{color:var(--green);font-weight:700;}
+.hla{color:var(--amber);font-weight:700;}
+
+/* DEF / THEOREM BOX */
+.def-box{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px;}
+.def-box:last-child{margin-bottom:0;}
+.def-box.pink-box{border-left:4px solid var(--pink);}
+.def-box.green-box{border-left:4px solid var(--green);}
+.def-box.purple-box{border-left:4px solid var(--purple);}
+.def-box.amber-box{border-left:4px solid var(--amber);}
+.def-box.blue-box{border-left:4px solid var(--blue);}
+.def-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;}
+.dl-pink{color:var(--pink);}
+.dl-green{color:var(--green);}
+.dl-purple{color:var(--purple);}
+.dl-amber{color:var(--amber);}
+.dl-blue{color:var(--blue);}
+.def-box p{color:var(--ink);font-size:.9rem;margin-bottom:6px;}
+.def-box p:last-child{margin-bottom:0;}
+
+/* FORMULA DISPLAY */
+.formula-block{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 20px;margin:10px 0;text-align:center;overflow-x:auto;}
+.formula-block .katex-display{margin:0;}
+.formula-label{font-family:'JetBrains Mono',monospace;font-size:.64rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.formula-tag{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--purple);float:right;margin-top:-20px;}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+/* EXAMPLE CARD */
+.example-card{border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:14px;}
+.example-card:last-child{margin-bottom:0;}
+.example-header{background:linear-gradient(135deg,#1e0e35,#3a1f6e);padding:16px 26px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.example-header-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);}
+.example-eq-badge{font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:600;background:rgba(232,79,163,.22);border:1px solid rgba(232,79,163,.4);color:#f9a8d4;padding:5px 14px;border-radius:99px;}
+.example-body{background:var(--card);}
+.step-row{display:flex;align-items:baseline;gap:14px;padding:10px 26px;border-bottom:1px solid var(--border);transition:background .15s;}
+.step-row:last-child{border-bottom:none;}
+.step-row:hover{background:var(--bg);}
+.step-n{font-family:'JetBrains Mono',monospace;font-size:.64rem;color:var(--muted);min-width:20px;flex-shrink:0;}
+.step-formula{flex:1;font-size:.9rem;color:var(--ink);}
+.step-comment{font-size:.74rem;color:var(--muted);font-style:italic;flex-shrink:0;max-width:230px;text-align:right;}
+.answer-row{background:var(--pink-lt)!important;border-top:1.5px solid var(--pink-mid)!important;}
+.answer-row .step-formula{color:var(--pink);font-weight:700;}
+.answer-row .step-comment{color:var(--pink);}
+
+/* CONVERGENCE TABLE */
+table{width:100%;border-collapse:collapse;font-size:.87rem;border-radius:14px;overflow:hidden;border:1.5px solid var(--border);}
+thead tr{background:var(--purple-lt);}
+thead th{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--purple);padding:10px 14px;text-align:center;}
+thead th:first-child{text-align:left;}
+tbody tr{border-bottom:1px solid var(--border);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:#f5f0fc;}
+tbody td{padding:9px 14px;font-size:.85rem;color:var(--ink);text-align:center;}
+tbody td:first-child{text-align:left;font-family:'JetBrains Mono',monospace;}
+.cell-green{background:var(--green-lt);color:var(--green);font-weight:700;}
+.cell-red  {background:var(--red-lt);color:var(--red);font-weight:700;}
+
+/* HW */
+.hw-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.hw-group-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:20px 0 10px;}
+.hw-item{display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:11px 14px;cursor:pointer;transition:border-color .2s,background .2s;-webkit-user-select:none;user-select:none;}
+.hw-item:hover{border-color:var(--pink);}
+.hw-item.done{background:var(--pink-lt);border-color:var(--pink-mid);}
+.hw-num{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--muted);min-width:22px;flex-shrink:0;}
+.hw-eq{font-size:.88rem;color:var(--ink);flex:1;line-height:1.4;}
+.hw-lv{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;padding:2px 8px;border-radius:99px;flex-shrink:0;}
+.lv1{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bd);}
+.lv2{background:var(--pink-lt);color:var(--pink);border:1px solid var(--pink-mid);}
+.lv3{background:var(--amber-lt);color:var(--amber);border:1px solid var(--amber-bd);}
+.lv4{background:var(--purple-lt);color:var(--purple);border:1px solid #d4c8ef;}
+.hw-check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.66rem;transition:all .2s;color:transparent;flex-shrink:0;}
+.hw-item.done .hw-check{background:var(--pink);border-color:var(--pink);color:#fff;}
+.progress-wrap{background:var(--purple-lt);border-radius:99px;height:8px;overflow:hidden;margin-bottom:8px;}
+.progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--pink),var(--purple));transition:width .4s;width:0%;}
+.progress-text{font-family:'JetBrains Mono',monospace;font-size:.73rem;color:var(--muted);}
+
+/* QUIZ */
+.quiz-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:12px;}
+.quiz-q{font-size:.96rem;font-weight:600;color:var(--ink);margin-bottom:12px;line-height:1.5;}
+.quiz-opts{display:flex;gap:8px;flex-wrap:wrap;}
+.quiz-opt{padding:8px 16px;border-radius:99px;border:1.5px solid var(--border);background:var(--bg);font-size:.84rem;font-weight:600;color:var(--ink);cursor:pointer;transition:all .15s;-webkit-user-select:none;user-select:none;}
+.quiz-opt:hover:not(:disabled){border-color:var(--pink);background:var(--pink-lt);color:var(--pink);}
+.quiz-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green);}
+.quiz-opt.wrong{background:var(--red-lt);border-color:var(--red);color:var(--red);}
+.quiz-opt.reveal{background:var(--green-lt);border-color:var(--green);color:var(--green);border-style:dashed;}
+.quiz-opt:disabled{cursor:default;}
+.quiz-fb{font-family:'JetBrains Mono',monospace;font-size:.74rem;border-radius:8px;padding:6px 12px;margin-top:8px;display:none;}
+.quiz-fb.show{display:block;}
+.quiz-fb.ok{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bd);}
+.quiz-fb.err{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bd);}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.score-badge{font-family:'JetBrains Mono',monospace;font-size:.76rem;padding:4px 14px;border-radius:99px;background:var(--purple-lt);color:var(--purple);border:1px solid #d4c8ef;font-weight:700;}
+.restart-btn{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border:none;border-radius:99px;padding:10px 24px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;margin-top:12px;transition:opacity .2s;display:none;}
+.restart-btn:hover{opacity:.85;}
+
+footer{text-align:center;font-family:'JetBrains Mono',monospace;font-size:.73rem;color:var(--muted);padding-top:12px;}
+
+@media(max-width:640px){
+  body{padding:24px 14px 60px;}
+  .hero{padding:36px 20px 32px;}
+  .card{padding:20px 16px;}
+  .two-col,.hw-grid{grid-template-columns:1fr;}
+  .step-comment{display:none;}
+  .example-header{flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-blob hero-blob-3"></div>
+  <div class="hero-badge">Інтегральне числення · §2</div>
+  <div class="hero-eyebrow">Self-Study Revision · Самостійне повторення</div>
+  <h1>Невласні<br>інтеграли</h1>
+  <p class="hero-sub">Інтеграли з нескінченними межами та від необмежених функцій — означення, ознаки збіжності та методи обчислення. За матеріалами підручника Тєвяшева, с. 58–64.</p>
+  <div class="hero-pills">
+    <div class="hero-pill hp-pink">1-й рід: нескінченні межі</div>
+    <div class="hero-pill hp-green">2-й рід: особлива точка</div>
+  </div>
+</div>
+
+<!-- ══ §1 КЛАСИФІКАЦІЯ ══ -->
+<div>
+  <div class="sec-label">§1 · Класифікація · Classification</div>
+  <div class="card">
+    <h2>Два типи невласних інтегралів</h2>
+    <div class="two-col">
+      <div class="def-box pink-box">
+        <div class="def-label dl-pink">1-й рід · Type I</div>
+        <p><strong>Нескінченні межі інтегрування</strong></p>
+        <p>Підінтегральна функція неперервна, але проміжок інтегрування нескінченний.</p>
+        <div class="formula-block">\(\displaystyle\int_a^{+\infty} f(x)\,dx,\quad \int_{-\infty}^b f(x)\,dx,\quad \int_{-\infty}^{+\infty} f(x)\,dx\)</div>
+      </div>
+      <div class="def-box green-box">
+        <div class="def-label dl-green">2-й рід · Type II</div>
+        <p><strong>Необмежені функції (особлива точка)</strong></p>
+        <p>Проміжок інтегрування скінченний, але функція необмежена в одній або кількох точках.</p>
+        <div class="formula-block">\(f(x) \to \infty\) при \(x \to c \in [a,b]\)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ §2 ПЕРШИЙ РІД ══ -->
+<div>
+  <div class="sec-label">§2 · Невласні інтеграли 1-го роду · Improper Integrals — Infinite Limits</div>
+  <div class="card">
+    <h2>Означення через граничний перехід</h2>
+    <p>Означення здійснюється за допомогою граничного переходу:</p>
+
+    <div class="def-box pink-box" style="margin-top:14px;">
+      <div class="def-label dl-pink">Означення 1 · Definition</div>
+      <div class="formula-block">
+        <div class="formula-label">Нижня межа \(a\), верхня \(= +\infty\)</div>
+        $$\int_a^{+\infty} f(x)\,dx = \lim_{b\to+\infty} \int_a^{b} f(x)\,dx \tag{1.23}$$
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">Верхня межа \(b\), нижня \(= -\infty\)</div>
+        $$\int_{-\infty}^b f(x)\,dx = \lim_{a\to-\infty} \int_a^{b} f(x)\,dx \tag{1.24}$$
+      </div>
+    </div>
+
+    <div class="def-box purple-box" style="margin-top:12px;">
+      <div class="def-label dl-purple">Означення 2 · Обидві межі нескінченні</div>
+      <p>Для будь-якого \(C \in \mathbb{R}\):</p>
+      <div class="formula-block">$$\int_{-\infty}^{+\infty} f(x)\,dx = \int_{-\infty}^{C} f(x)\,dx + \int_{C}^{+\infty} f(x)\,dx \tag{1.26}$$</div>
+      <p>Інтеграл <span class="hlp">збігається</span> тоді і тільки тоді, коли <strong>обидва</strong> інтеграли справа збігаються.</p>
+    </div>
+
+    <div class="key-rule" style="margin-top:14px;">
+      <div class="key-rule-title">🔑 Збіжність та розбіжність · Convergence</div>
+      <p>Якщо існує <span class="hl">скінченна границя</span> у правій частині (1.23) або (1.24) — інтеграл <span class="hlg">збігається</span>.</p>
+      <p>Якщо границя нескінченна або не існує — інтеграл <span class="hl">розбігається</span>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Формула Ньютона–Лейбніца -->
+<div>
+  <div class="sec-label sec-label">§2.1 · Формула Ньютона–Лейбніца · Newton–Leibniz</div>
+  <div class="card">
+    <h2>Обчислення через первісну</h2>
+    <p>Нехай \(F(x)\) — первісна \(f(x)\) на \([a,+\infty)\). Якщо існує скінченна границя \(\lim_{b\to+\infty} F(b) = F(+\infty)\), то:</p>
+    <div class="formula-block">$$\int_a^{+\infty} f(x)\,dx = F(x)\Big|_a^{+\infty} = F(+\infty) - F(a)$$</div>
+    <p>Аналогічно:</p>
+    <div class="formula-block">$$\int_{-\infty}^b f(x)\,dx = F(x)\Big|_{-\infty}^b = F(b) - F(-\infty)$$</div>
+    <div class="formula-block">$$\int_{-\infty}^{+\infty} f(x)\,dx = F(x)\Big|_{-\infty}^{+\infty} = F(+\infty) - F(-\infty)$$</div>
+    <p style="margin-top:8px;"><strong>Умова збіжності:</strong> повинні існувати <span class="hlp">обидві скінченні границі</span> \(F(+\infty)\) та \(F(-\infty)\).</p>
+  </div>
+</div>
+
+<!-- Ознаки збіжності 1-й рід -->
+<div>
+  <div class="sec-label">§2.2 · Ознаки збіжності 1-го роду · Convergence Tests</div>
+  <div class="card">
+    <h2>Теореми про збіжність</h2>
+
+    <div class="def-box pink-box">
+      <div class="def-label dl-pink">Теорема 1 · Ознака порівняння · Comparison Test</div>
+      <p>Нехай при \(a < x < +\infty\) виконується \(0 \leq f(x) \leq g(x)\). Тоді:</p>
+      <ul style="margin-left:20px;color:var(--ink);font-size:.9rem;line-height:1.8;">
+        <li>зі збіжності \(\displaystyle\int_a^{+\infty} g(x)\,dx\) випливає збіжність \(\displaystyle\int_a^{+\infty} f(x)\,dx\)</li>
+        <li>з розбіжності \(\displaystyle\int_a^{+\infty} f(x)\,dx\) випливає розбіжність \(\displaystyle\int_a^{+\infty} g(x)\,dx\)</li>
+      </ul>
+    </div>
+
+    <div class="def-box purple-box" style="margin-top:12px;">
+      <div class="def-label dl-purple">Теорема 2 · Гранична ознака порівняння · Limit Comparison Test</div>
+      <p>Нехай \(f(x) \geq 0\), \(g(x) \geq 0\) при \(x > a\) і існує скінченна границя:</p>
+      <div class="formula-block">$$\lim_{x \to +\infty} \frac{f(x)}{g(x)} = A > 0$$</div>
+      <p>Тоді інтеграли \(\displaystyle\int_a^{+\infty} f(x)\,dx\) та \(\displaystyle\int_a^{+\infty} g(x)\,dx\) <span class="hlp">збігаються або розбігаються одночасно</span>.</p>
+    </div>
+
+    <div class="def-box green-box" style="margin-top:12px;">
+      <div class="def-label dl-green">Теорема 3 · Знакозмінна функція · Absolute Convergence</div>
+      <p>Якщо збігається \(\displaystyle\int_a^{+\infty} |f(x)|\,dx\), то збігається і \(\displaystyle\int_a^{+\infty} f(x)\,dx\).</p>
+      <p>Інтеграл \(\displaystyle\int_a^{+\infty} f(x)\,dx\) називається <span class="hlg">абсолютно збіжним</span>, якщо збігається \(\displaystyle\int_a^{+\infty} |f(x)|\,dx\).</p>
+      <p>Якщо інтеграл збігається, а \(\displaystyle\int_a^{+\infty} |f(x)|\,dx\) розбігається — інтеграл <span class="hla">умовно збіжний</span>.</p>
+    </div>
+
+    <!-- Еталонний інтеграл -->
+    <div class="def-box amber-box" style="margin-top:12px;">
+      <div class="def-label dl-amber">Еталонний інтеграл · Benchmark integral</div>
+      <p>Для ознак порівняння зазвичай використовують:</p>
+      <div class="formula-block">$$\int_1^{+\infty} \frac{dx}{x^p} \begin{cases} \text{збігається,} & \text{якщо } p > 1 \\ \text{розбігається,} & \text{якщо } p \leq 1 \end{cases}$$</div>
+      <p>Також: \(\displaystyle\int_a^{+\infty} \frac{dx}{x^p}\), \(a > 0\) — має ті ж властивості.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Examples 1st kind -->
+<div>
+  <div class="sec-label">§2.3 · Приклади 1-го роду · Worked Examples — Type I</div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад а) · Example a</div></div>
+      <div class="example-eq-badge">\(\displaystyle\int_0^{+\infty}\frac{dx}{1+x^2}\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">Первісна: \(F(x) = \arctan x\)</span><span class="step-comment">табличний інтеграл</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(\displaystyle\int_0^{+\infty}\frac{dx}{1+x^2} = \lim_{b\to+\infty}\arctan x\Big|_0^b = \lim_{b\to+\infty}(\arctan b - \arctan 0)\)</span></div>
+      <div class="step-row"><span class="step-n">③</span><span class="step-formula">\(= \lim_{b\to+\infty}\arctan b - 0 = \dfrac{\pi}{2} - 0\)</span><span class="step-comment">\(\arctan(+\infty)=\pi/2\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(\displaystyle\int_0^{+\infty}\frac{dx}{1+x^2} = \dfrac{\pi}{2}\) — <strong>збігається</strong></span></div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад б) · Example b</div></div>
+      <div class="example-eq-badge">\(\displaystyle\int_{-\infty}^{+\infty}\frac{dx}{1+x^2}\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">Розбиваємо: \(\displaystyle\int_{-\infty}^{0}\frac{dx}{1+x^2} + \int_{0}^{+\infty}\frac{dx}{1+x^2}\)</span><span class="step-comment">формула (1.26)</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(\lim_{a\to-\infty}\arctan x\Big|_a^0 + \lim_{b\to+\infty}\arctan x\Big|_0^b\)</span></div>
+      <div class="step-row"><span class="step-n">③</span><span class="step-formula">\(= \left(0 - \left(-\tfrac{\pi}{2}\right)\right) + \left(\tfrac{\pi}{2} - 0\right) = \tfrac{\pi}{2} + \tfrac{\pi}{2}\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(\displaystyle\int_{-\infty}^{+\infty}\frac{dx}{1+x^2} = \pi\) — <strong>збігається</strong></span></div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад в) · Розбіжний інтеграл</div></div>
+      <div class="example-eq-badge">\(\displaystyle\int_1^{+\infty}\frac{dx}{\sqrt{x}}\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">Це \(\displaystyle\int_1^{+\infty} x^{-1/2}\,dx\), тут \(p = 1/2 < 1\) → еталонний інтеграл розбігається</span><span class="step-comment">\(p\leq 1\) → розбіжний</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= \lim_{b\to+\infty} 2\sqrt{x}\Big|_1^b = \lim_{b\to+\infty}(2\sqrt{b}-2) = +\infty\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✗</span><span class="step-formula"><strong>Розбігається</strong></span><span class="step-comment">границя \(= +\infty\)</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ §3 ДРУГИЙ РІД ══ -->
+<div>
+  <div class="sec-label green">§3 · Невласні інтеграли 2-го роду · Improper Integrals — Unbounded Functions</div>
+  <div class="card">
+    <h2>Означення через особливу точку</h2>
+    <p><strong>Особлива точка</strong> — точка \(c \in [a,b]\), де функція необмежена: \(f(x) \to \infty\) при \(x \to c\).</p>
+
+    <div class="def-box green-box" style="margin-top:14px;">
+      <div class="def-label dl-green">Випадок 1: \(x = a\) — особлива точка</div>
+      <div class="formula-block">$$\int_a^b f(x)\,dx = \lim_{\varepsilon\to+0}\int_{a+\varepsilon}^b f(x)\,dx \tag{1.27}$$</div>
+    </div>
+
+    <div class="def-box pink-box" style="margin-top:10px;">
+      <div class="def-label dl-pink">Випадок 2: \(x = b\) — особлива точка</div>
+      <div class="formula-block">$$\int_a^b f(x)\,dx = \lim_{\varepsilon\to+0}\int_a^{b-\varepsilon} f(x)\,dx \tag{1.28}$$</div>
+    </div>
+
+    <div class="def-box purple-box" style="margin-top:10px;">
+      <div class="def-label dl-purple">Випадок 3: \(x = c \in (a,b)\) — особлива точка всередині</div>
+      <div class="formula-block">$$\int_a^b f(x)\,dx = \int_a^c f(x)\,dx + \int_c^b f(x)\,dx \tag{1.29}$$</div>
+      <p>Збігається, якщо <strong>обидва</strong> інтеграли справа збігаються.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Формули через первісну 2-й рід -->
+<div>
+  <div class="sec-label green">§3.1 · Формули через первісну · Newton–Leibniz (Type II)</div>
+  <div class="card">
+    <h2>Обчислення з урахуванням особливої точки</h2>
+    <p>Нехай \(F(x)\) — первісна \(f(x)\) на проміжку. Тоді:</p>
+
+    <div class="two-col" style="margin-top:14px;">
+      <div>
+        <div class="def-label dl-green" style="margin-bottom:6px;">\(x=a\) — особлива точка</div>
+        <div class="formula-block">$$\int_a^b f(x)\,dx = F(x)\Big|_{a+0}^b = F(b) - F(a+0) \tag{1.30}$$</div>
+        <p style="font-size:.83rem;">де \(F(a+0) = \lim_{x\to a+0}F(x)\)</p>
+      </div>
+      <div>
+        <div class="def-label dl-pink" style="margin-bottom:6px;">\(x=b\) — особлива точка</div>
+        <div class="formula-block">$$\int_a^b f(x)\,dx = F(x)\Big|_a^{b-0} = F(b-0) - F(a) \tag{1.31}$$</div>
+        <p style="font-size:.83rem;">де \(F(b-0) = \lim_{x\to b-0}F(x)\)</p>
+      </div>
+    </div>
+
+    <div style="margin-top:12px;">
+      <div class="def-label dl-purple" style="margin-bottom:6px;">\(x=c \in (a,b)\) — особлива точка всередині</div>
+      <div class="formula-block">$$\int_a^b f(x)\,dx = F(x)\Big|_{a}^{c-0} + F(x)\Big|_{c+0}^{b} \tag{1.32}$$</div>
+      <p>Для збіжності потрібне існування скінченних границь \(F(c-0)\) та \(F(c+0)\).</p>
+    </div>
+  </div>
+</div>
+
+<!-- Ознаки збіжності 2-й рід + еталонний інтеграл -->
+<div>
+  <div class="sec-label green">§3.2 · Ознаки збіжності 2-го роду · Convergence Tests — Type II</div>
+  <div class="card">
+    <h2>Теореми (аналогічні до 1-го роду)</h2>
+    <p style="margin-bottom:14px;">Усі три теореми аналогічні до 1-го роду, але розглядаються при \(x \to a+0\) (або \(x \to b-0\)), де \(x=a\) — особлива точка.</p>
+
+    <div class="def-box pink-box">
+      <div class="def-label dl-pink">Теорема 1 · Ознака порівняння</div>
+      <p>Якщо \(0 \leq f(x) \leq g(x)\) на \((a,b]\), то зі збіжності \(\int_a^b g(x)\,dx\) випливає збіжність \(\int_a^b f(x)\,dx\), і навпаки для розбіжності.</p>
+    </div>
+    <div class="def-box purple-box" style="margin-top:10px;">
+      <div class="def-label dl-purple">Теорема 2 · Гранична ознака</div>
+      <p>Якщо \(f(x)>0\), \(g(x)>0\) на \((a,b]\) і \(\lim_{x\to a+0}\dfrac{f(x)}{g(x)} = A > 0\), то обидва інтеграли збігаються або розбігаються одночасно.</p>
+    </div>
+    <div class="def-box green-box" style="margin-top:10px;">
+      <div class="def-label dl-green">Теорема 3 + Абсолютна збіжність</div>
+      <p>Зі збіжності \(\int_a^b |f(x)|\,dx\) випливає збіжність \(\int_a^b f(x)\,dx\). Такий інтеграл — <span class="hlg">абсолютно збіжний</span>. Якщо збігається, а \(\int|f|\) розбігається — <span class="hla">умовно збіжний</span>.</p>
+    </div>
+
+    <div class="def-box amber-box" style="margin-top:12px;">
+      <div class="def-label dl-amber">Еталонний інтеграл 2-го роду · Benchmark</div>
+      <div class="formula-block">$$\int_0^1 \frac{dx}{x^p} \begin{cases} \text{збігається,} & p < 1 \\ \text{розбігається,} & p \geq 1 \end{cases}$$</div>
+      <p>Загальніший вигляд (\(a\) або \(b\) — особлива точка):</p>
+      <div class="formula-block">$$\int_a^b \frac{dx}{(x-a)^p},\quad \int_a^b \frac{dx}{(b-x)^p} \;\begin{cases}\text{збігаються при }p < 1\\\text{розбігаються при }p \geq 1\end{cases}$$</div>
+    </div>
+  </div>
+</div>
+
+<!-- Examples 2nd kind -->
+<div>
+  <div class="sec-label green">§3.3 · Приклади 2-го роду · Worked Examples — Type II</div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад г) · особлива точка \(x=0\)</div></div>
+      <div class="example-eq-badge">\(\displaystyle\int_0^1 \frac{dx}{\sqrt{x}}\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(x=0\) — особлива точка (\(f\to\infty\)), \(p=1/2<1\) → збігається</span><span class="step-comment">еталонний тест</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= \lim_{\varepsilon\to+0}\int_\varepsilon^1 x^{-1/2}\,dx = \lim_{\varepsilon\to+0} 2\sqrt{x}\Big|_\varepsilon^1 = \lim_{\varepsilon\to+0}(2 - 2\sqrt{\varepsilon})\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(\displaystyle\int_0^1 \frac{dx}{\sqrt{x}} = 2\) — <strong>збігається</strong></span></div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад д) · розбіжний 2-го роду</div></div>
+      <div class="example-eq-badge">\(\displaystyle\int_0^1 \frac{dx}{x}\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(x=0\) — особлива точка, \(p=1 \geq 1\) → розбігається</span><span class="step-comment">еталонний тест</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= \lim_{\varepsilon\to+0}\ln x\Big|_\varepsilon^1 = \lim_{\varepsilon\to+0}(0 - \ln\varepsilon) = +\infty\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✗</span><span class="step-formula"><strong>Розбігається</strong></span><span class="step-comment">границя \(=+\infty\)</span></div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад е) · особлива точка всередині</div></div>
+      <div class="example-eq-badge">\(\displaystyle\int_{-1}^{1} \frac{dx}{x^2}\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\(x=0 \in (-1,1)\) — особлива точка, розбиваємо за (1.29)</span><span class="step-comment">особлива точка в центрі</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">Перевіряємо \(\int_{-1}^0 \frac{dx}{x^2}\): \(p=2\geq 1\) → розбігається</span><span class="step-comment">достатньо одного</span></div>
+      <div class="step-row answer-row"><span class="step-n">✗</span><span class="step-formula"><strong>Розбігається</strong> (не можна застосовувати НЛ без перевірки!)</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ЗВЕДЕНА ТАБЛИЦЯ ══ -->
+<div>
+  <div class="divider"></div>
+  <div class="sec-label purple">§4 · Зведена таблиця · Summary Table</div>
+  <div class="card">
+    <h2>Еталонні інтеграли та збіжність</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Інтеграл</th>
+          <th>Умова на \(p\)</th>
+          <th>Збігається?</th>
+          <th>Тип</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>\(\int_1^{+\infty} x^{-p}\,dx\)</td>
+          <td>\(p > 1\)</td>
+          <td class="cell-green">✓ Так</td>
+          <td>1-й рід</td>
+        </tr>
+        <tr>
+          <td>\(\int_1^{+\infty} x^{-p}\,dx\)</td>
+          <td>\(p \leq 1\)</td>
+          <td class="cell-red">✗ Ні</td>
+          <td>1-й рід</td>
+        </tr>
+        <tr>
+          <td>\(\int_0^1 x^{-p}\,dx\)</td>
+          <td>\(p < 1\)</td>
+          <td class="cell-green">✓ Так</td>
+          <td>2-й рід</td>
+        </tr>
+        <tr>
+          <td>\(\int_0^1 x^{-p}\,dx\)</td>
+          <td>\(p \geq 1\)</td>
+          <td class="cell-red">✗ Ні</td>
+          <td>2-й рід</td>
+        </tr>
+        <tr>
+          <td>\(\int_0^{+\infty} \frac{dx}{1+x^2}\)</td>
+          <td>—</td>
+          <td class="cell-green">✓ \(= \pi/2\)</td>
+          <td>1-й рід</td>
+        </tr>
+        <tr>
+          <td>\(\int_{-\infty}^{+\infty} \frac{dx}{1+x^2}\)</td>
+          <td>—</td>
+          <td class="cell-green">✓ \(= \pi\)</td>
+          <td>1-й рід</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ HOMEWORK ══ -->
+<div>
+  <div class="sec-label">Домашнє завдання · Homework</div>
+  <div class="card">
+    <h2>Завдання для відпрацювання</h2>
+    <p style="margin-bottom:16px;">Натисни на завдання щоб відмітити виконаним. Спочатку визнач тип!</p>
+    <div class="progress-wrap"><div class="progress-fill" id="pBar"></div></div>
+    <div class="progress-text" id="pLabel">0 / 16 виконано</div>
+
+    <div class="hw-group-label">🟢 1-й рід · Обчислити (нескінченні межі)</div>
+    <div class="hw-grid">
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">1.</span><span class="hw-eq">\(\displaystyle\int_1^{+\infty}\frac{dx}{x^2}\)</span><span class="hw-lv lv1">збіг.</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">2.</span><span class="hw-eq">\(\displaystyle\int_1^{+\infty}\frac{dx}{x}\)</span><span class="hw-lv lv1">розб.?</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">3.</span><span class="hw-eq">\(\displaystyle\int_0^{+\infty}e^{-x}\,dx\)</span><span class="hw-lv lv1">збіг.</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">4.</span><span class="hw-eq">\(\displaystyle\int_1^{+\infty}\frac{dx}{x^3}\)</span><span class="hw-lv lv1">1-й рід</span><div class="hw-check">✓</div></div>
+    </div>
+
+    <div class="hw-group-label">🔵 Ознака порівняння 1-го роду · Дослідити збіжність</div>
+    <div class="hw-grid">
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">5.</span><span class="hw-eq">\(\displaystyle\int_1^{+\infty}\frac{dx}{x^2+1}\)</span><span class="hw-lv lv2">порівн.</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">6.</span><span class="hw-eq">\(\displaystyle\int_1^{+\infty}\frac{\sin^2 x}{x^2}\,dx\)</span><span class="hw-lv lv2">порівн.</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">7.</span><span class="hw-eq">\(\displaystyle\int_1^{+\infty}\frac{x\,dx}{x^3+1}\)</span><span class="hw-lv lv2">гран. ознака</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">8.</span><span class="hw-eq">\(\displaystyle\int_2^{+\infty}\frac{dx}{\ln x}\)</span><span class="hw-lv lv2">порівн.</span><div class="hw-check">✓</div></div>
+    </div>
+
+    <div class="hw-group-label">🟡 2-й рід · Обчислити або дослідити (особлива точка)</div>
+    <div class="hw-grid">
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">9.</span><span class="hw-eq">\(\displaystyle\int_0^1\frac{dx}{\sqrt[3]{x}}\)</span><span class="hw-lv lv3">2-й рід</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">10.</span><span class="hw-eq">\(\displaystyle\int_0^1\frac{dx}{x^{3/2}}\)</span><span class="hw-lv lv3">розб.?</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">11.</span><span class="hw-eq">\(\displaystyle\int_1^2\frac{dx}{\sqrt{2-x}}\)</span><span class="hw-lv lv3">2-й рід</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">12.</span><span class="hw-eq">\(\displaystyle\int_0^{\pi}\frac{dx}{\sin x}\)</span><span class="hw-lv lv3">обидва</span><div class="hw-check">✓</div></div>
+    </div>
+
+    <div class="hw-group-label">🔴 Ознака порівняння 2-го роду · Дослідити збіжність</div>
+    <div class="hw-grid">
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">13.</span><span class="hw-eq">\(\displaystyle\int_0^1\frac{dx}{\sqrt{x(1-x)}}\)</span><span class="hw-lv lv4">порівн.</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">14.</span><span class="hw-eq">\(\displaystyle\int_0^1\frac{\ln x}{\sqrt{x}}\,dx\)</span><span class="hw-lv lv4">гран. ознака</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">15.</span><span class="hw-eq">\(\displaystyle\int_0^1\frac{dx}{(x-1)^2}\)</span><span class="hw-lv lv4">розб.?</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">16.</span><span class="hw-eq">\(\displaystyle\int_{-1}^{1}\frac{dx}{\sqrt{1-x^2}}\)</span><span class="hw-lv lv4">обидва кінці</span><div class="hw-check">✓</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ QUIZ ══ -->
+<div>
+  <div class="sec-label purple">Тест · Quick Quiz</div>
+  <div class="card">
+    <h2>5 питань · 5 Questions</h2>
+    <p style="margin-bottom:18px;">Вибери правильну відповідь.</p>
+    <div class="progress-row">
+      <div>
+        <div class="progress-wrap" style="width:200px;"><div class="progress-fill" id="qBar"></div></div>
+        <div class="progress-text" id="qLabel">0 / 5 відповідей</div>
+      </div>
+      <div class="score-badge" id="qScore">Рахунок: 0</div>
+    </div>
+    <div id="quizWrap"></div>
+    <button class="restart-btn" id="restBtn" onclick="buildQuiz()">Пройти ще раз</button>
+  </div>
+</div>
+
+<footer>Невласні інтеграли · Improper Integrals · Тєвяшев с. 58–64 · Self-Study</footer>
+</div>
+
+<script>
+function tog(el){
+  el.classList.toggle('done');
+  const total=document.querySelectorAll('.hw-item').length;
+  const done=document.querySelectorAll('.hw-item.done').length;
+  document.getElementById('pBar').style.width=Math.round(done/total*100)+'%';
+  document.getElementById('pLabel').textContent=done+' / '+total+' виконано';
+}
+
+const QUIZ=[
+  {
+    q:'Чи збігається \\(\\displaystyle\\int_1^{+\\infty}\\frac{dx}{x^{3/2}}\\)?',
+    opts:['Так, збігається (\\(p=3/2>1\\))','Розбігається (\\(p<1\\))','Неможливо визначити','Тільки умовно'],
+    ansIdx:0,
+    hint:'Еталонний інтеграл 1-го роду: p=3/2 > 1 → збігається. Значення = 2.'
+  },
+  {
+    q:'Яке означення невласного інтеграла \\(\\int_a^{+\\infty}f(x)\\,dx\\)?',
+    opts:['\\(\\lim_{a\\to-\\infty}\\int_a^b f\\,dx\\)','\\(\\lim_{b\\to+\\infty}\\int_a^b f\\,dx\\)','\\(\\int_a^b f\\,dx\\) при \\(b=+\\infty\\)','Первісна при \\(x\\to+\\infty\\)'],
+    ansIdx:1,
+    hint:'За означенням (1.23): границя визначеного інтеграла при верхній межі b→+∞'
+  },
+  {
+    q:'Чи збігається \\(\\displaystyle\\int_0^1\\frac{dx}{x^{1/3}}\\)?',
+    opts:['Ні, \\(p=1/3\\geq 1\\)','Так, \\(p=1/3<1\\)','Інтеграл власний','Розбігається умовно'],
+    ansIdx:1,
+    hint:'Еталонний інтеграл 2-го роду: p=1/3 < 1 → збігається. Значення = 3/2.'
+  },
+  {
+    q:'Що означає абсолютна збіжність невласного інтеграла?',
+    opts:['Інтеграл дорівнює 0','Інтеграл збігається та розбігається','Збігається \\(\\int|f(x)|\\,dx\\)','\\(f(x)>0\\) скрізь'],
+    ansIdx:2,
+    hint:'Інтеграл абсолютно збіжний, якщо збігається ∫|f(x)|dx. Звідси збігається і сам ∫f(x)dx.'
+  },
+  {
+    q:'Особлива точка \\(x=c\\in(a,b)\\). Коли \\(\\int_a^b f\\,dx\\) збігається?',
+    opts:['Завжди','Якщо \\(f(c)=0\\)','Якщо збігаються обидва: \\(\\int_a^c\\) та \\(\\int_c^b\\)','Якщо розбігається хоча б один'],
+    ansIdx:2,
+    hint:'За формулою (1.29): потрібна збіжність ОБОХ інтегралів справа.'
+  },
+];
+
+let qAns=0,qScore=0;
+function buildQuiz(){
+  qAns=0;qScore=0;
+  document.getElementById('qBar').style.width='0%';
+  document.getElementById('qLabel').textContent='0 / 5 відповідей';
+  document.getElementById('qScore').textContent='Рахунок: 0';
+  document.getElementById('restBtn').style.display='none';
+  const wrap=document.getElementById('quizWrap');
+  wrap.innerHTML='';
+  QUIZ.forEach((q,qi)=>{
+    const card=document.createElement('div');
+    card.className='quiz-card';card.id='qc'+qi;
+    const optsHTML=q.opts.map((o,oi)=>
+      `<button class="quiz-opt" data-idx="${oi}" onclick="qAns_fn(${qi},${oi})">${o}</button>`
+    ).join('');
+    card.innerHTML=`<div class="quiz-q">${qi+1}. ${q.q}</div><div class="quiz-opts">${optsHTML}</div><div class="quiz-fb" id="qfb${qi}"></div>`;
+    wrap.appendChild(card);
+  });
+  if(window.renderMathInElement){
+    renderMathInElement(wrap,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'$$',right:'$$',display:true}],throwOnError:false});
+  }
+}
+function qAns_fn(qi,chosen){
+  const card=document.getElementById('qc'+qi);
+  if(card.dataset.done)return;
+  card.dataset.done='1';
+  const correct=QUIZ[qi].ansIdx;
+  const btns=card.querySelectorAll('.quiz-opt');
+  btns.forEach(b=>{b.disabled=true;if(+b.dataset.idx===correct)b.classList.add(chosen===correct?'correct':'reveal');});
+  const fb=document.getElementById('qfb'+qi);
+  if(chosen===correct){btns[chosen].classList.remove('reveal');btns[chosen].classList.add('correct');fb.textContent='✓ Правильно! '+QUIZ[qi].hint;fb.className='quiz-fb show ok';qScore++;}
+  else{btns[chosen].classList.add('wrong');fb.textContent='✗ Неправильно. '+QUIZ[qi].hint;fb.className='quiz-fb show err';}
+  qAns++;
+  document.getElementById('qScore').textContent='Рахунок: '+qScore;
+  document.getElementById('qBar').style.width=Math.round(qAns/QUIZ.length*100)+'%';
+  document.getElementById('qLabel').textContent=qAns+' / '+QUIZ.length+' відповідей';
+  if(qAns===QUIZ.length)setTimeout(()=>document.getElementById('restBtn').style.display='inline-block',500);
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  if(window.renderMathInElement){
+    renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'$$',right:'$$',display:true}],throwOnError:false});
+  }
+  buildQuiz();
+});
+</script>
+</body>
+</html>
