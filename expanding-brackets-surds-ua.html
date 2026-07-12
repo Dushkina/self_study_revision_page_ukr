@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Розкриття дужок · Expanding Brackets with Surds</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{
+    delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}],
+    throwOnError:false
+  });">
+</script>
+
+<style>
+:root{
+  --bg:#f7f4f0;--card:#fff;
+  --pink:#e84fa3;--purple:#7c5cbf;
+  --pink-lt:#fde8f4;--pink-mid:#f9c9e8;--purple-lt:#ede8f8;
+  --ink:#1a1228;--muted:#7a6e82;--border:#e5dff0;--radius:20px;
+  --green:#059669;--green-lt:#d1fae5;--green-bd:#a7f3d0;
+  --amber:#b45309;--amber-lt:#fef3c7;--amber-bd:#fde68a;
+  --red:#dc2626;--red-lt:#fee2e2;--red-bd:#fca5a5;
+  --blue:#0369a1;--blue-lt:#e0f2fe;--blue-bd:#bae6fd;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:16px;line-height:1.7;padding:48px 24px 80px;}
+.page{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:28px;}
+.divider{height:2px;background:linear-gradient(90deg,var(--pink),var(--purple));opacity:.22;border-radius:2px;}
+
+/* HERO */
+.hero{background:var(--ink);border-radius:var(--radius);padding:52px 44px 48px;position:relative;overflow:hidden;}
+.hero-blob{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;}
+.hero-blob-1{width:320px;height:320px;background:rgba(232,79,163,.28);top:-80px;right:-60px;}
+.hero-blob-2{width:240px;height:240px;background:rgba(124,92,191,.22);bottom:-60px;left:40px;}
+.hero-blob-3{width:160px;height:160px;background:rgba(5,150,105,.14);top:20px;left:220px;}
+.hero-badge{position:absolute;top:24px;right:24px;background:var(--pink);color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:5px 14px;border-radius:99px;}
+.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--pink);margin-bottom:14px;}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,4.4vw,3rem);color:#fff;line-height:1.12;margin-bottom:14px;}
+.hero-sub{color:rgba(255,255,255,.55);font-size:.94rem;max-width:540px;margin-bottom:22px;}
+.hero-formulas{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.hero-fbox{background:rgba(255,255,255,.07);border:1px solid rgba(232,79,163,.35);border-radius:12px;padding:12px 18px;text-align:center;}
+.hero-fbox-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(232,79,163,.8);margin-bottom:8px;}
+.hero-fbox .katex{font-size:1rem;color:#fff;}
+
+/* SEC LABEL */
+.sec-label{display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;}
+.sec-label::before{content:'';display:block;width:24px;height:3px;background:var(--pink);border-radius:2px;flex-shrink:0;}
+.sec-label.green::before{background:var(--green);}
+.sec-label.purple::before{background:var(--purple);}
+.sec-label.amber::before{background:var(--amber);}
+
+/* CARD */
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px 32px;}
+h2{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--ink);margin-bottom:16px;line-height:1.25;}
+p{color:var(--muted);font-size:.93rem;margin-bottom:10px;}
+p:last-child{margin-bottom:0;}
+p strong{color:var(--ink);}
+
+/* PILL */
+.pill{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.63rem;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;}
+.pill-pink{background:var(--pink-lt);color:var(--pink);border:1px solid var(--pink-mid);}
+.pill-purple{background:var(--purple-lt);color:var(--purple);border:1px solid #d4c8ef;}
+.pill-green{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bd);}
+.pill-amber{background:var(--amber-lt);color:var(--amber);border:1px solid var(--amber-bd);}
+
+/* KEY RULE */
+.key-rule{background:linear-gradient(135deg,var(--pink-lt),var(--purple-lt));border:1.5px solid var(--border);border-radius:var(--radius);padding:22px 28px;}
+.key-rule-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--pink);margin-bottom:10px;}
+.key-rule p{color:var(--ink);font-size:.93rem;margin-bottom:8px;}
+.key-rule p:last-child{margin-bottom:0;}
+.hl{color:var(--pink);font-weight:700;}
+.hlp{color:var(--purple);font-weight:700;}
+.hlg{color:var(--green);font-weight:700;}
+.hla{color:var(--amber);font-weight:700;}
+
+/* ID CARD */
+.id-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px;}
+.id-card:last-child{margin-bottom:0;}
+.id-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;flex-wrap:wrap;}
+.id-title{font-weight:600;font-size:.95rem;color:var(--ink);}
+.id-formula-row{font-family:'JetBrains Mono',monospace;font-size:.88rem;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 14px;margin-top:6px;}
+.id-formula-row+.id-formula-row{margin-top:6px;}
+
+/* ALGO */
+.algo-list{display:flex;flex-direction:column;gap:10px;}
+.algo-step{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:15px 20px;transition:border-color .2s;}
+.algo-step:hover{border-color:var(--pink);}
+.algo-badge{font-family:'JetBrains Mono',monospace;font-size:.82rem;font-weight:700;color:#fff;background:var(--pink);border-radius:8px;min-width:34px;height:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.algo-badge.purple{background:var(--purple);}
+.algo-badge.green{background:var(--green);}
+.algo-body h4{font-size:.94rem;font-weight:600;color:var(--ink);margin-bottom:4px;}
+.algo-body p{font-size:.83rem;color:var(--muted);margin-bottom:0;}
+.algo-note{display:inline-block;margin-top:5px;background:var(--pink-lt);border:1px solid var(--pink-mid);border-radius:8px;padding:4px 12px;font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--pink);}
+.algo-note.purple{background:var(--purple-lt);border-color:#d4c8ef;color:var(--purple);}
+.algo-note.green{background:var(--green-lt);border-color:var(--green-bd);color:var(--green);}
+
+/* EXAMPLE CARD */
+.example-card{border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:14px;}
+.example-card:last-child{margin-bottom:0;}
+.example-header{background:linear-gradient(135deg,#1e0e35,#3a1f6e);padding:16px 26px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.example-header-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5);}
+.example-eq-badge{font-family:'JetBrains Mono',monospace;font-size:.9rem;font-weight:600;background:rgba(232,79,163,.22);border:1px solid rgba(232,79,163,.4);color:#f9a8d4;padding:5px 14px;border-radius:99px;}
+.example-body{background:var(--card);}
+.step-row{display:flex;align-items:baseline;gap:14px;padding:10px 26px;border-bottom:1px solid var(--border);transition:background .15s;}
+.step-row:last-child{border-bottom:none;}
+.step-row:hover{background:var(--bg);}
+.step-n{font-family:'JetBrains Mono',monospace;font-size:.64rem;color:var(--muted);min-width:20px;flex-shrink:0;}
+.step-formula{flex:1;font-size:.9rem;color:var(--ink);}
+.step-formula .katex{font-size:.9rem;}
+.step-comment{font-size:.74rem;color:var(--muted);font-style:italic;flex-shrink:0;max-width:230px;text-align:right;}
+.answer-row{background:var(--pink-lt)!important;border-top:1.5px solid var(--pink-mid)!important;}
+.answer-row .step-formula{color:var(--pink);font-weight:700;}
+.answer-row .step-comment{color:var(--pink);}
+
+/* PATTERN GRID */
+.pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+.pat-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:18px 20px;transition:border-color .2s;}
+.pat-card:hover{border-color:var(--pink);}
+.pat-label{font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;}
+.pl-pink{color:var(--pink);}
+.pl-green{color:var(--green);}
+.pl-purple{color:var(--purple);}
+.pl-amber{color:var(--amber);}
+.pat-formula{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 14px;text-align:center;margin:8px 0;font-size:.9rem;}
+.pat-formula .katex{font-size:.9rem;}
+.pat-card p{font-size:.82rem;color:var(--muted);margin-bottom:0;}
+
+/* HW */
+.hw-group-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:20px 0 10px;}
+.hw-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.hw-item{display:flex;align-items:center;gap:10px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:11px 14px;cursor:pointer;transition:border-color .2s,background .2s;-webkit-user-select:none;user-select:none;}
+.hw-item:hover{border-color:var(--pink);}
+.hw-item.done{background:var(--pink-lt);border-color:var(--pink-mid);}
+.hw-num{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--muted);min-width:22px;flex-shrink:0;}
+.hw-eq{font-size:.9rem;color:var(--ink);flex:1;line-height:1.4;}
+.hw-lv{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;padding:2px 8px;border-radius:99px;flex-shrink:0;}
+.lv1{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bd);}
+.lv2{background:var(--pink-lt);color:var(--pink);border:1px solid var(--pink-mid);}
+.lv3{background:var(--purple-lt);color:var(--purple);border:1px solid #d4c8ef;}
+.hw-check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.66rem;transition:all .2s;color:transparent;flex-shrink:0;}
+.hw-item.done .hw-check{background:var(--pink);border-color:var(--pink);color:#fff;}
+.progress-wrap{background:var(--purple-lt);border-radius:99px;height:8px;overflow:hidden;margin-bottom:8px;}
+.progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--pink),var(--purple));transition:width .4s;width:0%;}
+.progress-text{font-family:'JetBrains Mono',monospace;font-size:.73rem;color:var(--muted);}
+
+/* QUIZ */
+.quiz-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:12px;}
+.quiz-card:last-child{margin-bottom:0;}
+.quiz-q{font-size:.96rem;font-weight:600;color:var(--ink);margin-bottom:12px;line-height:1.5;}
+.quiz-q .katex{font-size:.96rem;}
+.quiz-opts{display:flex;gap:8px;flex-wrap:wrap;}
+.quiz-opt{padding:8px 16px;border-radius:99px;border:1.5px solid var(--border);background:var(--bg);font-size:.86rem;font-weight:600;color:var(--ink);cursor:pointer;transition:all .15s;-webkit-user-select:none;user-select:none;}
+.quiz-opt:hover:not(:disabled){border-color:var(--pink);background:var(--pink-lt);color:var(--pink);}
+.quiz-opt .katex{font-size:.86rem;}
+.quiz-opt.correct{background:var(--green-lt);border-color:var(--green);color:var(--green);}
+.quiz-opt.wrong{background:var(--red-lt);border-color:var(--red);color:var(--red);}
+.quiz-opt.reveal{background:var(--green-lt);border-color:var(--green);color:var(--green);border-style:dashed;}
+.quiz-opt:disabled{cursor:default;}
+.quiz-fb{font-family:'JetBrains Mono',monospace;font-size:.74rem;border-radius:8px;padding:6px 12px;margin-top:8px;display:none;}
+.quiz-fb.show{display:block;}
+.quiz-fb.ok{background:var(--green-lt);color:var(--green);border:1px solid var(--green-bd);}
+.quiz-fb.err{background:var(--red-lt);color:var(--red);border:1px solid var(--red-bd);}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.score-badge{font-family:'JetBrains Mono',monospace;font-size:.76rem;padding:4px 14px;border-radius:99px;background:var(--purple-lt);color:var(--purple);border:1px solid #d4c8ef;font-weight:700;}
+.restart-btn{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;border:none;border-radius:99px;padding:10px 24px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;margin-top:12px;transition:opacity .2s;display:none;}
+.restart-btn:hover{opacity:.85;}
+
+footer{text-align:center;font-family:'JetBrains Mono',monospace;font-size:.73rem;color:var(--muted);padding-top:12px;}
+
+@media(max-width:640px){
+  body{padding:24px 14px 60px;}
+  .hero{padding:36px 20px 32px;}
+  .card{padding:20px 16px;}
+  .hero-formulas,.pattern-grid,.hw-grid{grid-template-columns:1fr;}
+  .step-comment{display:none;}
+  .example-header{flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-blob hero-blob-3"></div>
+  <div class="hero-badge">Algebra · Алгебра</div>
+  <div class="hero-eyebrow">Self-Study Revision · Самостійне повторення</div>
+  <h1>Розкриття дужок<br>з коренями · Surds</h1>
+  <p class="hero-sub">Expanding brackets containing surds (ірраціональні числа). Правило FOIL, квадрат суми/різниці, різниця квадратів — з прикладами та практикою.</p>
+  <div class="hero-formulas">
+    <div class="hero-fbox">
+      <div class="hero-fbox-label">Ключ · Key identity</div>
+      \( \sqrt{a}\cdot\sqrt{a} = (\sqrt{a})^2 = a \)
+    </div>
+    <div class="hero-fbox">
+      <div class="hero-fbox-label">FOIL Rule</div>
+      \( (a+b)(c+d) = ac+ad+bc+bd \)
+    </div>
+  </div>
+</div>
+
+<!-- ══ §1 ОСНОВИ ══ -->
+<div>
+  <div class="sec-label">§1 · Основи · Key Rules</div>
+  <div class="card">
+    <h2>Що потрібно знати перед розкриттям дужок</h2>
+
+    <div class="id-card">
+      <div class="id-head"><div class="id-title">Зведення кореня у квадрат · Squaring a surd</div><span class="pill pill-pink">√a · √a = a</span></div>
+      <div class="id-formula-row">\((\sqrt{a})^2 = \sqrt{a}\cdot\sqrt{a} = a\)</div>
+      <div class="id-formula-row">\((k\sqrt{a})^2 = k^2\cdot(\sqrt{a})^2 = k^2\cdot a\)</div>
+      <div class="id-formula-row">\((2\sqrt{3})^2 = 4\cdot 3 = 12\quad (3\sqrt{5})^2 = 9\cdot 5 = 45\)</div>
+    </div>
+
+    <div class="id-card">
+      <div class="id-head"><div class="id-title">Множення коренів · Multiplying surds</div><span class="pill pill-purple">√a · √b = √(ab)</span></div>
+      <div class="id-formula-row">\(\sqrt{a}\cdot\sqrt{b} = \sqrt{ab}\)</div>
+      <div class="id-formula-row">\(\sqrt{2}\cdot\sqrt{5} = \sqrt{10}\quad 3\sqrt{2}\cdot 4\sqrt{2} = 12\cdot 2 = 24\)</div>
+    </div>
+
+    <div class="id-card">
+      <div class="id-head"><div class="id-title">Подібні доданки · Like surds</div><span class="pill pill-green">collect terms</span></div>
+      <div class="id-formula-row">\(3\sqrt{2}+5\sqrt{2} = 8\sqrt{2}\quad 7\sqrt{3}-2\sqrt{3} = 5\sqrt{3}\)</div>
+      <p style="font-size:.85rem;margin-top:8px;">Як алгебраїчні змінні: \(\sqrt{2}\) та \(\sqrt{3}\) — різні, не можна спростити \(\sqrt{2}+\sqrt{3}\)</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ §2 МЕТОД FOIL ══ -->
+<div>
+  <div class="sec-label">§2 · Метод FOIL · FOIL Method</div>
+  <div class="key-rule">
+    <div class="key-rule-title">⚡ Правило FOIL · The FOIL Rule</div>
+    <p>Для двочленів: <span class="hl">(a+b)(c+d)</span> перемножуємо 4 пари:</p>
+    <p><span class="hlp">F</span>irst (перші) · <span class="hlp">O</span>uter (зовнішні) · <span class="hlp">I</span>nner (внутрішні) · <span class="hlp">L</span>ast (останні)</p>
+    <p>\((a+b)(c+d) = \underbrace{ac}_{\text{F}} + \underbrace{ad}_{\text{O}} + \underbrace{bc}_{\text{I}} + \underbrace{bd}_{\text{L}}\)</p>
+    <p>Потім <span class="hlg">зібрати подібні доданки (collect like terms)</span>.</p>
+  </div>
+
+  <div class="card" style="margin-top:14px;">
+    <h2>Алгоритм · Algorithm</h2>
+    <div class="algo-list">
+      <div class="algo-step">
+        <div class="algo-badge">01</div>
+        <div class="algo-body">
+          <h4>Записати 4 добутки · Write 4 products (FOIL)</h4>
+          <p>Кожен член першої дужки множимо на кожен член другої.</p>
+          <span class="algo-note">\((2+\sqrt{2})(3+\sqrt{2}) = 2\cdot3+2\sqrt{2}+3\sqrt{2}+\sqrt{2}\cdot\sqrt{2}\)</span>
+        </div>
+      </div>
+      <div class="algo-step">
+        <div class="algo-badge">02</div>
+        <div class="algo-body">
+          <h4>Спростити добутки коренів · Simplify surd products</h4>
+          <p>Замінити \(\sqrt{a}\cdot\sqrt{a}=a\), \(\sqrt{a}\cdot\sqrt{b}=\sqrt{ab}\) тощо.</p>
+          <span class="algo-note">\(= 6 + 2\sqrt{2} + 3\sqrt{2} + 2\)</span>
+        </div>
+      </div>
+      <div class="algo-step">
+        <div class="algo-badge purple">03</div>
+        <div class="algo-body">
+          <h4>Зібрати подібні доданки · Collect like terms</h4>
+          <p>Числа окремо, корені окремо.</p>
+          <span class="algo-note purple">\(= (6+2) + (2+3)\sqrt{2} = 8 + 5\sqrt{2}\)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ §3 ШАБЛОНИ ══ -->
+<div>
+  <div class="sec-label">§3 · Важливі шаблони · Key Patterns</div>
+  <div class="card">
+    <h2>Три спеціальні форми</h2>
+    <div class="pattern-grid">
+
+      <div class="pat-card">
+        <div class="pat-label pl-pink">Квадрат суми · Perfect square (sum)</div>
+        <div class="pat-formula">\((a+b)^2 = a^2+2ab+b^2\)</div>
+        <div class="pat-formula">\((a+\sqrt{b})^2 = a^2+2a\sqrt{b}+b\)</div>
+        <p>Приклад: \((3+\sqrt{2})^2 = 9+6\sqrt{2}+2 = 11+6\sqrt{2}\)</p>
+      </div>
+
+      <div class="pat-card">
+        <div class="pat-label pl-green">Квадрат різниці · Perfect square (diff)</div>
+        <div class="pat-formula">\((a-b)^2 = a^2-2ab+b^2\)</div>
+        <div class="pat-formula">\((a-\sqrt{b})^2 = a^2-2a\sqrt{b}+b\)</div>
+        <p>Приклад: \((3-\sqrt{2})^2 = 9-6\sqrt{2}+2 = 11-6\sqrt{2}\)</p>
+      </div>
+
+      <div class="pat-card">
+        <div class="pat-label pl-purple">Різниця квадратів · Difference of squares</div>
+        <div class="pat-formula">\((a+b)(a-b) = a^2-b^2\)</div>
+        <div class="pat-formula">\((\sqrt{a}+\sqrt{b})(\sqrt{a}-\sqrt{b}) = a-b\)</div>
+        <p>Результат — <strong>раціональне число</strong>! Це основа раціоналізації.</p>
+        <p>Приклад: \((3+\sqrt{2})(3-\sqrt{2}) = 9-2 = 7\)</p>
+      </div>
+
+      <div class="pat-card">
+        <div class="pat-label pl-amber">Квадрат \((k\sqrt{a})^2\) · Squaring</div>
+        <div class="pat-formula">\((k\sqrt{a})^2 = k^2\cdot a\)</div>
+        <p>Приклади:</p>
+        <p>\((2\sqrt{3})^2 = 4\cdot 3 = 12\)</p>
+        <p>\((3\sqrt{5})^2 = 9\cdot 5 = 45\)</p>
+        <p>\((7\sqrt{10})^2 = 49\cdot 10 = 490\)</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ §4 ПРИКЛАДИ ══ -->
+<div>
+  <div class="sec-label">§4 · Розібрані приклади · Worked Examples</div>
+
+  <!-- Ex 1 -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 1 · FOIL — базовий</div></div>
+      <div class="example-eq-badge">\((2+\sqrt{2})(3+\sqrt{2})\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">FOIL: \(2\cdot3 + 2\cdot\sqrt{2} + \sqrt{2}\cdot3 + \sqrt{2}\cdot\sqrt{2}\)</span><span class="step-comment">чотири добутки</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= 6 + 2\sqrt{2} + 3\sqrt{2} + 2\)</span><span class="step-comment">\(\sqrt{2}\cdot\sqrt{2}=2\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= 8 + 5\sqrt{2}\)</span><span class="step-comment">collect like terms</span></div>
+    </div>
+  </div>
+
+  <!-- Ex 2 -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 2 · FOIL — від'ємний член</div></div>
+      <div class="example-eq-badge">\((3+\sqrt{5})(1-\sqrt{5})\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">FOIL: \(3\cdot1 + 3\cdot(-\sqrt{5}) + \sqrt{5}\cdot1 + \sqrt{5}\cdot(-\sqrt{5})\)</span><span class="step-comment">уважно зі знаком мінус</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= 3 - 3\sqrt{5} + \sqrt{5} - 5\)</span><span class="step-comment">\(\sqrt{5}\cdot\sqrt{5}=5\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= -2 - 2\sqrt{5}\)</span><span class="step-comment">collect like terms</span></div>
+    </div>
+  </div>
+
+  <!-- Ex 3 -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 3 · Квадрат суми</div></div>
+      <div class="example-eq-badge">\((3+\sqrt{2})^2\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">\((3+\sqrt{2})(3+\sqrt{2}) = 9 + 3\sqrt{2} + 3\sqrt{2} + (\sqrt{2})^2\)</span><span class="step-comment">FOIL або шаблон \((a+b)^2\)</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= 9 + 6\sqrt{2} + 2\)</span><span class="step-comment">\((\sqrt{2})^2=2\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= 11 + 6\sqrt{2}\)</span></div>
+    </div>
+  </div>
+
+  <!-- Ex 4 -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 4 · Різниця квадратів</div></div>
+      <div class="example-eq-badge">\((\sqrt{7}+2)(\sqrt{7}-3)\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">FOIL: \((\sqrt{7})^2 - 3\sqrt{7} + 2\sqrt{7} - 6\)</span><span class="step-comment">не є точна різниця квадратів (різні числа)</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= 7 - 3\sqrt{7} + 2\sqrt{7} - 6\)</span><span class="step-comment">\((\sqrt{7})^2=7\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= 1 - \sqrt{7}\)</span><span class="step-comment">collect like terms</span></div>
+    </div>
+  </div>
+
+  <!-- Ex 5 -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 5 · З числом перед коренем</div></div>
+      <div class="example-eq-badge">\((3\sqrt{2}+1)(2\sqrt{2}-2)\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">FOIL: \(3\sqrt{2}\cdot2\sqrt{2} + 3\sqrt{2}\cdot(-2) + 1\cdot2\sqrt{2} + 1\cdot(-2)\)</span><span class="step-comment">multiply all pairs</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= 6\cdot2 - 6\sqrt{2} + 2\sqrt{2} - 2 = 12 - 6\sqrt{2} + 2\sqrt{2} - 2\)</span><span class="step-comment">\(3\sqrt{2}\cdot2\sqrt{2}=6\cdot(\sqrt{2})^2=12\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= 10 - 4\sqrt{2}\)</span><span class="step-comment">collect like terms</span></div>
+    </div>
+  </div>
+
+  <!-- Ex 6 -->
+  <div class="example-card">
+    <div class="example-header">
+      <div><div class="example-header-label">Приклад 6 · Точна різниця квадратів</div></div>
+      <div class="example-eq-badge">\((6-2\sqrt{2})(2+\sqrt{2})\)</div>
+    </div>
+    <div class="example-body">
+      <div class="step-row"><span class="step-n">①</span><span class="step-formula">FOIL: \(6\cdot2 + 6\sqrt{2} + (-2\sqrt{2})\cdot2 + (-2\sqrt{2})\cdot\sqrt{2}\)</span><span class="step-comment">уважно зі знаком</span></div>
+      <div class="step-row"><span class="step-n">②</span><span class="step-formula">\(= 12 + 6\sqrt{2} - 4\sqrt{2} - 2\cdot2 = 12 + 6\sqrt{2} - 4\sqrt{2} - 4\)</span><span class="step-comment">\(-2\sqrt{2}\cdot\sqrt{2}=-2\cdot2=-4\)</span></div>
+      <div class="step-row answer-row"><span class="step-n">✓</span><span class="step-formula">\(= 8 + 2\sqrt{2}\)</span><span class="step-comment">collect like terms</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ HOMEWORK ══ -->
+<div>
+  <div class="sec-label">Домашнє завдання · Homework</div>
+  <div class="card">
+    <h2>15 завдань · 15 Exercises</h2>
+    <p style="margin-bottom:16px;">Натисни для відмітки виконаного. Розкрий дужки та спростити · Expand and simplify.</p>
+    <div class="progress-wrap"><div class="progress-fill" id="pBar"></div></div>
+    <div class="progress-text" id="pLabel">0 / 15 виконано</div>
+
+    <div class="hw-group-label">🟢 Рівень 1 · Level 1 — FOIL базовий</div>
+    <div class="hw-grid">
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">1.</span><span class="hw-eq">\((2+\sqrt{2})(3+\sqrt{2})\)</span><span class="hw-lv lv1">foil</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">2.</span><span class="hw-eq">\((3+\sqrt{2})(3+\sqrt{2})\)</span><span class="hw-lv lv1">foil</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">3.</span><span class="hw-eq">\((\sqrt{2}+2)(\sqrt{2}-1)\)</span><span class="hw-lv lv1">foil</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">4.</span><span class="hw-eq">\((4-\sqrt{3})(3+\sqrt{3})\)</span><span class="hw-lv lv1">foil</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">5.</span><span class="hw-eq">\((2+\sqrt{3})(2-\sqrt{3})\)</span><span class="hw-lv lv1">DoS</span><div class="hw-check">✓</div></div>
+    </div>
+
+    <div class="hw-group-label">🔵 Рівень 2 · Level 2 — від'ємні та змішані</div>
+    <div class="hw-grid">
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">6.</span><span class="hw-eq">\((2-\sqrt{6})(5+\sqrt{6})\)</span><span class="hw-lv lv2">foil</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">7.</span><span class="hw-eq">\((\sqrt{7}+2)(\sqrt{7}-3)\)</span><span class="hw-lv lv2">foil</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">8.</span><span class="hw-eq">\((\sqrt{11}+\sqrt{2})(\sqrt{11}-\sqrt{2})\)</span><span class="hw-lv lv2">DoS</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">9.</span><span class="hw-eq">\((3\sqrt{2}+1)(3\sqrt{2}+3)\)</span><span class="hw-lv lv2">foil</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">10.</span><span class="hw-eq">\((6-2\sqrt{2})(2+\sqrt{2})\)</span><span class="hw-lv lv2">foil</span><div class="hw-check">✓</div></div>
+    </div>
+
+    <div class="hw-group-label">🔴 Рівень 3 · Level 3 — квадрати та складні вирази</div>
+    <div class="hw-grid">
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">11.</span><span class="hw-eq">\((3\sqrt{2}+1)^2\)</span><span class="hw-lv lv3">square</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">12.</span><span class="hw-eq">\((\sqrt{5}-2)^2\)</span><span class="hw-lv lv3">square</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">13.</span><span class="hw-eq">\((2\sqrt{3}-1)(2\sqrt{3}+4)\)</span><span class="hw-lv lv3">foil</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">14.</span><span class="hw-eq">\((1+\sqrt{3})^2+(1-\sqrt{3})^2\)</span><span class="hw-lv lv3">combine</span><div class="hw-check">✓</div></div>
+      <div class="hw-item" onclick="tog(this)"><span class="hw-num">15.</span><span class="hw-eq">\((2+\sqrt{5})(2-\sqrt{5})+(1+\sqrt{5})^2\)</span><span class="hw-lv lv3">combine</span><div class="hw-check">✓</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══ QUIZ ══ -->
+<div>
+  <div class="sec-label purple">Тест · Quick Quiz</div>
+  <div class="card">
+    <h2>5 питань · 5 Questions</h2>
+    <p style="margin-bottom:18px;">Вибери правильну відповідь · Choose the correct answer</p>
+    <div class="progress-row">
+      <div>
+        <div class="progress-wrap" style="width:200px;"><div class="progress-fill" id="qBar"></div></div>
+        <div class="progress-text" id="qLabel">0 / 5 відповідей</div>
+      </div>
+      <div class="score-badge" id="qScore">Рахунок: 0</div>
+    </div>
+    <div id="quizWrap"></div>
+    <button class="restart-btn" id="restBtn" onclick="buildQuiz()">Пройти ще раз</button>
+  </div>
+</div>
+
+<footer>Розкриття дужок з коренями · Expanding Brackets with Surds · Algebra · Self-Study</footer>
+</div>
+
+<script>
+function tog(el){
+  el.classList.toggle('done');
+  const total=document.querySelectorAll('.hw-item').length;
+  const done=document.querySelectorAll('.hw-item.done').length;
+  document.getElementById('pBar').style.width=Math.round(done/total*100)+'%';
+  document.getElementById('pLabel').textContent=done+' / '+total+' виконано';
+}
+
+const QUIZ=[
+  {
+    q:'Expand and simplify: \\((3+\\sqrt{2})(3+\\sqrt{2})\\)',
+    opts:['\\(9+2\\)','\\(7+6\\sqrt{2}\\)','\\(11+6\\sqrt{2}\\)','\\(9+3\\sqrt{2}\\)'],
+    ansIdx:2,
+    hint:'(3+√2)² = 9 + 3√2 + 3√2 + 2 = 11 + 6√2. Квадрат суми!'
+  },
+  {
+    q:'Expand and simplify: \\((\\sqrt{5}+2)(\\sqrt{5}-2)\\)',
+    opts:['\\(5-4\\)','\\(5+4\\)','\\(1+4\\sqrt{5}\\)','\\(1\\)'],
+    ansIdx:3,
+    hint:'Різниця квадратів: (√5)²−2² = 5−4 = 1. Результат раціональний!'
+  },
+  {
+    q:'Simplify: \\((2\\sqrt{3})^2\\)',
+    opts:['\\(2\\sqrt{3}\\)','\\(4\\sqrt{3}\\)','\\(12\\)','\\(6\\)'],
+    ansIdx:2,
+    hint:'(2√3)² = 2²·(√3)² = 4·3 = 12. Зводимо кожен множник окремо.'
+  },
+  {
+    q:'Expand and simplify: \\((\\sqrt{7}+2)(\\sqrt{7}-3)\\)',
+    opts:['\\(1-\\sqrt{7}\\)','\\(7-\\sqrt{7}\\)','\\(4-\\sqrt{7}\\)','\\(1+\\sqrt{7}\\)'],
+    ansIdx:0,
+    hint:'FOIL: 7 − 3√7 + 2√7 − 6 = (7−6) + (−3+2)√7 = 1 − √7'
+  },
+  {
+    q:'Expand and simplify: \\((3\\sqrt{2}+1)(2\\sqrt{2}-2)\\)',
+    opts:['\\(8-4\\sqrt{2}\\)','\\(10-4\\sqrt{2}\\)','\\(10+4\\sqrt{2}\\)','\\(8+2\\sqrt{2}\\)'],
+    ansIdx:1,
+    hint:'FOIL: 3√2·2√2 + 3√2·(−2) + 1·2√2 + 1·(−2) = 12 − 6√2 + 2√2 − 2 = 10 − 4√2'
+  },
+];
+
+let qAns=0,qScore=0;
+function buildQuiz(){
+  qAns=0;qScore=0;
+  document.getElementById('qBar').style.width='0%';
+  document.getElementById('qLabel').textContent='0 / 5 відповідей';
+  document.getElementById('qScore').textContent='Рахунок: 0';
+  document.getElementById('restBtn').style.display='none';
+  const wrap=document.getElementById('quizWrap');
+  wrap.innerHTML='';
+  QUIZ.forEach((q,qi)=>{
+    const card=document.createElement('div');
+    card.className='quiz-card';card.id='qc'+qi;
+    const optsHTML=q.opts.map((o,oi)=>
+      `<button class="quiz-opt" data-idx="${oi}" onclick="qAns_fn(${qi},${oi})">${o}</button>`
+    ).join('');
+    card.innerHTML=`<div class="quiz-q">${qi+1}. ${q.q}</div><div class="quiz-opts">${optsHTML}</div><div class="quiz-fb" id="qfb${qi}"></div>`;
+    wrap.appendChild(card);
+  });
+  if(window.renderMathInElement){
+    renderMathInElement(wrap,{
+      delimiters:[{left:'\\(',right:'\\)',display:false},{left:'$$',right:'$$',display:true}],
+      throwOnError:false
+    });
+  }
+}
+function qAns_fn(qi,chosen){
+  const card=document.getElementById('qc'+qi);
+  if(card.dataset.done)return;
+  card.dataset.done='1';
+  const correct=QUIZ[qi].ansIdx;
+  const btns=card.querySelectorAll('.quiz-opt');
+  btns.forEach(b=>{b.disabled=true;if(+b.dataset.idx===correct)b.classList.add(chosen===correct?'correct':'reveal');});
+  const fb=document.getElementById('qfb'+qi);
+  if(chosen===correct){
+    btns[chosen].classList.remove('reveal');btns[chosen].classList.add('correct');
+    fb.textContent='✓ Правильно! '+QUIZ[qi].hint;fb.className='quiz-fb show ok';qScore++;
+  }else{
+    btns[chosen].classList.add('wrong');
+    fb.textContent='✗ Неправильно. '+QUIZ[qi].hint;fb.className='quiz-fb show err';
+  }
+  qAns++;
+  document.getElementById('qScore').textContent='Рахунок: '+qScore;
+  document.getElementById('qBar').style.width=Math.round(qAns/QUIZ.length*100)+'%';
+  document.getElementById('qLabel').textContent=qAns+' / '+QUIZ.length+' відповідей';
+  if(qAns===QUIZ.length)setTimeout(()=>document.getElementById('restBtn').style.display='inline-block',500);
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  if(window.renderMathInElement){
+    renderMathInElement(document.body,{
+      delimiters:[{left:'\\(',right:'\\)',display:false},{left:'$$',right:'$$',display:true}],
+      throwOnError:false
+    });
+  }
+  buildQuiz();
+});
+</script>
+</body>
+</html>
